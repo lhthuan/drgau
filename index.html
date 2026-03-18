@@ -502,12 +502,19 @@ Nguyên tắc trả lời:
 - Trả lời súc tích, có cấu trúc rõ ràng (dùng emoji và dấu gạch đầu dòng khi phù hợp)
 - Nếu câu hỏi không liên quan đến y tế/sức khỏe, lịch sự từ chối và hướng dẫn lại
 
+QUAN TRỌNG – Quy tắc về đối thủ cạnh tranh:
+- TUYỆT ĐỐI KHÔNG cung cấp thông tin, địa chỉ, chi nhánh, giá cả hoặc bất kỳ nội dung nào liên quan đến các nhà thuốc/chuỗi dược phẩm khác như: Long Châu, Pharmacity, An Khang, Medicare, Eco Pharma hoặc bất kỳ thương hiệu nhà thuốc nào KHÔNG phải Trung Sơn.
+- Nếu khách hỏi về nhà thuốc khác, hãy lịch sự từ chối: "Bác Sĩ Gấu chỉ có thể hỗ trợ thông tin về hệ thống Nhà thuốc Trung Sơn. Bạn có muốn Bác Sĩ Gấu tìm chi nhánh Trung Sơn gần bạn không? 😊"
+- KHÔNG so sánh Trung Sơn với bất kỳ đối thủ nào dù khách yêu cầu.
+- Khi dùng Google Search, CHỈ lấy thông tin về sức khỏe, thuốc, y tế – KHÔNG lấy thông tin về nhà thuốc đối thủ.
+
 Thông tin về Trung Sơn Pharma:
-- Chuỗi nhà thuốc bán lẻ tại Việt Nam
+- Chuỗi nhà thuốc bán lẻ uy tín tại Việt Nam
 - Cam kết cung cấp thuốc chính hãng, chất lượng cao
 - Dịch vụ tư vấn sức khỏe miễn phí
 - Website: trungsoncare.com`,
-  USE_GOOGLE_SEARCH: true,   // bật Google Search grounding
+  USE_GOOGLE_SEARCH: true,
+  COMPETITOR_KEYWORDS: ['long châu', 'longchau', 'pharmacity', 'an khang', 'medicare', 'eco pharma', 'nhathuoclongchau', 'long chau'],
 };
 
 // ══════════════════════════════════════════
@@ -695,12 +702,26 @@ function sendQuick(btn) {
 // ══════════════════════════════════════════
 //  MAIN SEND LOGIC
 // ══════════════════════════════════════════
+function checkCompetitor(text) {
+  const lower = text.toLowerCase();
+  return CONFIG.COMPETITOR_KEYWORDS.some(kw => lower.includes(kw));
+}
+
 async function sendMessage(overrideText) {
   if (isLoading) return;
 
   const input = document.getElementById('user-input');
   const text = (overrideText || input.value).trim();
   if (!text) return;
+
+  // Chặn câu hỏi về đối thủ cạnh tranh ngay tại client
+  if (checkCompetitor(text)) {
+    input.value = '';
+    input.style.height = 'auto';
+    appendUserMessage(text);
+    appendBotMessage('Bác Sĩ Gấu chỉ có thể hỗ trợ thông tin về hệ thống **Nhà thuốc Trung Sơn** thôi bạn nhé! 😊\n\nBạn có muốn Bác Sĩ Gấu giúp tìm chi nhánh Trung Sơn gần bạn hoặc tư vấn sức khỏe không?');
+    return;
+  }
 
   if (!apiKey) {
     appendBotMessage('⚠️ Vui lòng nhập Gemini API Key ở trên để bắt đầu!');
