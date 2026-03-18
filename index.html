@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bác Sĩ Gấu – Trung Sơn Pharma</title>
+  <title>B1734 Bác Sĩ Gấu – Trung Sơn Pharma</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
@@ -489,7 +489,7 @@
 //  CONFIGURATION – chỉnh sửa tại đây
 // ══════════════════════════════════════════
 const CONFIG = {
-  MODEL_ID: "gemini-2.5-flash-preview-05-20",   // model mới nhất, thay nếu cần
+  MODEL_ID: "gemini-2.5-flash",   // stable model, đổi sang gemini-2.0-flash nếu cần
   SYSTEM_PROMPT: `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma), một chuỗi nhà thuốc bán lẻ uy tín tại Việt Nam.
 
 Nguyên tắc trả lời:
@@ -560,7 +560,7 @@ async function testAndSaveKey() {
   bar.textContent = '⏳ Đang kết nối đến Gemini API…';
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL_ID}:generateContent?key=${val}`;
+    const url = `https://generativelanguage.googleapis.com/v1/models/${CONFIG.MODEL_ID}:generateContent?key=${val}`;
     const resp = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -741,6 +741,8 @@ async function sendMessage(overrideText) {
 //  GEMINI API CALL
 // ══════════════════════════════════════════
 async function callGemini(history) {
+  // Google Search grounding chỉ hoạt động trên v1beta
+  const apiVersion = CONFIG.USE_GOOGLE_SEARCH ? 'v1beta' : 'v1';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL_ID}:generateContent?key=${apiKey}`;
 
   const body = {
@@ -752,7 +754,7 @@ async function callGemini(history) {
       temperature: 0.7,
       maxOutputTokens: 1024,
     },
-    tools: CONFIG.USE_GOOGLE_SEARCH ? [{ google_search: {} }] : [],
+    tools: CONFIG.USE_GOOGLE_SEARCH ? [{ googleSearch: {} }] : [],
   };
 
   const resp = await fetch(url, {
