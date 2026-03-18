@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bác sĩ Gấu - Chat Real-time</title>
+    <title>Build 4:39 Bác sĩ Gấu - Trung Sơn Care</title>
     <style>
-        body { font-family: sans-serif; background: #eef2f3; display: flex; justify-content: center; padding: 20px; }
-        #chat-container { width: 100%; max-width: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; height: 80vh; }
-        #header { background: #007bff; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 1.2em; }
-        #messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 12px 16px; border-radius: 15px; max-width: 80%; line-height: 1.4; }
-        .user { background: #007bff; color: white; align-self: flex-end; }
-        .bot { background: #f1f0f0; color: #333; align-self: flex-start; }
-        #input-area { border-top: 1px solid #ddd; padding: 15px; display: flex; gap: 10px; }
-        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
-        button { background: #007bff; color: white; border: none; padding: 0 20px; border-radius: 25px; cursor: pointer; font-weight: bold; }
-        button:disabled { background: #ccc; }
-        .loading { font-style: italic; color: #888; font-size: 0.9em; }
+        body { font-family: 'Arial', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #chat-container { width: 100%; max-width: 450px; height: 90vh; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        #header { background: #3b82f6; color: white; padding: 20px; text-align: center; font-weight: bold; border-radius: 20px 20px 0 0; }
+        #messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .msg { padding: 12px 16px; border-radius: 18px; max-width: 85%; font-size: 14px; line-height: 1.5; }
+        .user { background: #3b82f6; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .bot { background: #f1f5f9; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 4px; white-space: pre-wrap; }
+        #input-area { padding: 15px; border-top: 1px solid #e2e8f0; display: flex; gap: 8px; }
+        input { flex: 1; padding: 12px 18px; border: 1px solid #e2e8f0; border-radius: 25px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #3b82f6; }
+        button { background: #3b82f6; color: white; border: none; padding: 0 20px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        button:disabled { background: #cbd5e1; }
     </style>
 </head>
 <body>
@@ -24,60 +24,60 @@
 <div id="chat-container">
     <div id="header">🐻 Bác sĩ Gấu - Trung Sơn Care</div>
     <div id="messages">
-        <div class="msg bot">Dạ, Bác sĩ Gấu xin nghe! Bạn cần hỏi về dịch vụ hay chính sách gì của Trung Sơn Care ạ?</div>
+        <div class="msg bot">Dạ, Bác sĩ Gấu xin nghe! Bác sĩ có thể giúp gì cho bạn về dịch vụ của Trung Sơn Care ạ?</div>
     </div>
     <div id="input-area">
-        <input type="text" id="userInput" placeholder="Hỏi Bác sĩ Gấu..." />
+        <input type="text" id="userInput" placeholder="Nhập câu hỏi tại đây..." autocomplete="off">
         <button id="sendBtn">Gửi</button>
     </div>
 </div>
 
-<script type="module">
-    // CẤU HÌNH API
-    const API_KEY = "AIzaSyCSjXNkoztRtYD1BQGj8NXpIivAjOvnyOk"; // Key bạn vừa lấy
-    const MODEL_NAME = "gemini-1.5-flash"; // Bản nhanh nhất cho chatbot
+<script>
+    // 1. Dán API Key của bạn vào đây
+    const API_KEY = "AIzaSyCSjXNkoztRtYD1BQGj8NXpIivAjOvnyOk"; 
+    
+    // 2. Thử đổi giữa 1.5-flash hoặc 2.0-flash nếu lỗi
+    const MODEL_NAME = "gemini-1.5-flash"; 
 
     const messagesDiv = document.getElementById('messages');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
-    // Hàm gửi tin nhắn
-    async function askGemini() {
-        const prompt = userInput.value.trim();
-        if (!prompt) return;
+    async function chatWithGemini() {
+        const text = userInput.value.trim();
+        if (!text) return;
 
-        // Hiển thị tin người dùng
-        appendMessage(prompt, 'user');
+        appendMessage(text, 'user');
         userInput.value = '';
         sendBtn.disabled = true;
 
-        // Hiển thị trạng thái đang chờ
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'loading';
-        loadingDiv.innerText = 'Bác sĩ Gấu đang nhớ lại...';
-        messagesDiv.appendChild(loadingDiv);
+        const loadingMsg = appendMessage("Bác sĩ Gấu đang suy nghĩ...", 'bot');
 
         try {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    "contents": [{ "parts": [{ "text": prompt }] }],
-                    "systemInstruction": { "parts": [{ "text": "Bạn là Bác sĩ Gấu của trungsoncare.com. Hãy trả lời thân thiện, lễ phép dùng 'Dạ'. Nếu hỏi về bệnh nặng hãy khuyên đi khám." }] }
+                    "contents": [{"parts": [{"text": text}]}],
+                    "systemInstruction": { "parts": [{"text": "Bạn là Bác sĩ Gấu, trợ lý của trungsoncare.com. Trả lời lễ phép, thân thiện."}] }
                 })
             });
 
             const data = await response.json();
-            const botText = data.candidates[0].content.parts[0].text;
             
-            loadingDiv.remove();
-            appendMessage(botText, 'bot');
+            if (!response.ok) {
+                throw new Error(`Lỗi ${response.status}: ${data.error.message}`);
+            }
+
+            const answer = data.candidates[0].content.parts[0].text;
+            loadingMsg.innerText = answer;
 
         } catch (error) {
-            console.error("Lỗi:", error);
-            loadingDiv.innerText = "Dạ, có lỗi kết nối chút xíu. Bạn thử lại nhé!";
+            loadingMsg.innerText = "⚠️ Lỗi: " + error.message + ". Hãy kiểm tra lại API Key hoặc Model name trong code.";
+            console.error(error);
         } finally {
             sendBtn.disabled = false;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
     }
 
@@ -87,10 +87,11 @@
         div.innerText = text;
         messagesDiv.appendChild(div);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        return div;
     }
 
-    sendBtn.onclick = askGemini;
-    userInput.onkeypress = (e) => { if(e.key === 'Enter') askGemini(); };
+    sendBtn.addEventListener('click', chatWithGemini);
+    userInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') chatWithGemini(); });
 </script>
 
 </body>
