@@ -365,7 +365,7 @@ const ADMIN_PWD = 'trungson2024'; // đổi mật khẩu tại đây
 
 // ── Worker URL ── đổi thành URL Worker sau khi deploy ──────────
 // Ví dụ: 'https://bacsi-gau-proxy.YOUR-SUBDOMAIN.workers.dev'
-const WORKER_URL = localStorage.getItem('bsg_worker_url') || '';
+const WORKER_URL = localStorage.getItem('bsg_worker_url') || 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
 const USE_WORKER = () => !!WORKER_URL;
 function workerHeaders() {
   return {
