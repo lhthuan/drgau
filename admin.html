@@ -3,233 +3,171 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>334</title>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>Bác Sĩ Gấu – Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root {
+:root{
   --g1:#00843D;--g2:#00A84F;--g3:#C8F0D8;--g4:#E8F7EE;
   --teal:#006D62;--ink:#1A2620;--ink2:#3D5248;--ink3:#6B8577;
-  --line:#DDE8E1;--bg:#F4F9F6;--white:#fff;
-  --shadow:0 4px 20px rgba(0,132,61,.12);
-  --r:16px;--font:'Lexend',sans-serif;
+  --line:#DDE8E1;--bg:#F4F9F6;--w:#fff;
+  --sh:0 4px 20px rgba(0,132,61,.12);
+  --font:'Lexend',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var(--ink)}
 
 /* LOGIN */
-.login-wrap{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
-}
-.login-card{
-  background:var(--white);border:1px solid var(--line);border-radius:24px;
-  padding:40px;width:100%;max-width:380px;box-shadow:var(--shadow);text-align:center;
-}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:var(--w);border:1px solid var(--line);border-radius:24px;padding:40px;width:100%;max-width:380px;box-shadow:var(--sh);text-align:center}
 .login-bear{font-size:52px;margin-bottom:12px}
-.login-card h1{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.login-card h1{font-size:20px;font-weight:700;margin-bottom:4px}
 .login-card p{font-size:13px;color:var(--ink3);margin-bottom:28px}
-.login-card input{
-  width:100%;border:1.5px solid var(--line);border-radius:10px;
-  padding:12px 16px;font-family:var(--font);font-size:14px;
-  outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;
-  background:var(--bg);transition:border-color .2s;
-}
-.login-card input:focus{border-color:var(--g1);background:var(--white)}
+.login-card input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px 16px;font-family:var(--font);font-size:14px;outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;background:var(--bg);transition:border-color .2s}
+.login-card input:focus{border-color:var(--g1);background:var(--w)}
 .login-err{font-size:12px;color:#DC2626;margin-bottom:8px;min-height:16px}
 
 /* APP */
-.app{display:none;min-height:100vh}
-.app.show{display:block}
+.app{display:none;min-height:100vh}.app.show{display:block}
 
-/* TOP BAR */
-.topbar{
-  background:linear-gradient(135deg,#003D1E,var(--teal));
-  padding:0 28px;height:60px;display:flex;align-items:center;gap:16px;
-  position:sticky;top:0;z-index:100;
-}
-.topbar-logo{display:flex;align-items:center;gap:10px;color:white}
-.topbar-logo .bear{font-size:24px}
-.topbar-logo h1{font-size:16px;font-weight:700}
-.topbar-logo span{font-size:11px;opacity:.6;margin-left:4px}
-.topbar-nav{display:flex;gap:4px;margin-left:24px}
-.tab-btn{
-  padding:8px 16px;border-radius:8px;border:none;cursor:pointer;
-  font-family:var(--font);font-size:13px;font-weight:500;
-  color:rgba(255,255,255,.7);background:transparent;transition:all .18s;
-}
-.tab-btn:hover{background:rgba(255,255,255,.12);color:white}
-.tab-btn.active{background:rgba(255,255,255,.2);color:white}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.store-pill{
-  background:rgba(255,255,255,.15);border-radius:20px;
-  padding:5px 12px;font-size:12px;color:white;
-}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.dot.green{background:#4ADE80}
-.dot.red{background:#F87171}
-.logout-btn{
-  padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);
-  font-family:var(--font);font-size:12px;font-weight:600;color:white;
-  background:transparent;cursor:pointer;transition:all .18s;
-}
-.logout-btn:hover{background:rgba(255,255,255,.15)}
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,#003D1E,var(--teal));padding:0 24px;height:58px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.t-logo{display:flex;align-items:center;gap:9px;color:#fff}
+.t-logo h1{font-size:15px;font-weight:700}
+.t-logo span{font-size:10px;opacity:.55;margin-left:3px}
+.t-nav{display:flex;gap:3px;margin-left:20px}
+.tab-btn{padding:8px 15px;border-radius:8px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:500;color:rgba(255,255,255,.65);background:transparent;transition:all .18s}
+.tab-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.tab-btn.active{background:rgba(255,255,255,.18);color:#fff}
+.t-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.store-pill{background:rgba(255,255,255,.14);border-radius:20px;padding:4px 11px;font-size:12px;color:#fff}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.dot.g{background:#4ADE80}.dot.r{background:#F87171}
+.logout-btn{padding:5px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.28);font-family:var(--font);font-size:12px;font-weight:600;color:#fff;background:transparent;cursor:pointer;transition:all .18s}
+.logout-btn:hover{background:rgba(255,255,255,.14)}
 
 /* CONTENT */
-.content{max-width:860px;margin:0 auto;padding:32px 24px}
+.content{max-width:820px;margin:0 auto;padding:28px 20px}
 
 /* TABS */
 .panel{display:none}.panel.active{display:block}
 
 /* CARDS */
-.card{
-  background:var(--white);border:1px solid var(--line);border-radius:20px;
-  padding:24px;margin-bottom:16px;box-shadow:var(--shadow);
-}
-.card h3{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.card p{font-size:13px;color:var(--ink3);margin-bottom:16px;line-height:1.6}
+.card{background:var(--w);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:14px;box-shadow:var(--sh)}
+.card h3{font-size:14px;font-weight:700;margin-bottom:3px}
+.card .desc{font-size:12.5px;color:var(--ink3);margin-bottom:14px;line-height:1.55}
 
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
-.form-group input,.form-group select,.form-group textarea{
-  width:100%;border:1.5px solid var(--line);border-radius:10px;
-  padding:10px 14px;font-family:var(--font);font-size:14px;color:var(--ink);
-  outline:none;background:var(--bg);transition:border-color .2s;
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
-  border-color:var(--g1);background:var(--white)
-}
-.form-group textarea{resize:vertical;min-height:80px}
+/* FORM */
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 13px;font-family:var(--font);font-size:13.5px;color:var(--ink);outline:none;background:var(--bg);transition:border-color .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g1);background:var(--w)}
+.fg textarea{resize:vertical;min-height:80px}
+.fg .hint{font-size:11px;color:var(--ink3);margin-top:4px}
 
-.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:10px 20px;border-radius:10px;font-family:var(--font);
-  font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .18s;
-}
-.btn-primary{background:var(--g1);color:white;box-shadow:0 2px 8px rgba(0,132,61,.25)}
-.btn-primary:hover{background:var(--g2);transform:translateY(-1px)}
-.btn-outline{background:transparent;color:var(--g1);border:1.5px solid var(--g1)}
-.btn-outline:hover{background:var(--g4)}
-.btn-danger{background:#FEE2E2;color:#DC2626;border:1.5px solid #FECACA}
-.btn-danger:hover{background:#DC2626;color:white}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
-.btn-sm{padding:7px 14px;font-size:12px}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .18s}
+.btn-p{background:var(--g1);color:#fff;box-shadow:0 2px 8px rgba(0,132,61,.2)}
+.btn-p:hover{background:var(--g2);transform:translateY(-1px)}
+.btn-o{background:transparent;color:var(--g1);border:1.5px solid var(--g1)}
+.btn-o:hover{background:var(--g4)}
+.btn-d{background:#FEE2E2;color:#DC2626;border:1.5px solid #FECACA}
+.btn-d:hover{background:#DC2626;color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
-.store-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-.store-item{
-  display:flex;align-items:center;gap:12px;padding:14px 16px;
-  background:var(--g4);border:1px solid var(--g3);border-radius:12px;
-}
+/* STORE LIST */
+.store-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.store-item{display:flex;align-items:center;gap:11px;padding:13px 15px;background:var(--g4);border:1px solid var(--g3);border-radius:11px}
 .si-info{flex:1}
-.si-name{font-size:14px;font-weight:600;color:var(--ink)}
+.si-name{font-size:13.5px;font-weight:600}
 .si-id{font-size:11px;color:var(--ink3);margin-top:2px;font-family:monospace}
-.si-actions{display:flex;gap:6px}
-.active-badge{
-  background:var(--g1);color:white;border-radius:20px;
-  padding:3px 10px;font-size:11px;font-weight:700;
-}
+.si-act{display:flex;gap:6px}
+.badge-active{background:var(--g1);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700}
 
-.doc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.doc-item{
-  display:flex;align-items:center;gap:10px;padding:12px 14px;
-  background:var(--bg);border:1px solid var(--line);border-radius:10px;
-}
-.doc-name{flex:1;font-size:13px;font-weight:500;color:var(--ink)}
-.doc-state{
-  font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;
-}
-.doc-state.active{background:var(--g3);color:var(--teal)}
-.doc-state.processing{background:#FEF3C7;color:#92400E}
+/* DOC LIST */
+.doc-list{display:flex;flex-direction:column;gap:7px;margin-top:11px}
+.doc-item{display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--bg);border:1px solid var(--line);border-radius:9px}
+.doc-name{flex:1;font-size:13px;font-weight:500}
+.doc-state{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+.ds-active{background:var(--g3);color:var(--teal)}
+.ds-proc{background:#FEF3C7;color:#92400E}
 
-.upload-zone{
-  border:2px dashed var(--g3);border-radius:12px;padding:28px;text-align:center;
-  cursor:pointer;transition:all .2s;background:var(--g4);
-}
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--g3);border-radius:11px;padding:26px;text-align:center;cursor:pointer;transition:all .2s;background:var(--g4)}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--g1);background:var(--g3)}
-.uz-icon{font-size:32px;margin-bottom:8px}
+.uz-icon{font-size:30px;margin-bottom:7px}
 #file-input{display:none}
 
-.progress-wrap{display:none;margin-top:12px}
-.progress-bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));border-radius:6px;transition:width .3s}
-.progress-label{font-size:13px;color:var(--ink2);margin-bottom:6px}
+/* PROGRESS */
+.prog-wrap{display:none;margin-top:11px}
+.prog-bar{height:5px;background:var(--line);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));border-radius:5px;transition:width .3s}
+.prog-label{font-size:12.5px;color:var(--ink2);margin-bottom:5px}
 
-.log-box{
-  background:#0D1F15;border-radius:10px;padding:14px;
-  font-family:monospace;font-size:12px;color:#86EFAC;
-  max-height:160px;overflow-y:auto;margin-top:12px;line-height:1.8;
-}
-.log-err{color:#FCA5A5}.log-info{color:#93C5FD}
+/* LOG */
+.log-box{background:#0D1F15;border-radius:9px;padding:12px;font-family:monospace;font-size:12px;color:#86EFAC;max-height:150px;overflow-y:auto;margin-top:11px;line-height:1.8}
+.le{color:#FCA5A5}.li{color:#93C5FD}
 
-.toast{
-  position:fixed;bottom:24px;right:24px;z-index:9999;
-  padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;
-  box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:320px;
-  animation:toastIn .3s ease-out;
-}
-@keyframes toastIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.toast.success{background:var(--g1);color:white}
-.toast.error{background:#DC2626;color:white}
-.toast.info{background:var(--ink);color:white}
+/* INFO BOX */
+.info-box{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--ink3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
-.status-bar{
-  display:flex;align-items:center;gap:8px;padding:10px 14px;
-  background:var(--g4);border:1px solid var(--g3);border-radius:10px;
-  font-size:13px;margin-bottom:16px;
-}
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;z-index:9999;padding:11px 18px;border-radius:11px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.14);max-width:300px;animation:tin .3s ease-out}
+@keyframes tin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.ts{background:var(--g1);color:#fff}.te{background:#DC2626;color:#fff}.ti{background:var(--ink);color:#fff}
+
+/* CONN RESULT */
+.conn-ok{color:var(--g1);font-size:13px;margin-top:8px}
+.conn-err{color:#DC2626;font-size:13px;margin-top:8px}
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- ── LOGIN ─────────────────────────────────────────────── -->
 <div class="login-wrap" id="login-screen">
   <div class="login-card">
     <div class="login-bear">🐻</div>
     <h1>Bác Sĩ Gấu Admin</h1>
     <p>Nhập mật khẩu để truy cập trang quản trị</p>
     <input type="password" id="pwd-input" placeholder="••••••••"
-      onkeydown="if(event.key==='Enter')login()"/>
+      onkeydown="if(event.key==='Enter')doLogin()"/>
     <div class="login-err" id="login-err"></div>
-    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="login()">
-      Đăng nhập
-    </button>
-    <p style="margin-top:16px;font-size:11px;color:var(--ink3)">
-      Trang này chỉ dành cho nội bộ Trung Sơn Pharma
-    </p>
+    <button class="btn btn-p" style="width:100%;justify-content:center" onclick="doLogin()">Đăng nhập</button>
+    <p style="margin-top:14px;font-size:11px;color:var(--ink3)">Chỉ dành cho nội bộ Trung Sơn Pharma</p>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- ── MAIN APP ───────────────────────────────────────────── -->
 <div class="app" id="main-app">
 
   <div class="topbar">
-    <div class="topbar-logo">
-      <span class="bear">🐻</span>
-      <h1>Bác Sĩ Gấu<span>Admin</span></h1>
-    </div>
-    <nav class="topbar-nav">
-      <button class="tab-btn active" onclick="switchTab('settings',this)">⚙️ Cài đặt</button>
-      <button class="tab-btn" onclick="switchTab('store',this)">🗄️ File Store</button>
-      <button class="tab-btn" onclick="switchTab('docs',this)">📄 Tài liệu</button>
+    <div class="t-logo"><span>🐻</span><h1>Bác Sĩ Gấu<span>Admin</span></h1></div>
+    <nav class="t-nav">
+      <button class="tab-btn active" onclick="gotoTab('settings',this)">⚙️ Cài đặt</button>
+      <button class="tab-btn" onclick="gotoTab('store',this)">🗄️ File Store</button>
+      <button class="tab-btn" onclick="gotoTab('docs',this)">📄 Tài liệu</button>
     </nav>
-    <div class="topbar-right">
-      <div class="store-pill" id="store-pill">
-        <span class="dot red"></span>Chưa chọn store
-      </div>
-      <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+    <div class="t-right">
+      <div class="store-pill" id="store-pill"><span class="dot r"></span>Chưa chọn store</div>
+      <button class="logout-btn" onclick="doLogout()">Đăng xuất</button>
     </div>
   </div>
 
   <div class="content">
 
-    <!-- ── SETTINGS TAB ── -->
+    <!-- ── SETTINGS ──────────────────────────────────────── -->
     <div class="panel active" id="tab-settings">
+
       <div class="card">
-        <h3>🔑 API & Model</h3>
-        <p>Cấu hình kết nối Gemini. Thay đổi ở đây sẽ được <strong>chat.html</strong> đọc tự động.</p>
-        <div class="form-group">
-          <label>Gemini API Key</label>
-          <input type="password" id="api-key-field" placeholder="AIza..."/>
+        <h3>🔑 Gemini API Key</h3>
+        <p class="desc">Key chỉ dùng để test kết nối trực tiếp tại đây. Chat công khai dùng key trong Cloudflare Worker — không cần lưu key ở trình duyệt.</p>
+        <div class="fg">
+          <label>API Key (dùng để test)</label>
+          <input type="password" id="api-key-field" placeholder="AIza... (paste để test kết nối)"/>
+          <div class="hint">Không lưu vĩnh viễn. Chỉ dùng cho nút "Kiểm tra kết nối" bên dưới.</div>
         </div>
-        <div class="form-group">
+        <div class="fg">
           <label>Model</label>
           <select id="model-select">
             <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite · Free · 1000 RPD</option>
@@ -237,84 +175,93 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
             <option value="gemini-2.5-pro">gemini-2.5-pro · Paid · Mạnh nhất</option>
           </select>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="saveSettings()">💾 Lưu</button>
-          <button class="btn btn-outline" onclick="testConn()">🔌 Kiểm tra kết nối</button>
+        <div class="btn-row">
+          <button class="btn btn-p" onclick="testConn()">🔌 Kiểm tra kết nối</button>
         </div>
-        <div id="conn-result" style="margin-top:10px;font-size:13px"></div>
+        <div id="conn-result"></div>
+      </div>
+
+      <div class="card">
+        <h3>🔧 Cloudflare Worker</h3>
+        <p class="desc">Worker proxy ẩn API key. Đã hardcode sẵn — chỉ đổi nếu deploy Worker mới.</p>
+        <div class="fg">
+          <label>Worker URL</label>
+          <input type="text" id="worker-url-field"
+            value="https://bacsi-gau-proxy.lamhieuthuan.workers.dev"/>
+          <div class="hint">Worker URL này được <strong>chat.html</strong> dùng để gọi Gemini.</div>
+        </div>
+        <div class="fg">
+          <label>Admin Password (Worker)</label>
+          <input type="password" id="worker-pwd-field" placeholder="Mật khẩu Worker (để upload file)"/>
+          <div class="hint">Là giá trị <code>ADMIN_PASSWORD</code> trong Cloudflare env vars.</div>
+        </div>
+        <button class="btn btn-p" onclick="saveWorkerConfig()">💾 Lưu Worker Config</button>
+        <div id="worker-status" style="margin-top:8px;font-size:12.5px"></div>
       </div>
 
       <div class="card">
         <h3>🐻 System Prompt</h3>
-        <p>Tính cách và nguyên tắc của Bác Sĩ Gấu. Lưu ở đây → chat.html tự cập nhật.</p>
-        <div class="form-group">
-          <textarea id="prompt-field" rows="14"></textarea>
+        <p class="desc">Tính cách và quy tắc của Bác Sĩ Gấu. Lưu ở đây → chat.html đọc từ localStorage.</p>
+        <div class="fg">
+          <textarea id="prompt-field" rows="13"></textarea>
         </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-primary" onclick="savePrompt()">💾 Lưu Prompt</button>
-          <button class="btn btn-outline" onclick="resetPrompt()">↩ Reset mặc định</button>
+        <div class="btn-row">
+          <button class="btn btn-p" onclick="savePrompt()">💾 Lưu Prompt</button>
+          <button class="btn btn-o" onclick="resetPrompt()">↩ Reset mặc định</button>
         </div>
       </div>
 
       <div class="card">
-        <h3>🔧 Cloudflare Worker URL</h3>
-        <p>Nhập URL Worker để tránh lỗi CORS khi upload tài liệu. Bỏ trống để gọi trực tiếp (chỉ dùng khi test local).</p>
-        <div class="form-group">
-          <label>Worker URL</label>
-          <input type="text" id="worker-url-field"
-            placeholder="https://bacsi-gau-proxy.YOUR.workers.dev"/>
+        <h3>🔗 Code nhúng vào web</h3>
+        <p class="desc">Nhúng chatbot vào trungsoncare.com bằng iframe.</p>
+        <div class="fg">
+          <label>URL chat.html trên GitHub Pages</label>
+          <input type="text" id="chat-url-field"
+            placeholder="https://username.github.io/repo/chat.html"
+            oninput="updateEmbedCode()"/>
         </div>
-        <button class="btn btn-primary" onclick="saveWorkerUrl()">💾 Lưu Worker URL</button>
-        <div id="worker-status" style="margin-top:8px;font-size:13px"></div>
-      </div>
-
-      <div class="card">
-        <h3>🔗 Nhúng vào web</h3>
-        <p>Copy đoạn code này để nhúng chatbot vào trungsoncare.com. Thay <code>YOUR_GITHUB_PAGES_URL</code> bằng link GitHub Pages thực tế.</p>
-        <div class="form-group">
-          <label>URL GitHub Pages</label>
-          <input type="text" id="chat-url" placeholder="https://username.github.io/repo/chat.html"
-            oninput="updateEmbed()"/>
-        </div>
-        <div class="form-group">
-          <label>Code nhúng (copy vào web)</label>
+        <div class="fg">
+          <label>Code nhúng</label>
           <textarea id="embed-code" rows="5" readonly style="font-family:monospace;font-size:12px"></textarea>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="copyEmbed()">📋 Copy code</button>
+        <button class="btn btn-o btn-sm" onclick="copyEmbed()">📋 Copy</button>
       </div>
-    </div>
 
-    <!-- ── STORE TAB ── -->
+    </div><!-- /settings -->
+
+    <!-- ── STORE ──────────────────────────────────────────── -->
     <div class="panel" id="tab-store">
+
       <div class="card">
         <h3>➕ Tạo Store mới</h3>
-        <p>Một store là một kho kiến thức. Nên tạo 1 store dùng chung cho toàn bộ tài liệu Trung Sơn.</p>
-        <div style="display:flex;gap:10px">
+        <p class="desc">Tạo kho kiến thức RAG. Nên dùng 1 store duy nhất cho tất cả tài liệu Trung Sơn.</p>
+        <div style="display:flex;gap:9px">
           <input type="text" id="store-name-input" placeholder="trungson-bacsi-gau"
-            style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;font-family:var(--font);font-size:14px;outline:none;background:var(--bg)"
+            style="flex:1;border:1.5px solid var(--line);border-radius:9px;padding:9px 13px;font-family:var(--font);font-size:13.5px;outline:none;background:var(--bg)"
             onfocus="this.style.borderColor='var(--g1)'" onblur="this.style.borderColor='var(--line)'"/>
-          <button class="btn btn-primary" onclick="createStore()">➕ Tạo</button>
+          <button class="btn btn-p" onclick="createStore()">➕ Tạo</button>
         </div>
       </div>
 
       <div class="card">
         <h3>📋 Danh sách Store</h3>
-        <p>Chọn store đang hoạt động. <strong>chat.html</strong> sẽ dùng store này để trả lời khách.</p>
-        <button class="btn btn-outline btn-sm" onclick="listStores()">🔄 Tải lại</button>
+        <p class="desc">Store được chọn (✅) sẽ được <strong>chat.html</strong> dùng để trả lời khách.</p>
+        <button class="btn btn-o btn-sm" onclick="listStores()">🔄 Tải lại</button>
         <div class="store-list" id="store-list">
-          <p style="font-size:13px;color:var(--ink3);margin-top:8px">Bấm "Tải lại" để xem.</p>
+          <p style="font-size:13px;color:var(--ink3);margin-top:8px">Bấm "Tải lại" để xem danh sách.</p>
         </div>
       </div>
 
       <div class="log-box" id="store-log">// Log store...</div>
     </div>
 
-    <!-- ── DOCS TAB ── -->
+    <!-- ── DOCS ───────────────────────────────────────────── -->
     <div class="panel" id="tab-docs">
+
       <div class="card">
         <h3>📤 Upload tài liệu</h3>
-        <p>Hỗ trợ <strong>PDF, DOCX, TXT, MD, JSON, CSV</strong>. Upload xong Gemini tự động chunking + embedding.</p>
-        <div class="form-group">
+        <p class="desc">Hỗ trợ <strong>PDF, DOCX, TXT, MD, JSON, CSV</strong>. Gemini tự chunking + embedding.</p>
+        <div class="fg">
           <label>Store đích</label>
           <select id="upload-store-sel">
             <option value="">-- Chọn store --</option>
@@ -331,19 +278,20 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
         </div>
         <input type="file" id="file-input" accept=".pdf,.docx,.txt,.md,.json,.csv"
           multiple onchange="handleFileSelect(event)"/>
-        <div class="progress-wrap" id="progress-wrap">
-          <div class="progress-label" id="progress-label">Đang upload...</div>
-          <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="prog-wrap" id="prog-wrap">
+          <div class="prog-label" id="prog-label">Đang upload...</div>
+          <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
         </div>
       </div>
 
       <div class="card">
         <h3>📋 Tài liệu trong Store</h3>
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
-          <select id="view-store-sel" style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 14px;font-family:var(--font);font-size:14px;outline:none;background:var(--bg)">
+        <div style="display:flex;gap:9px;align-items:center;margin-bottom:11px">
+          <select id="view-store-sel"
+            style="flex:1;border:1.5px solid var(--line);border-radius:9px;padding:8px 13px;font-family:var(--font);font-size:13.5px;outline:none;background:var(--bg)">
             <option value="">-- Chọn store --</option>
           </select>
-          <button class="btn btn-outline btn-sm" onclick="listDocs()">🔄 Tải</button>
+          <button class="btn btn-o btn-sm" onclick="listDocs()">🔄 Tải</button>
         </div>
         <div class="doc-list" id="doc-list">
           <p style="font-size:13px;color:var(--ink3)">Chọn store và bấm Tải.</p>
@@ -353,30 +301,17 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
       <div class="log-box" id="doc-log">// Log upload...</div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /app -->
+  </div>
+</div>
 
 <script>
-// ══════════════════════════
-//  CONFIG
-// ══════════════════════════
-const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
-const ADMIN_PWD = 'trungson2024'; // đổi mật khẩu tại đây
+// ════════════════════════════════════════
+//  CONSTANTS
+// ════════════════════════════════════════
+const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
-// ── Worker URL ── đổi thành URL Worker sau khi deploy ──────────
-// Ví dụ: 'https://bacsi-gau-proxy.YOUR-SUBDOMAIN.workers.dev'
-// Đọc live mỗi lần gọi — không dùng const để tránh stale value
-function getWorkerUrl() {
-  return localStorage.getItem('bsg_worker_url') || 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
-}
-function USE_WORKER() { return !!getWorkerUrl(); }
-function WORKER_URL()  { return getWorkerUrl(); }
-function workerHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'X-Admin-Password': ADMIN_PWD,
-  };
-}
+// Worker URL hardcode — đổi chỉ khi deploy Worker mới
+const DEFAULT_WORKER = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
 
 const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma).
 
@@ -393,20 +328,37 @@ Thông tin Trung Sơn Pharma:
 - Chuỗi nhà thuốc bán lẻ uy tín tại Việt Nam
 - Website: trungsoncare.com`;
 
-// ══════════════════════════
-//  STATE
-// ══════════════════════════
-let stores = [];
-let apiKey = () => localStorage.getItem('bsg_key') || '';
-let modelId = () => localStorage.getItem('bsg_model') || 'gemini-2.5-flash';
+// ════════════════════════════════════════
+//  STATE HELPERS — luôn đọc live từ localStorage
+// ════════════════════════════════════════
+const LS = {
+  workerUrl:  () => localStorage.getItem('bsg_worker_url')  || DEFAULT_WORKER,
+  workerPwd:  () => localStorage.getItem('bsg_worker_pwd')  || '',
+  activeStore:() => localStorage.getItem('bsg_store')       || '',
+  prompt:     () => localStorage.getItem('bsg_prompt')      || DEFAULT_PROMPT,
+  model:      () => localStorage.getItem('bsg_model')       || 'gemini-2.5-flash',
+  set: (k, v) => localStorage.setItem(k, v),
+  del: (k)    => localStorage.removeItem(k),
+};
 
-// ══════════════════════════
-//  LOGIN
-// ══════════════════════════
-function login() {
-  const val = document.getElementById('pwd-input').value;
-  if (val === ADMIN_PWD) {
-    sessionStorage.setItem('bsg_admin_auth', '1');
+// Worker request headers (admin)
+const adminHeaders = () => ({
+  'Content-Type': 'application/json',
+  'X-Admin-Password': LS.workerPwd(),
+});
+
+let stores = [];
+
+// ════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════
+// Mật khẩu login vào trang admin (khác với Worker password)
+const ADMIN_PWD = 'trungson2024';
+
+function doLogin() {
+  const v = document.getElementById('pwd-input').value;
+  if (v === ADMIN_PWD) {
+    sessionStorage.setItem('bsg_admin_ok', '1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('main-app').classList.add('show');
     initApp();
@@ -416,38 +368,37 @@ function login() {
   }
 }
 
-function logout() {
-  sessionStorage.removeItem('bsg_admin_auth');
+function doLogout() {
+  sessionStorage.removeItem('bsg_admin_ok');
   location.reload();
 }
 
-// Auto-check auth
-if (sessionStorage.getItem('bsg_admin_auth') === '1') {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('main-app').classList.add('show');
-  // initApp called after DOM ready
-}
-
-// ══════════════════════════
-//  INIT
-// ══════════════════════════
-function initApp() {
-  document.getElementById('api-key-field').value = apiKey();
-  document.getElementById('worker-url-field').value = getWorkerUrl();
-  document.getElementById('model-select').value = modelId();
-  document.getElementById('prompt-field').value =
-    localStorage.getItem('bsg_prompt') || DEFAULT_PROMPT;
-  updateStorePill();
-  updateEmbed();
-}
 window.addEventListener('DOMContentLoaded', () => {
-  if (sessionStorage.getItem('bsg_admin_auth') === '1') initApp();
+  if (sessionStorage.getItem('bsg_admin_ok') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').classList.add('show');
+    initApp();
+  }
 });
 
-// ══════════════════════════
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+function initApp() {
+  // Settings tab
+  document.getElementById('model-select').value   = LS.model();
+  document.getElementById('worker-url-field').value = LS.workerUrl();
+  document.getElementById('worker-pwd-field').value = LS.workerPwd();
+  document.getElementById('prompt-field').value   = LS.prompt();
+  // api-key-field intentionally LEFT EMPTY — user pastes each time for test
+  refreshStorePill();
+  updateEmbedCode();
+}
+
+// ════════════════════════════════════════
 //  NAV
-// ══════════════════════════
-function switchTab(id, btn) {
+// ════════════════════════════════════════
+function gotoTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
@@ -455,99 +406,96 @@ function switchTab(id, btn) {
   if (id === 'store') listStores();
 }
 
-// ══════════════════════════
+// ════════════════════════════════════════
 //  SETTINGS
-// ══════════════════════════
-function saveWorkerUrl() {
-  const url = document.getElementById('worker-url-field').value.trim().replace(/\/+$/, '');
-  localStorage.setItem('bsg_worker_url', url);
-  document.getElementById('worker-status').innerHTML = url
-    ? `<span style="color:var(--g1)">✅ Worker URL đã lưu: ${url}</span>`
-    : '<span style="color:var(--ink3)">⚠️ Chưa có Worker URL — upload sẽ bị CORS</span>';
+// ════════════════════════════════════════
+async function testConn() {
+  const key   = document.getElementById('api-key-field').value.trim();
+  const model = document.getElementById('model-select').value;
+  const el    = document.getElementById('conn-result');
+  if (!key) {
+    el.innerHTML = '<span class="conn-err">⚠️ Paste API key vào ô bên trên để test</span>';
+    return;
+  }
+  el.innerHTML = '⏳ Đang kiểm tra...';
+  try {
+    const r = await fetch(
+      `${GEMINI_BASE}/models/${model}:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents: [{role:'user',parts:[{text:'hi'}]}],
+          generationConfig: {maxOutputTokens:5},
+        }),
+      }
+    );
+    if (r.ok) {
+      el.innerHTML = `<span class="conn-ok">✅ Kết nối thành công! Model: ${model}</span>`;
+    } else {
+      const d = await r.json();
+      el.innerHTML = `<span class="conn-err">❌ ${d?.error?.message || r.status}</span>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<span class="conn-err">❌ ${e.message}</span>`;
+  }
 }
 
-function saveSettings() {
-  const key = document.getElementById('api-key-field').value.trim();
-  const model = document.getElementById('model-select').value;
-  localStorage.setItem('bsg_key', key);
-  localStorage.setItem('bsg_model', model);
-  showToast('✅ Đã lưu — chat.html sẽ dùng cấu hình này', 'success');
+function saveWorkerConfig() {
+  const url = document.getElementById('worker-url-field').value.trim().replace(/\/+$/, '');
+  const pwd = document.getElementById('worker-pwd-field').value.trim();
+  LS.set('bsg_worker_url', url);
+  LS.set('bsg_worker_pwd', pwd);
+  document.getElementById('worker-status').innerHTML =
+    `<span style="color:var(--g1)">✅ Đã lưu: ${url}</span>`;
+  showToast('✅ Lưu Worker config xong', 'success');
 }
 
 function savePrompt() {
-  const p = document.getElementById('prompt-field').value;
-  localStorage.setItem('bsg_prompt', p);
+  LS.set('bsg_prompt', document.getElementById('prompt-field').value);
   showToast('✅ Đã lưu System Prompt', 'success');
 }
 
 function resetPrompt() {
   document.getElementById('prompt-field').value = DEFAULT_PROMPT;
-  localStorage.setItem('bsg_prompt', DEFAULT_PROMPT);
-  showToast('↩ Đã reset về mặc định', 'info');
+  LS.set('bsg_prompt', DEFAULT_PROMPT);
+  showToast('↩ Reset về mặc định', 'info');
 }
 
-async function testConn() {
-  const el = document.getElementById('conn-result');
-  const key = document.getElementById('api-key-field').value.trim();
-  const model = document.getElementById('model-select').value;
-  el.innerHTML = '⏳ Đang kiểm tra...';
-  try {
-    const r = await fetch(`${API_BASE}/models/${model}:generateContent?key=${key}`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{role:'user',parts:[{text:'Hi'}]}],generationConfig:{maxOutputTokens:5}}),
-    });
-    if (r.ok) {
-      el.innerHTML = `<span style="color:var(--g1)">✅ Kết nối thành công! Model: ${model}</span>`;
-    } else {
-      const d = await r.json();
-      el.innerHTML = `<span style="color:#DC2626">❌ ${d?.error?.message||r.status}</span>`;
-    }
-  } catch(e) {
-    el.innerHTML = `<span style="color:#DC2626">❌ ${e.message}</span>`;
-  }
-}
-
-function updateEmbed() {
-  const url = document.getElementById('chat-url').value.trim() || 'https://YOUR_GITHUB_PAGES_URL/chat.html';
+function updateEmbedCode() {
+  const url = document.getElementById('chat-url-field').value.trim()
+    || 'https://YOUR_GITHUB_PAGES/chat.html';
   document.getElementById('embed-code').value =
 `<!-- Bác Sĩ Gấu – Trung Sơn Pharma -->
-<iframe
-  src="${url}"
-  width="420"
-  height="680"
-  style="border:none;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);position:fixed;bottom:24px;right:24px;z-index:9999"
-  allow="clipboard-write">
+<iframe src="${url}"
+  width="420" height="680"
+  style="border:none;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);position:fixed;bottom:24px;right:24px;z-index:9999">
 </iframe>`;
 }
 
 function copyEmbed() {
-  const el = document.getElementById('embed-code');
-  el.select();
+  document.getElementById('embed-code').select();
   document.execCommand('copy');
-  showToast('📋 Đã copy code nhúng!', 'success');
+  showToast('📋 Đã copy!', 'success');
 }
 
-// ══════════════════════════
-//  STORE API
-// ══════════════════════════
+// ════════════════════════════════════════
+//  STORE — gọi qua Worker
+// ════════════════════════════════════════
 function sLog(msg, type='') {
   const b = document.getElementById('store-log');
   const l = document.createElement('div');
-  l.className = type==='err'?'log-err':type==='info'?'log-info':'';
+  l.className = type==='err'?'le':type==='info'?'li':'';
   l.textContent = `[${new Date().toLocaleTimeString('vi')}] ${msg}`;
   b.appendChild(l); b.scrollTop = b.scrollHeight;
 }
 
-function updateStorePill() {
-  const s = localStorage.getItem('bsg_store') || '';
+function refreshStorePill() {
+  const s = LS.activeStore();
   const el = document.getElementById('store-pill');
-  if (s) {
-    const name = s.split('/').pop();
-    el.innerHTML = `<span class="dot green"></span>${name}`;
-  } else {
-    el.innerHTML = `<span class="dot red"></span>Chưa chọn store`;
-  }
+  el.innerHTML = s
+    ? `<span class="dot g"></span>${s.split('/').pop()}`
+    : `<span class="dot r"></span>Chưa chọn store`;
 }
 
 async function createStore() {
@@ -555,25 +503,19 @@ async function createStore() {
   if (!name) return showToast('Nhập tên store!', 'error');
   sLog(`Tạo store: ${name}`, 'info');
   try {
-    const url = USE_WORKER()
-      ? `${WORKER_URL()}/stores`
-      : `${API_BASE}/fileSearchStores?key=${apiKey()}`;
-    const headers = USE_WORKER()
-      ? workerHeaders()
-      : {'Content-Type':'application/json'};
-    const r = await fetch(url, {
+    const r = await fetch(`${LS.workerUrl()}/stores`, {
       method: 'POST',
-      headers,
-      body: JSON.stringify({displayName: name}),
+      headers: adminHeaders(),
+      body: JSON.stringify({ displayName: name }),
     });
     const d = await r.json();
     if (r.ok) {
-      sLog(`✅ Tạo thành công: ${d.name}`);
+      sLog(`✅ Tạo xong: ${d.name}`);
       showToast('✅ Tạo store thành công!', 'success');
       listStores();
     } else {
-      sLog(`❌ ${d?.error?.message||r.status}`, 'err');
-      showToast(`❌ ${d?.error?.message||'Lỗi'}`, 'error');
+      sLog(`❌ ${d?.error?.message || r.status}`, 'err');
+      showToast(`❌ ${d?.error?.message || 'Lỗi tạo store'}`, 'error');
     }
   } catch(e) { sLog(`❌ ${e.message}`, 'err'); showToast(`❌ ${e.message}`, 'error'); }
 }
@@ -581,22 +523,19 @@ async function createStore() {
 async function listStores() {
   sLog('Tải danh sách store...', 'info');
   try {
-    const url = USE_WORKER()
-      ? `${WORKER_URL()}/stores`
-      : `${API_BASE}/fileSearchStores?key=${apiKey()}`;
-    const r = await fetch(url, USE_WORKER() ? {headers: workerHeaders()} : {});
+    const r = await fetch(`${LS.workerUrl()}/stores`, { headers: adminHeaders() });
     const d = await r.json();
-    if (!r.ok) { sLog(`❌ ${d?.error?.message||r.status}`, 'err'); return; }
+    if (!r.ok) { sLog(`❌ ${d?.error?.message || r.status}`, 'err'); return; }
     stores = d.fileSearchStores || [];
     sLog(`✅ ${stores.length} store(s)`);
     renderStores();
-    updateStoreSelects();
+    refreshStoreSelects();
   } catch(e) { sLog(`❌ ${e.message}`, 'err'); }
 }
 
 function renderStores() {
   const el = document.getElementById('store-list');
-  const active = localStorage.getItem('bsg_store') || '';
+  const active = LS.activeStore();
   if (!stores.length) {
     el.innerHTML = '<p style="font-size:13px;color:var(--ink3)">Chưa có store. Tạo mới ở trên.</p>';
     return;
@@ -604,67 +543,59 @@ function renderStores() {
   el.innerHTML = stores.map(s => `
     <div class="store-item">
       <div class="si-info">
-        <div class="si-name">${s.displayName||s.name}</div>
+        <div class="si-name">${s.displayName || s.name}</div>
         <div class="si-id">${s.name}</div>
       </div>
-      <div class="si-actions">
-        ${active===s.name
-          ? '<span class="active-badge">✅ Đang dùng</span>'
-          : `<button class="btn btn-outline btn-sm" onclick="selectStore('${s.name}','${s.displayName||s.name}')">Chọn</button>`
-        }
-        <button class="btn btn-danger btn-sm" onclick="deleteStore('${s.name}')">🗑️</button>
+      <div class="si-act">
+        ${active === s.name
+          ? '<span class="badge-active">✅ Đang dùng</span>'
+          : `<button class="btn btn-o btn-sm" onclick="selectStore('${s.name}','${s.displayName||s.name}')">Chọn</button>`}
+        <button class="btn btn-d btn-sm" onclick="deleteStore('${s.name}')">🗑️</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function selectStore(name, displayName) {
-  localStorage.setItem('bsg_store', name);
-  updateStorePill();
+  LS.set('bsg_store', name);
+  refreshStorePill();
   renderStores();
-  showToast(`✅ Store hoạt động: ${displayName}`, 'success');
-  sLog(`✅ Chọn store: ${name}`, 'info');
+  showToast(`✅ Store: ${displayName}`, 'success');
+  sLog(`✅ Chọn: ${name}`, 'info');
 }
 
 async function deleteStore(name) {
   if (!confirm(`Xóa store ${name}?\nToàn bộ tài liệu sẽ bị xóa!`)) return;
+  // storeId là phần sau 'fileSearchStores/'
+  const storeId = name.replace('fileSearchStores/', '');
   try {
-    const storeId = name.replace('fileSearchStores/', '');
-    const url = USE_WORKER()
-      ? `${WORKER_URL()}/stores/${storeId}`
-      : `${API_BASE}/${name}?key=${apiKey()}&force=true`;
-    const r = await fetch(url, {
-      method: 'DELETE',
-      headers: USE_WORKER() ? workerHeaders() : {},
+    const r = await fetch(`${LS.workerUrl()}/stores/${storeId}`, {
+      method: 'DELETE', headers: adminHeaders(),
     });
-    if (r.ok || r.status===204) {
-      if (localStorage.getItem('bsg_store')===name) {
-        localStorage.removeItem('bsg_store');
-        updateStorePill();
-      }
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) {
+      if (LS.activeStore() === name) { LS.del('bsg_store'); refreshStorePill(); }
       showToast('🗑️ Đã xóa store', 'info');
       listStores();
     } else {
-      const d = await r.json();
-      showToast(`❌ ${d?.error?.message||'Lỗi xóa'}`, 'error');
+      showToast(`❌ ${d?.error?.message || 'Lỗi xóa'}`, 'error');
     }
   } catch(e) { showToast(`❌ ${e.message}`, 'error'); }
 }
 
-function updateStoreSelects() {
+function refreshStoreSelects() {
   const opts = '<option value="">-- Chọn store --</option>' +
-    stores.map(s => `<option value="${s.name}">${s.displayName||s.name}</option>`).join('');
+    stores.map(s => `<option value="${s.name}">${s.displayName || s.name}</option>`).join('');
   document.getElementById('upload-store-sel').innerHTML = opts;
   document.getElementById('view-store-sel').innerHTML = opts;
 }
 
-// ══════════════════════════
-//  DOCS
-// ══════════════════════════
+// ════════════════════════════════════════
+//  DOCS — upload qua Worker
+// ════════════════════════════════════════
 function dLog(msg, type='') {
   const b = document.getElementById('doc-log');
   const l = document.createElement('div');
-  l.className = type==='err'?'log-err':type==='info'?'log-info':'';
+  l.className = type==='err'?'le':type==='info'?'li':'';
   l.textContent = `[${new Date().toLocaleTimeString('vi')}] ${msg}`;
   b.appendChild(l); b.scrollTop = b.scrollHeight;
 }
@@ -683,137 +614,59 @@ async function uploadFiles(files) {
   const store = document.getElementById('upload-store-sel').value;
   if (!store) return showToast('Chọn store trước!', 'error');
   if (!files.length) return;
-  const pw = document.getElementById('progress-wrap');
-  const pl = document.getElementById('progress-label');
-  const pf = document.getElementById('progress-fill');
+  if (!LS.workerPwd()) return showToast('⚠️ Chưa nhập Worker Password trong Cài đặt!', 'error');
+
+  const pw   = document.getElementById('prog-wrap');
+  const pl   = document.getElementById('prog-label');
+  const pf   = document.getElementById('prog-fill');
   pw.style.display = 'block';
+
+  // storeId = phần sau 'fileSearchStores/'
+  const storeId = store.replace('fileSearchStores/', '');
+
   for (let i = 0; i < files.length; i++) {
     const f = files[i];
     pl.textContent = `Upload (${i+1}/${files.length}): ${f.name}`;
-    pf.style.width = Math.round(i/files.length*100) + '%';
+    pf.style.width = Math.round(i / files.length * 100) + '%';
     dLog(`Upload: ${f.name} (${(f.size/1024).toFixed(0)}KB)`, 'info');
     try {
-      await uploadOneFile(store, f);
-      dLog(`✅ ${f.name}`);
+      const fd = new FormData();
+      fd.append('file', f, f.name);
+      fd.append('displayName', f.name);
+      const r = await fetch(`${LS.workerUrl()}/stores/${storeId}/upload`, {
+        method: 'POST',
+        headers: { 'X-Admin-Password': LS.workerPwd() }, // KHÔNG set Content-Type — FormData tự set boundary
+        body: fd,
+      });
+      const d = await r.json();
+      if (r.ok) {
+        dLog(`✅ ${f.name} → ${d.fileName} (indexing...)`, 'info');
+      } else {
+        throw new Error(d?.error?.message || r.status);
+      }
     } catch(e) {
       dLog(`❌ ${f.name}: ${e.message}`, 'err');
-      showToast(`❌ Lỗi: ${f.name}`, 'error');
+      showToast(`❌ ${f.name}: ${e.message}`, 'error');
     }
   }
+
   pf.style.width = '100%';
-  pl.textContent = '✅ Upload hoàn tất!';
+  pl.textContent = '✅ Upload hoàn tất! (indexing chạy ngầm ~1-3 phút)';
   showToast(`✅ Upload ${files.length} file xong!`, 'success');
-  setTimeout(() => { pw.style.display = 'none'; }, 2500);
-  listDocs();
-}
-
-async function uploadOneFile(store, file) {
-  const storeId = store.replace('fileSearchStores/', '');
-
-  if (USE_WORKER()) {
-    // ── Gọi qua Worker (không bị CORS) ──
-    const fd = new FormData();
-    fd.append('file', file, file.name);
-    fd.append('displayName', file.name);
-    const r = await fetch(`${WORKER_URL()}/stores/${storeId}/upload`, {
-      method: 'POST',
-      headers: { 'X-Admin-Password': ADMIN_PWD },
-      body: fd,
-    });
-    if (!r.ok) {
-      const d = await r.json();
-      throw new Error(d?.error?.message || r.status);
-    }
-    const d = await r.json();
-    dLog(`  ✅ fileName: ${d.fileName} | operation: ${d.operation}`, 'info');
-    return d;
-  }
-
-  // ── Gọi trực tiếp (chỉ dùng nếu CORS cho phép) ──
-
-  const mimeMap = {
-    pdf:'application/pdf',
-    docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    txt:'text/plain', md:'text/markdown',
-    json:'application/json', csv:'text/csv',
-  };
-  const ext = file.name.split('.').pop().toLowerCase();
-  const mime = mimeMap[ext] || 'text/plain';
-  const storeName = store.startsWith('fileSearchStores/') ? store : store;
-
-  // Bước 1: Upload file lên Files API (lấy file URI)
-  dLog(`  Đang upload lên Files API...`, 'info');
-  const uploadUrl = `https://generativelanguage.googleapis.com/upload/v1beta/files?key=${apiKey()}`;
-  const meta = JSON.stringify({file:{display_name: file.name}});
-  const metaBlob = new Blob([meta], {type:'application/json'});
-  const formData = new FormData();
-  formData.append('metadata', metaBlob);
-  formData.append('file', file, file.name);
-
-  // Dùng multipart upload trực tiếp
-  const boundary = '-------' + Math.random().toString(36).slice(2);
-  const metaBytes = new TextEncoder().encode(
-    '--' + boundary + '\r\n' +
-    'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-    JSON.stringify({file:{display_name: file.name}}) + '\r\n' +
-    '--' + boundary + '\r\n' +
-    'Content-Type: ' + mime + '\r\n\r\n'
-  );
-  const fileBytes = new Uint8Array(await file.arrayBuffer());
-  const endBytes = new TextEncoder().encode('\r\n--' + boundary + '--');
-  const body = new Uint8Array(metaBytes.length + fileBytes.length + endBytes.length);
-  body.set(metaBytes, 0);
-  body.set(fileBytes, metaBytes.length);
-  body.set(endBytes, metaBytes.length + fileBytes.length);
-
-  const r1 = await fetch(
-    `https://generativelanguage.googleapis.com/upload/v1beta/files?key=${apiKey()}`,
-    {
-      method: 'POST',
-      headers: {'Content-Type': `multipart/related; boundary=${boundary}`, 'X-Goog-Upload-Protocol': 'multipart'},
-      body: body,
-    }
-  );
-  if (!r1.ok) {
-    const d = await r1.json();
-    throw new Error('Files API: ' + (d?.error?.message || r1.status));
-  }
-  const fileData = await r1.json();
-  const fileName = fileData?.file?.name;
-  if (!fileName) throw new Error('Không lấy được file name từ Files API');
-  dLog(`  File URI: ${fileName}`, 'info');
-
-  // Bước 2: Import file vào File Search Store
-  dLog(`  Đang import vào File Search Store...`, 'info');
-  const r2 = await fetch(
-    `${API_BASE}/${storeName}/files:import?key=${apiKey()}`,
-    {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ fileName }),
-    }
-  );
-  if (!r2.ok) {
-    const d = await r2.json();
-    throw new Error('Import Store: ' + (d?.error?.message || r2.status));
-  }
-  const opData = await r2.json();
-  dLog(`  ✅ Đang indexing... (${opData.name||'?'})`, 'info');
-  return opData;
+  setTimeout(() => { pw.style.display = 'none'; listDocs(); }, 3000);
 }
 
 async function listDocs() {
   const store = document.getElementById('view-store-sel').value;
   if (!store) return;
+  const storeId = store.replace('fileSearchStores/', '');
   dLog('Tải tài liệu...', 'info');
   try {
-    const storeId = store.replace('fileSearchStores/', '');
-    const url = USE_WORKER()
-      ? `${WORKER_URL()}/stores/${storeId}/docs`
-      : `${API_BASE}/${store}/documents?key=${apiKey()}`;
-    const r = await fetch(url, USE_WORKER() ? {headers: workerHeaders()} : {});
+    const r = await fetch(`${LS.workerUrl()}/stores/${storeId}/docs`, {
+      headers: adminHeaders(),
+    });
     const d = await r.json();
-    if (!r.ok) { dLog(`❌ ${d?.error?.message||r.status}`, 'err'); return; }
+    if (!r.ok) { dLog(`❌ ${d?.error?.message || r.status}`, 'err'); return; }
     const docs = d.documents || [];
     dLog(`✅ ${docs.length} tài liệu`);
     const el = document.getElementById('doc-list');
@@ -821,41 +674,41 @@ async function listDocs() {
       el.innerHTML = '<p style="font-size:13px;color:var(--ink3)">Chưa có tài liệu.</p>';
       return;
     }
-    el.innerHTML = docs.map(doc => `
-      <div class="doc-item">
-        <span style="font-size:20px">📄</span>
-        <div class="doc-name">${doc.displayName||doc.name.split('/').pop()}</div>
-        <span class="doc-state ${(doc.state||'').toLowerCase()==='active'?'active':'processing'}">
-          ${doc.state||'ACTIVE'}
-        </span>
-        <button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.name}')">🗑️</button>
-      </div>
-    `).join('');
+    el.innerHTML = docs.map(doc => {
+      const state = (doc.state || 'ACTIVE').toUpperCase();
+      const stateClass = state === 'ACTIVE' ? 'ds-active' : 'ds-proc';
+      // doc.name = fileSearchStores/{storeId}/documents/{docId}
+      const parts = doc.name.split('/');
+      const docStoreId = parts[1];
+      const docId      = parts[3];
+      return `<div class="doc-item">
+        <span>📄</span>
+        <div class="doc-name">${doc.displayName || docId}</div>
+        <span class="doc-state ${stateClass}">${state}</span>
+        <button class="btn btn-d btn-sm" onclick="deleteDoc('${docStoreId}','${docId}')">🗑️</button>
+      </div>`;
+    }).join('');
   } catch(e) { dLog(`❌ ${e.message}`, 'err'); }
 }
 
-async function deleteDoc(name) {
+async function deleteDoc(storeId, docId) {
   if (!confirm('Xóa tài liệu này?')) return;
   try {
-    const storeId = name.replace('fileSearchStores/', '');
-    const url = USE_WORKER()
-      ? `${WORKER_URL()}/stores/${storeId}`
-      : `${API_BASE}/${name}?key=${apiKey()}&force=true`;
-    const r = await fetch(url, {
-      method: 'DELETE',
-      headers: USE_WORKER() ? workerHeaders() : {},
+    const r = await fetch(`${LS.workerUrl()}/stores/${storeId}/docs/${docId}`, {
+      method: 'DELETE', headers: adminHeaders(),
     });
-    if (r.ok||r.status===204) { showToast('🗑️ Đã xóa', 'info'); listDocs(); }
-    else { const d = await r.json(); showToast(`❌ ${d?.error?.message||'Lỗi'}`, 'error'); }
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) { showToast('🗑️ Đã xóa', 'info'); listDocs(); }
+    else showToast(`❌ ${d?.error?.message || 'Lỗi'}`, 'error');
   } catch(e) { showToast(`❌ ${e.message}`, 'error'); }
 }
 
-// ══════════════════════════
+// ════════════════════════════════════════
 //  TOAST
-// ══════════════════════════
-function showToast(msg, type='info') {
+// ════════════════════════════════════════
+function showToast(msg, type = 'info') {
   const t = document.createElement('div');
-  t.className = `toast ${type}`;
+  t.className = `toast t${type[0]}`; // ts / te / ti
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3500);
