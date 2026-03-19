@@ -181,23 +181,7 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
         <div id="conn-result"></div>
       </div>
 
-      <div class="card">
-        <h3>🔧 Cloudflare Worker</h3>
-        <p class="desc">Worker proxy ẩn API key. Đã hardcode sẵn — chỉ đổi nếu deploy Worker mới.</p>
-        <div class="fg">
-          <label>Worker URL</label>
-          <input type="text" id="worker-url-field"
-            value="https://bacsi-gau-proxy.lamhieuthuan.workers.dev"/>
-          <div class="hint">Worker URL này được <strong>chat.html</strong> dùng để gọi Gemini.</div>
-        </div>
-        <div class="fg">
-          <label>Admin Password (Worker)</label>
-          <input type="password" id="worker-pwd-field" placeholder="Mật khẩu Worker (để upload file)"/>
-          <div class="hint">Là giá trị <code>ADMIN_PASSWORD</code> trong Cloudflare env vars.</div>
-        </div>
-        <button class="btn btn-p" onclick="saveWorkerConfig()">💾 Lưu Worker Config</button>
-        <div id="worker-status" style="margin-top:8px;font-size:12.5px"></div>
-      </div>
+      <!-- Worker config hardcoded — không hiện ra UI -->
 
       <div class="card">
         <h3>🐻 System Prompt</h3>
@@ -311,7 +295,8 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
 // Worker URL hardcode — đổi chỉ khi deploy Worker mới
-const DEFAULT_WORKER = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
+const DEFAULT_WORKER  = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
+const WORKER_PASSWORD = 'trungson2024'; // phải khớp với ADMIN_PASSWORD trong Cloudflare env vars
 
 const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma).
 
@@ -333,7 +318,7 @@ Thông tin Trung Sơn Pharma:
 // ════════════════════════════════════════
 const LS = {
   workerUrl:  () => localStorage.getItem('bsg_worker_url')  || DEFAULT_WORKER,
-  workerPwd:  () => localStorage.getItem('bsg_worker_pwd')  || '',
+  workerPwd:  () => WORKER_PASSWORD, // hardcode — không cần localStorage
   activeStore:() => localStorage.getItem('bsg_store')       || '',
   prompt:     () => localStorage.getItem('bsg_prompt')      || DEFAULT_PROMPT,
   model:      () => localStorage.getItem('bsg_model')       || 'gemini-2.5-flash',
@@ -387,8 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function initApp() {
   // Settings tab
   document.getElementById('model-select').value   = LS.model();
-  document.getElementById('worker-url-field').value = LS.workerUrl();
-  document.getElementById('worker-pwd-field').value = LS.workerPwd();
+  // Worker config hardcoded — không cần load vào UI
   document.getElementById('prompt-field').value   = LS.prompt();
   // api-key-field intentionally LEFT EMPTY — user pastes each time for test
   refreshStorePill();
@@ -441,15 +425,7 @@ async function testConn() {
   }
 }
 
-function saveWorkerConfig() {
-  const url = document.getElementById('worker-url-field').value.trim().replace(/\/+$/, '');
-  const pwd = document.getElementById('worker-pwd-field').value.trim();
-  LS.set('bsg_worker_url', url);
-  LS.set('bsg_worker_pwd', pwd);
-  document.getElementById('worker-status').innerHTML =
-    `<span style="color:var(--g1)">✅ Đã lưu: ${url}</span>`;
-  showToast('✅ Lưu Worker config xong', 'success');
-}
+// saveWorkerConfig removed — hardcoded
 
 function savePrompt() {
   LS.set('bsg_prompt', document.getElementById('prompt-field').value);
