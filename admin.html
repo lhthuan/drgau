@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin – Bác Sĩ Gấu</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --g1:#00843D;--g2:#00A84F;--g3:#C8F0D8;--g4:#E8F7EE;
+  --teal:#006D62;--ink:#1A2620;--ink2:#3D5248;--ink3:#6B8577;
+  --line:#DDE8E1;--bg:#F4F9F6;--white:#fff;
+  --shadow:0 4px 20px rgba(0,132,61,.12);
+  --r:16px;--font:'Lexend',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var(--ink)}
+
+/* LOGIN */
+.login-wrap{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+}
+.login-card{
+  background:var(--white);border:1px solid var(--line);border-radius:24px;
+  padding:40px;width:100%;max-width:380px;box-shadow:var(--shadow);text-align:center;
+}
+.login-bear{font-size:52px;margin-bottom:12px}
+.login-card h1{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.login-card p{font-size:13px;color:var(--ink3);margin-bottom:28px}
+.login-card input{
+  width:100%;border:1.5px solid var(--line);border-radius:10px;
+  padding:12px 16px;font-family:var(--font);font-size:14px;
+  outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;
+  background:var(--bg);transition:border-color .2s;
+}
+.login-card input:focus{border-color:var(--g1);background:var(--white)}
+.login-err{font-size:12px;color:#DC2626;margin-bottom:8px;min-height:16px}
+
+/* APP */
+.app{display:none;min-height:100vh}
+.app.show{display:block}
+
+/* TOP BAR */
+.topbar{
+  background:linear-gradient(135deg,#003D1E,var(--teal));
+  padding:0 28px;height:60px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-logo{display:flex;align-items:center;gap:10px;color:white}
+.topbar-logo .bear{font-size:24px}
+.topbar-logo h1{font-size:16px;font-weight:700}
+.topbar-logo span{font-size:11px;opacity:.6;margin-left:4px}
+.topbar-nav{display:flex;gap:4px;margin-left:24px}
+.tab-btn{
+  padding:8px 16px;border-radius:8px;border:none;cursor:pointer;
+  font-family:var(--font);font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.7);background:transparent;transition:all .18s;
+}
+.tab-btn:hover{background:rgba(255,255,255,.12);color:white}
+.tab-btn.active{background:rgba(255,255,255,.2);color:white}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.store-pill{
+  background:rgba(255,255,255,.15);border-radius:20px;
+  padding:5px 12px;font-size:12px;color:white;
+}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.dot.green{background:#4ADE80}
+.dot.red{background:#F87171}
+.logout-btn{
+  padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);
+  font-family:var(--font);font-size:12px;font-weight:600;color:white;
+  background:transparent;cursor:pointer;transition:all .18s;
+}
+.logout-btn:hover{background:rgba(255,255,255,.15)}
+
+/* CONTENT */
+.content{max-width:860px;margin:0 auto;padding:32px 24px}
+
+/* TABS */
+.panel{display:none}.panel.active{display:block}
+
+/* CARDS */
+.card{
+  background:var(--white);border:1px solid var(--line);border-radius:20px;
+  padding:24px;margin-bottom:16px;box-shadow:var(--shadow);
+}
+.card h3{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card p{font-size:13px;color:var(--ink3);margin-bottom:16px;line-height:1.6}
+
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;border:1.5px solid var(--line);border-radius:10px;
+  padding:10px 14px;font-family:var(--font);font-size:14px;color:var(--ink);
+  outline:none;background:var(--bg);transition:border-color .2s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--g1);background:var(--white)
+}
+.form-group textarea{resize:vertical;min-height:80px}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:10px;font-family:var(--font);
+  font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .18s;
+}
+.btn-primary{background:var(--g1);color:white;box-shadow:0 2px 8px rgba(0,132,61,.25)}
+.btn-primary:hover{background:var(--g2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--g1);border:1.5px solid var(--g1)}
+.btn-outline:hover{background:var(--g4)}
+.btn-danger{background:#FEE2E2;color:#DC2626;border:1.5px solid #FECACA}
+.btn-danger:hover{background:#DC2626;color:white}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-sm{padding:7px 14px;font-size:12px}
+
+.store-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.store-item{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+  background:var(--g4);border:1px solid var(--g3);border-radius:12px;
+}
+.si-info{flex:1}
+.si-name{font-size:14px;font-weight:600;color:var(--ink)}
+.si-id{font-size:11px;color:var(--ink3);margin-top:2px;font-family:monospace}
+.si-actions{display:flex;gap:6px}
+.active-badge{
+  background:var(--g1);color:white;border-radius:20px;
+  padding:3px 10px;font-size:11px;font-weight:700;
+}
+
+.doc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.doc-item{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;
+}
+.doc-name{flex:1;font-size:13px;font-weight:500;color:var(--ink)}
+.doc-state{
+  font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;
+}
+.doc-state.active{background:var(--g3);color:var(--teal)}
+.doc-state.processing{background:#FEF3C7;color:#92400E}
+
+.upload-zone{
+  border:2px dashed var(--g3);border-radius:12px;padding:28px;text-align:center;
+  cursor:pointer;transition:all .2s;background:var(--g4);
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--g1);background:var(--g3)}
+.uz-icon{font-size:32px;margin-bottom:8px}
+#file-input{display:none}
+
+.progress-wrap{display:none;margin-top:12px}
+.progress-bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));border-radius:6px;transition:width .3s}
+.progress-label{font-size:13px;color:var(--ink2);margin-bottom:6px}
+
+.log-box{
+  background:#0D1F15;border-radius:10px;padding:14px;
+  font-family:monospace;font-size:12px;color:#86EFAC;
+  max-height:160px;overflow-y:auto;margin-top:12px;line-height:1.8;
+}
+.log-err{color:#FCA5A5}.log-info{color:#93C5FD}
+
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:320px;
+  animation:toastIn .3s ease-out;
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.toast.success{background:var(--g1);color:white}
+.toast.error{background:#DC2626;color:white}
+.toast.info{background:var(--ink);color:white}
+
+.status-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  background:var(--g4);border:1px solid var(--g3);border-radius:10px;
+  font-size:13px;margin-bottom:16px;
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="login-bear">🐻</div>
+    <h1>Bác Sĩ Gấu Admin</h1>
+    <p>Nhập mật khẩu để truy cập trang quản trị</p>
+    <input type="password" id="pwd-input" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')login()"/>
+    <div class="login-err" id="login-err"></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="login()">
+      Đăng nhập
+    </button>
+    <p style="margin-top:16px;font-size:11px;color:var(--ink3)">
+      Trang này chỉ dành cho nội bộ Trung Sơn Pharma
+    </p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="main-app">
+
+  <div class="topbar">
+    <div class="topbar-logo">
+      <span class="bear">🐻</span>
+      <h1>Bác Sĩ Gấu<span>Admin</span></h1>
+    </div>
+    <nav class="topbar-nav">
+      <button class="tab-btn active" onclick="switchTab('settings',this)">⚙️ Cài đặt</button>
+      <button class="tab-btn" onclick="switchTab('store',this)">🗄️ File Store</button>
+      <button class="tab-btn" onclick="switchTab('docs',this)">📄 Tài liệu</button>
+    </nav>
+    <div class="topbar-right">
+      <div class="store-pill" id="store-pill">
+        <span class="dot red"></span>Chưa chọn store
+      </div>
+      <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── SETTINGS TAB ── -->
+    <div class="panel active" id="tab-settings">
+      <div class="card">
+        <h3>🔑 API & Model</h3>
+        <p>Cấu hình kết nối Gemini. Thay đổi ở đây sẽ được <strong>chat.html</strong> đọc tự động.</p>
+        <div class="form-group">
+          <label>Gemini API Key</label>
+          <input type="password" id="api-key-field" placeholder="AIza..."/>
+        </div>
+        <div class="form-group">
+          <label>Model</label>
+          <select id="model-select">
+            <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite · Free · 1000 RPD</option>
+            <option value="gemini-2.5-flash" selected>gemini-2.5-flash · Paid · Cân bằng</option>
+            <option value="gemini-2.5-pro">gemini-2.5-pro · Paid · Mạnh nhất</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="saveSettings()">💾 Lưu</button>
+          <button class="btn btn-outline" onclick="testConn()">🔌 Kiểm tra kết nối</button>
+        </div>
+        <div id="conn-result" style="margin-top:10px;font-size:13px"></div>
+      </div>
+
+      <div class="card">
+        <h3>🐻 System Prompt</h3>
+        <p>Tính cách và nguyên tắc của Bác Sĩ Gấu. Lưu ở đây → chat.html tự cập nhật.</p>
+        <div class="form-group">
+          <textarea id="prompt-field" rows="14"></textarea>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" onclick="savePrompt()">💾 Lưu Prompt</button>
+          <button class="btn btn-outline" onclick="resetPrompt()">↩ Reset mặc định</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔗 Nhúng vào web</h3>
+        <p>Copy đoạn code này để nhúng chatbot vào trungsoncare.com. Thay <code>YOUR_GITHUB_PAGES_URL</code> bằng link GitHub Pages thực tế.</p>
+        <div class="form-group">
+          <label>URL GitHub Pages</label>
+          <input type="text" id="chat-url" placeholder="https://username.github.io/repo/chat.html"
+            oninput="updateEmbed()"/>
+        </div>
+        <div class="form-group">
+          <label>Code nhúng (copy vào web)</label>
+          <textarea id="embed-code" rows="5" readonly style="font-family:monospace;font-size:12px"></textarea>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="copyEmbed()">📋 Copy code</button>
+      </div>
+    </div>
+
+    <!-- ── STORE TAB ── -->
+    <div class="panel" id="tab-store">
+      <div class="card">
+        <h3>➕ Tạo Store mới</h3>
+        <p>Một store là một kho kiến thức. Nên tạo 1 store dùng chung cho toàn bộ tài liệu Trung Sơn.</p>
+        <div style="display:flex;gap:10px">
+          <input type="text" id="store-name-input" placeholder="trungson-bacsi-gau"
+            style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;font-family:var(--font);font-size:14px;outline:none;background:var(--bg)"
+            onfocus="this.style.borderColor='var(--g1)'" onblur="this.style.borderColor='var(--line)'"/>
+          <button class="btn btn-primary" onclick="createStore()">➕ Tạo</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Danh sách Store</h3>
+        <p>Chọn store đang hoạt động. <strong>chat.html</strong> sẽ dùng store này để trả lời khách.</p>
+        <button class="btn btn-outline btn-sm" onclick="listStores()">🔄 Tải lại</button>
+        <div class="store-list" id="store-list">
+          <p style="font-size:13px;color:var(--ink3);margin-top:8px">Bấm "Tải lại" để xem.</p>
+        </div>
+      </div>
+
+      <div class="log-box" id="store-log">// Log store...</div>
+    </div>
+
+    <!-- ── DOCS TAB ── -->
+    <div class="panel" id="tab-docs">
+      <div class="card">
+        <h3>📤 Upload tài liệu</h3>
+        <p>Hỗ trợ <strong>PDF, DOCX, TXT, MD, JSON, CSV</strong>. Upload xong Gemini tự động chunking + embedding.</p>
+        <div class="form-group">
+          <label>Store đích</label>
+          <select id="upload-store-sel">
+            <option value="">-- Chọn store --</option>
+          </select>
+        </div>
+        <div class="upload-zone" id="upload-zone"
+          onclick="document.getElementById('file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleDrop(event)">
+          <div class="uz-icon">📁</div>
+          <p><strong>Bấm để chọn file</strong> hoặc kéo thả vào đây</p>
+          <p style="font-size:11px;margin-top:4px;color:var(--ink3)">PDF · DOCX · TXT · MD · JSON · CSV</p>
+        </div>
+        <input type="file" id="file-input" accept=".pdf,.docx,.txt,.md,.json,.csv"
+          multiple onchange="handleFileSelect(event)"/>
+        <div class="progress-wrap" id="progress-wrap">
+          <div class="progress-label" id="progress-label">Đang upload...</div>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Tài liệu trong Store</h3>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+          <select id="view-store-sel" style="flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 14px;font-family:var(--font);font-size:14px;outline:none;background:var(--bg)">
+            <option value="">-- Chọn store --</option>
+          </select>
+          <button class="btn btn-outline btn-sm" onclick="listDocs()">🔄 Tải</button>
+        </div>
+        <div class="doc-list" id="doc-list">
+          <p style="font-size:13px;color:var(--ink3)">Chọn store và bấm Tải.</p>
+        </div>
+      </div>
+
+      <div class="log-box" id="doc-log">// Log upload...</div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════
+//  CONFIG
+// ══════════════════════════
+const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
+const ADMIN_PWD = 'trungson2024'; // đổi mật khẩu tại đây
+
+const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma).
+
+Nguyên tắc:
+- Luôn trả lời bằng tiếng Việt, thân thiện, ấm áp nhưng chuyên nghiệp
+- Xưng là "Bác Sĩ Gấu", gọi khách là "bạn" hoặc "anh/chị"
+- CHỈ trả lời dựa trên tài liệu được cung cấp từ Trung Sơn Pharma
+- Nếu không có thông tin, hướng dẫn khách gọi hotline hoặc đến chi nhánh
+- Không chẩn đoán bệnh, chỉ cung cấp thông tin tham khảo
+- Không đề cập nhà thuốc khác (Long Châu, Pharmacity, An Khang...)
+- Trả lời súc tích, dùng bullet points khi liệt kê
+
+Thông tin Trung Sơn Pharma:
+- Chuỗi nhà thuốc bán lẻ uy tín tại Việt Nam
+- Website: trungsoncare.com`;
+
+// ══════════════════════════
+//  STATE
+// ══════════════════════════
+let stores = [];
+let apiKey = () => localStorage.getItem('bsg_key') || '';
+let modelId = () => localStorage.getItem('bsg_model') || 'gemini-2.5-flash';
+
+// ══════════════════════════
+//  LOGIN
+// ══════════════════════════
+function login() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === ADMIN_PWD) {
+    sessionStorage.setItem('bsg_admin_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').classList.add('show');
+    initApp();
+  } else {
+    document.getElementById('login-err').textContent = 'Mật khẩu không đúng!';
+    document.getElementById('pwd-input').value = '';
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('bsg_admin_auth');
+  location.reload();
+}
+
+// Auto-check auth
+if (sessionStorage.getItem('bsg_admin_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-app').classList.add('show');
+  // initApp called after DOM ready
+}
+
+// ══════════════════════════
+//  INIT
+// ══════════════════════════
+function initApp() {
+  document.getElementById('api-key-field').value = apiKey();
+  document.getElementById('model-select').value = modelId();
+  document.getElementById('prompt-field').value =
+    localStorage.getItem('bsg_prompt') || DEFAULT_PROMPT;
+  updateStorePill();
+  updateEmbed();
+}
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('bsg_admin_auth') === '1') initApp();
+});
+
+// ══════════════════════════
+//  NAV
+// ══════════════════════════
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'store') listStores();
+}
+
+// ══════════════════════════
+//  SETTINGS
+// ══════════════════════════
+function saveSettings() {
+  const key = document.getElementById('api-key-field').value.trim();
+  const model = document.getElementById('model-select').value;
+  localStorage.setItem('bsg_key', key);
+  localStorage.setItem('bsg_model', model);
+  showToast('✅ Đã lưu — chat.html sẽ dùng cấu hình này', 'success');
+}
+
+function savePrompt() {
+  const p = document.getElementById('prompt-field').value;
+  localStorage.setItem('bsg_prompt', p);
+  showToast('✅ Đã lưu System Prompt', 'success');
+}
+
+function resetPrompt() {
+  document.getElementById('prompt-field').value = DEFAULT_PROMPT;
+  localStorage.setItem('bsg_prompt', DEFAULT_PROMPT);
+  showToast('↩ Đã reset về mặc định', 'info');
+}
+
+async function testConn() {
+  const el = document.getElementById('conn-result');
+  const key = document.getElementById('api-key-field').value.trim();
+  const model = document.getElementById('model-select').value;
+  el.innerHTML = '⏳ Đang kiểm tra...';
+  try {
+    const r = await fetch(`${API_BASE}/models/${model}:generateContent?key=${key}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({contents:[{role:'user',parts:[{text:'Hi'}]}],generationConfig:{maxOutputTokens:5}}),
+    });
+    if (r.ok) {
+      el.innerHTML = `<span style="color:var(--g1)">✅ Kết nối thành công! Model: ${model}</span>`;
+    } else {
+      const d = await r.json();
+      el.innerHTML = `<span style="color:#DC2626">❌ ${d?.error?.message||r.status}</span>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<span style="color:#DC2626">❌ ${e.message}</span>`;
+  }
+}
+
+function updateEmbed() {
+  const url = document.getElementById('chat-url').value.trim() || 'https://YOUR_GITHUB_PAGES_URL/chat.html';
+  document.getElementById('embed-code').value =
+`<!-- Bác Sĩ Gấu – Trung Sơn Pharma -->
+<iframe
+  src="${url}"
+  width="420"
+  height="680"
+  style="border:none;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);position:fixed;bottom:24px;right:24px;z-index:9999"
+  allow="clipboard-write">
+</iframe>`;
+}
+
+function copyEmbed() {
+  const el = document.getElementById('embed-code');
+  el.select();
+  document.execCommand('copy');
+  showToast('📋 Đã copy code nhúng!', 'success');
+}
+
+// ══════════════════════════
+//  STORE API
+// ══════════════════════════
+function sLog(msg, type='') {
+  const b = document.getElementById('store-log');
+  const l = document.createElement('div');
+  l.className = type==='err'?'log-err':type==='info'?'log-info':'';
+  l.textContent = `[${new Date().toLocaleTimeString('vi')}] ${msg}`;
+  b.appendChild(l); b.scrollTop = b.scrollHeight;
+}
+
+function updateStorePill() {
+  const s = localStorage.getItem('bsg_store') || '';
+  const el = document.getElementById('store-pill');
+  if (s) {
+    const name = s.split('/').pop();
+    el.innerHTML = `<span class="dot green"></span>${name}`;
+  } else {
+    el.innerHTML = `<span class="dot red"></span>Chưa chọn store`;
+  }
+}
+
+async function createStore() {
+  const name = document.getElementById('store-name-input').value.trim();
+  if (!name) return showToast('Nhập tên store!', 'error');
+  sLog(`Tạo store: ${name}`, 'info');
+  try {
+    const r = await fetch(`${API_BASE}/fileSearchStores?key=${apiKey()}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({displayName: name}),
+    });
+    const d = await r.json();
+    if (r.ok) {
+      sLog(`✅ Tạo thành công: ${d.name}`);
+      showToast('✅ Tạo store thành công!', 'success');
+      listStores();
+    } else {
+      sLog(`❌ ${d?.error?.message||r.status}`, 'err');
+      showToast(`❌ ${d?.error?.message||'Lỗi'}`, 'error');
+    }
+  } catch(e) { sLog(`❌ ${e.message}`, 'err'); showToast(`❌ ${e.message}`, 'error'); }
+}
+
+async function listStores() {
+  sLog('Tải danh sách store...', 'info');
+  try {
+    const r = await fetch(`${API_BASE}/fileSearchStores?key=${apiKey()}`);
+    const d = await r.json();
+    if (!r.ok) { sLog(`❌ ${d?.error?.message||r.status}`, 'err'); return; }
+    stores = d.fileSearchStores || [];
+    sLog(`✅ ${stores.length} store(s)`);
+    renderStores();
+    updateStoreSelects();
+  } catch(e) { sLog(`❌ ${e.message}`, 'err'); }
+}
+
+function renderStores() {
+  const el = document.getElementById('store-list');
+  const active = localStorage.getItem('bsg_store') || '';
+  if (!stores.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--ink3)">Chưa có store. Tạo mới ở trên.</p>';
+    return;
+  }
+  el.innerHTML = stores.map(s => `
+    <div class="store-item">
+      <div class="si-info">
+        <div class="si-name">${s.displayName||s.name}</div>
+        <div class="si-id">${s.name}</div>
+      </div>
+      <div class="si-actions">
+        ${active===s.name
+          ? '<span class="active-badge">✅ Đang dùng</span>'
+          : `<button class="btn btn-outline btn-sm" onclick="selectStore('${s.name}','${s.displayName||s.name}')">Chọn</button>`
+        }
+        <button class="btn btn-danger btn-sm" onclick="deleteStore('${s.name}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectStore(name, displayName) {
+  localStorage.setItem('bsg_store', name);
+  updateStorePill();
+  renderStores();
+  showToast(`✅ Store hoạt động: ${displayName}`, 'success');
+  sLog(`✅ Chọn store: ${name}`, 'info');
+}
+
+async function deleteStore(name) {
+  if (!confirm(`Xóa store ${name}?\nToàn bộ tài liệu sẽ bị xóa!`)) return;
+  try {
+    const r = await fetch(`${API_BASE}/${name}?key=${apiKey()}`, {method:'DELETE'});
+    if (r.ok || r.status===204) {
+      if (localStorage.getItem('bsg_store')===name) {
+        localStorage.removeItem('bsg_store');
+        updateStorePill();
+      }
+      showToast('🗑️ Đã xóa store', 'info');
+      listStores();
+    } else {
+      const d = await r.json();
+      showToast(`❌ ${d?.error?.message||'Lỗi xóa'}`, 'error');
+    }
+  } catch(e) { showToast(`❌ ${e.message}`, 'error'); }
+}
+
+function updateStoreSelects() {
+  const opts = '<option value="">-- Chọn store --</option>' +
+    stores.map(s => `<option value="${s.name}">${s.displayName||s.name}</option>`).join('');
+  document.getElementById('upload-store-sel').innerHTML = opts;
+  document.getElementById('view-store-sel').innerHTML = opts;
+}
+
+// ══════════════════════════
+//  DOCS
+// ══════════════════════════
+function dLog(msg, type='') {
+  const b = document.getElementById('doc-log');
+  const l = document.createElement('div');
+  l.className = type==='err'?'log-err':type==='info'?'log-info':'';
+  l.textContent = `[${new Date().toLocaleTimeString('vi')}] ${msg}`;
+  b.appendChild(l); b.scrollTop = b.scrollHeight;
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  uploadFiles(Array.from(e.dataTransfer.files));
+}
+function handleFileSelect(e) {
+  uploadFiles(Array.from(e.target.files));
+  e.target.value = '';
+}
+
+async function uploadFiles(files) {
+  const store = document.getElementById('upload-store-sel').value;
+  if (!store) return showToast('Chọn store trước!', 'error');
+  if (!files.length) return;
+  const pw = document.getElementById('progress-wrap');
+  const pl = document.getElementById('progress-label');
+  const pf = document.getElementById('progress-fill');
+  pw.style.display = 'block';
+  for (let i = 0; i < files.length; i++) {
+    const f = files[i];
+    pl.textContent = `Upload (${i+1}/${files.length}): ${f.name}`;
+    pf.style.width = Math.round(i/files.length*100) + '%';
+    dLog(`Upload: ${f.name} (${(f.size/1024).toFixed(0)}KB)`, 'info');
+    try {
+      await uploadOneFile(store, f);
+      dLog(`✅ ${f.name}`);
+    } catch(e) {
+      dLog(`❌ ${f.name}: ${e.message}`, 'err');
+      showToast(`❌ Lỗi: ${f.name}`, 'error');
+    }
+  }
+  pf.style.width = '100%';
+  pl.textContent = '✅ Upload hoàn tất!';
+  showToast(`✅ Upload ${files.length} file xong!`, 'success');
+  setTimeout(() => { pw.style.display = 'none'; }, 2500);
+  listDocs();
+}
+
+async function uploadOneFile(store, file) {
+  const mimeMap = {
+    pdf:'application/pdf',
+    docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    txt:'text/plain', md:'text/markdown',
+    json:'application/json', csv:'text/csv',
+  };
+  const ext = file.name.split('.').pop().toLowerCase();
+  const mime = mimeMap[ext] || 'text/plain';
+
+  // Dùng multipart upload
+  const text = await file.text();
+  const b64 = btoa(unescape(encodeURIComponent(text)));
+  const r = await fetch(`${API_BASE}/${store}/documents?key=${apiKey()}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      document: { displayName: file.name },
+      inlineContent: { mimeType: mime, data: b64 },
+    }),
+  });
+  if (!r.ok) {
+    const d = await r.json();
+    throw new Error(d?.error?.message || r.status);
+  }
+  return r.json();
+}
+
+async function listDocs() {
+  const store = document.getElementById('view-store-sel').value;
+  if (!store) return;
+  dLog('Tải tài liệu...', 'info');
+  try {
+    const r = await fetch(`${API_BASE}/${store}/documents?key=${apiKey()}`);
+    const d = await r.json();
+    if (!r.ok) { dLog(`❌ ${d?.error?.message||r.status}`, 'err'); return; }
+    const docs = d.documents || [];
+    dLog(`✅ ${docs.length} tài liệu`);
+    const el = document.getElementById('doc-list');
+    if (!docs.length) {
+      el.innerHTML = '<p style="font-size:13px;color:var(--ink3)">Chưa có tài liệu.</p>';
+      return;
+    }
+    el.innerHTML = docs.map(doc => `
+      <div class="doc-item">
+        <span style="font-size:20px">📄</span>
+        <div class="doc-name">${doc.displayName||doc.name.split('/').pop()}</div>
+        <span class="doc-state ${(doc.state||'').toLowerCase()==='active'?'active':'processing'}">
+          ${doc.state||'ACTIVE'}
+        </span>
+        <button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.name}')">🗑️</button>
+      </div>
+    `).join('');
+  } catch(e) { dLog(`❌ ${e.message}`, 'err'); }
+}
+
+async function deleteDoc(name) {
+  if (!confirm('Xóa tài liệu này?')) return;
+  try {
+    const r = await fetch(`${API_BASE}/${name}?key=${apiKey()}`, {method:'DELETE'});
+    if (r.ok||r.status===204) { showToast('🗑️ Đã xóa', 'info'); listDocs(); }
+    else { const d = await r.json(); showToast(`❌ ${d?.error?.message||'Lỗi'}`, 'error'); }
+  } catch(e) { showToast(`❌ ${e.message}`, 'error'); }
+}
+
+// ══════════════════════════
+//  TOAST
+// ══════════════════════════
+function showToast(msg, type='info') {
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+</script>
+</body>
+</html>
