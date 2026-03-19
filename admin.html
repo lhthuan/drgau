@@ -388,6 +388,7 @@ function gotoTab(id, btn) {
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
   if (id === 'store') listStores();
+  if (id === 'docs') listStores(); // đảm bảo store selects luôn đúng
 }
 
 // ════════════════════════════════════════
@@ -542,7 +543,7 @@ function selectStore(name, displayName) {
 async function deleteStore(name) {
   if (!confirm(`Xóa store ${name}?\nToàn bộ tài liệu sẽ bị xóa!`)) return;
   // storeId là phần sau 'fileSearchStores/'
-  const storeId = name.replace('fileSearchStores/', '');
+  const storeId = name.includes('/') ? name.split('/').pop() : name;
   try {
     const r = await fetch(`${LS.workerUrl()}/stores/${storeId}`, {
       method: 'DELETE', headers: adminHeaders(),
@@ -597,8 +598,10 @@ async function uploadFiles(files) {
   const pf   = document.getElementById('prog-fill');
   pw.style.display = 'block';
 
-  // storeId = phần sau 'fileSearchStores/'
-  const storeId = store.replace('fileSearchStores/', '');
+  // store = full name như 'fileSearchStores/datalearning01-xxx'
+  // storeId = phần ID sau dấu /
+  const storeId = store.includes('/') ? store.split('/').pop() : store;
+  dLog(`Store ID: ${storeId}`, 'info');
 
   for (let i = 0; i < files.length; i++) {
     const f = files[i];
@@ -635,8 +638,8 @@ async function uploadFiles(files) {
 async function listDocs() {
   const store = document.getElementById('view-store-sel').value;
   if (!store) return;
-  const storeId = store.replace('fileSearchStores/', '');
-  dLog('Tải tài liệu...', 'info');
+  const storeId = store.includes('/') ? store.split('/').pop() : store;
+  dLog(`Tải tài liệu store: ${storeId}`, 'info');
   try {
     const r = await fetch(`${LS.workerUrl()}/stores/${storeId}/docs`, {
       headers: adminHeaders(),
