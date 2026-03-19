@@ -296,6 +296,7 @@ const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
 // Worker URL hardcode — đổi chỉ khi deploy Worker mới
 const DEFAULT_WORKER  = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
+const DEFAULT_STORE   = 'fileSearchStores/datalearning01-8r8tmakcvuzv'; // store mặc định
 const WORKER_PASSWORD = 'trungson2024'; // phải khớp với ADMIN_PASSWORD trong Cloudflare env vars
 
 const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma).
@@ -319,7 +320,7 @@ Thông tin Trung Sơn Pharma:
 const LS = {
   workerUrl:  () => localStorage.getItem('bsg_worker_url')  || DEFAULT_WORKER,
   workerPwd:  () => WORKER_PASSWORD, // hardcode — không cần localStorage
-  activeStore:() => localStorage.getItem('bsg_store')       || '',
+  activeStore:() => localStorage.getItem('bsg_store')       || DEFAULT_STORE,
   prompt:     () => localStorage.getItem('bsg_prompt')      || DEFAULT_PROMPT,
   model:      () => localStorage.getItem('bsg_model')       || 'gemini-2.5-flash',
   set: (k, v) => localStorage.setItem(k, v),
@@ -470,9 +471,7 @@ function sLog(msg, type='') {
 function refreshStorePill() {
   const s = LS.activeStore();
   const el = document.getElementById('store-pill');
-  el.innerHTML = s
-    ? `<span class="dot g"></span>${s.split('/').pop()}`
-    : `<span class="dot r"></span>Chưa chọn store`;
+  el.innerHTML = `<span class="dot g"></span>${s.split('/').pop()}`;
 }
 
 async function createStore() {
@@ -660,18 +659,22 @@ async function listDocs() {
       const parts = doc.name.split('/');
       const docStoreId = parts[1];
       const docId      = parts[3];
+      const label = doc.displayName || '(chưa có tên)';
       return `<div class="doc-item">
         <span>📄</span>
-        <div class="doc-name">${doc.displayName || docId}</div>
+        <div class="doc-name">
+          <div>${label}</div>
+          <div style="font-size:11px;color:var(--ink3);font-family:monospace;margin-top:2px">${docId}</div>
+        </div>
         <span class="doc-state ${stateClass}">${state}</span>
-        <button class="btn btn-d btn-sm" onclick="deleteDoc('${docStoreId}','${docId}')">🗑️</button>
+        <button class="btn btn-d btn-sm" onclick="deleteDoc('${docStoreId}','${docId}','${label.replace(/'/g,'')}')">🗑️</button>
       </div>`;
     }).join('');
   } catch(e) { dLog(`❌ ${e.message}`, 'err'); }
 }
 
-async function deleteDoc(storeId, docId) {
-  if (!confirm('Xóa tài liệu này?')) return;
+async function deleteDoc(storeId, docId, label='') {
+  if (!confirm(`Xóa tài liệu: ${label || docId}?`)) return;
   try {
     const r = await fetch(`${LS.workerUrl()}/stores/${storeId}/docs/${docId}`, {
       method: 'DELETE', headers: adminHeaders(),
