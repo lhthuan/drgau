@@ -206,6 +206,9 @@ html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--i
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const COMPETITOR_KW = ['long châu','longchau','pharmacity','an khang','medicare','eco pharma','long chau'];
 
+// Worker URL — đọc từ localStorage (admin.html đã set)
+const workerUrl = () => localStorage.getItem('bsg_worker_url') || '';
+
 const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của Nhà thuốc Trung Sơn (Trung Sơn Pharma). Luôn trả lời bằng tiếng Việt, thân thiện. Không đề cập nhà thuốc đối thủ. Không chẩn đoán bệnh.`;
 
 function cfg() {
@@ -304,10 +307,21 @@ async function callGemini(hist, c) {
     tools,
     generationConfig: {temperature:0.7, maxOutputTokens:1024},
   };
-  const r = await fetch(
-    `${API_BASE}/models/${c.model}:generateContent?key=${c.key}`,
-    {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)}
-  );
+
+  const wUrl = workerUrl();
+  let url, headers;
+  if (wUrl) {
+    // Gọi qua Worker — key ẩn server-side
+    url = `${wUrl}/chat`;
+    headers = {'Content-Type':'application/json'};
+    body.model = c.model; // Worker đọc field này
+  } else {
+    // Gọi trực tiếp — chỉ dùng khi test
+    url = `${API_BASE}/models/${c.model}:generateContent?key=${c.key}`;
+    headers = {'Content-Type':'application/json'};
+  }
+
+  const r = await fetch(url, {method:'POST', headers, body:JSON.stringify(body)});
   if (!r.ok) {
     const d = await r.json();
     throw new Error(d?.error?.message || r.status);
