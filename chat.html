@@ -292,12 +292,9 @@ function addBot(text, citations) {
   const el  = document.getElementById('msgs');
   const row = document.createElement('div');
   row.className = 'mrow bot';
-  const citeHtml = citations?.length
-    ? `<div class="cites">${citations.map(c=>`<span class="cc">📄 ${esc(c)}</span>`).join('')}</div>`
-    : '';
   row.innerHTML = `
     <div class="mav">🐻</div>
-    <div><div class="bub">${mdToHtml(text)}</div>${citeHtml}</div>`;
+    <div><div class="bub">${mdToHtml(text)}</div></div>`;
   el.appendChild(row); scrollBottom();
 }
 
