@@ -270,12 +270,18 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
 
       <div class="card">
         <h3>📋 Tài liệu trong Store</h3>
-        <div style="display:flex;gap:9px;align-items:center;margin-bottom:11px">
+        <div style="display:flex;gap:9px;align-items:center;margin-bottom:11px;flex-wrap:wrap">
           <select id="view-store-sel"
-            style="flex:1;border:1.5px solid var(--line);border-radius:9px;padding:8px 13px;font-family:var(--font);font-size:13.5px;outline:none;background:var(--bg)">
+            style="flex:1;min-width:180px;border:1.5px solid var(--line);border-radius:9px;padding:8px 13px;font-family:var(--font);font-size:13.5px;outline:none;background:var(--bg)">
             <option value="">-- Chọn store --</option>
           </select>
           <button class="btn btn-o btn-sm" onclick="listDocs()">🔄 Tải</button>
+          <button class="btn btn-d btn-sm" onclick="deleteAllDocs()">🗑️ Xóa tất cả</button>
+          <button class="btn btn-o btn-sm" onclick="exportMapping()">📤 Export</button>
+          <label class="btn btn-o btn-sm" style="cursor:pointer">
+            📥 Import
+            <input type="file" accept=".json" onchange="importMapping(event)" style="display:none"/>
+          </label>
         </div>
         <div class="doc-list" id="doc-list">
           <p style="font-size:13px;color:var(--ink3)">Chọn store và bấm Tải.</p>
@@ -703,6 +709,102 @@ async function deleteDoc(storeId, docId, label='') {
     if (r.ok) { showToast('🗑️ Đã xóa', 'info'); listDocs(); }
     else showToast(`❌ ${d?.error?.message || 'Lỗi'}`, 'error');
   } catch(e) { showToast(`❌ ${e.message}`, 'error'); }
+}
+
+// ════════════════════════════════════════
+//  BULK OPERATIONS
+// ════════════════════════════════════════
+async function deleteAllDocs() {
+  const store = document.getElementById('view-store-sel').value;
+  if (!store) return showToast('Chọn store trước!', 'error');
+  const storeId = store.includes('/') ? store.split('/').pop() : store;
+
+  // Tải toàn bộ docs trước
+  dLog('Đang tải danh sách để xóa...', 'info');
+  let allDocs = [];
+  let pageToken = '';
+  try {
+    do {
+      const url = `${LS.workerUrl()}/stores/${storeId}/docs${pageToken ? '?pageToken=' + pageToken : ''}`;
+      const r = await fetch(url, { headers: adminHeaders() });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d?.error?.message || r.status);
+      allDocs = allDocs.concat(d.documents || []);
+      pageToken = d.nextPageToken || '';
+    } while (pageToken);
+  } catch(e) {
+    return showToast('❌ ' + e.message, 'error');
+  }
+
+  if (!allDocs.length) return showToast('Store trống!', 'info');
+  if (!confirm(`Xóa toàn bộ ${allDocs.length} tài liệu trong store?
+Hành động không thể hoàn tác!`)) return;
+
+  dLog(`Đang xóa ${allDocs.length} tài liệu...`, 'info');
+  let ok = 0, fail = 0;
+  for (const doc of allDocs) {
+    const parts = doc.name.split('/');
+    const docStoreId = parts[1];
+    const docId = parts[3];
+    try {
+      const r = await fetch(`${LS.workerUrl()}/stores/${docStoreId}/docs/${docId}`, {
+        method: 'DELETE', headers: adminHeaders(),
+      });
+      if (r.ok) ok++;
+      else fail++;
+    } catch(e) { fail++; }
+  }
+  dLog(`✅ Xóa xong: ${ok} thành công, ${fail} lỗi`, 'info');
+  showToast(`🗑️ Đã xóa ${ok}/${allDocs.length} tài liệu`, ok === allDocs.length ? 'success' : 'info');
+  listDocs();
+}
+
+// ── Export mapping tên file ──────────────────────────────────
+function exportMapping() {
+  const map = JSON.parse(localStorage.getItem('bsg_file_map') || '{}');
+  if (!Object.keys(map).length) {
+    showToast('⚠️ Chưa có mapping nào để export', 'info');
+    return;
+  }
+  // Thêm metadata
+  const exportData = {
+    exported_at: new Date().toISOString(),
+    store: LS.activeStore(),
+    total: Object.keys(map).length,
+    mapping: map, // { fileId: 'tên file gốc' }
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `trungson-file-mapping-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`📤 Đã export ${Object.keys(map).length} file mappings`, 'success');
+}
+
+// ── Import mapping từ file JSON ──────────────────────────────
+function importMapping(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const incoming = data.mapping || data; // hỗ trợ cả 2 format
+      const existing = JSON.parse(localStorage.getItem('bsg_file_map') || '{}');
+      const merged   = { ...existing, ...incoming };
+      localStorage.setItem('bsg_file_map', JSON.stringify(merged));
+      const newCount = Object.keys(incoming).length;
+      showToast(`📥 Đã import ${newCount} mappings`, 'success');
+      dLog(`✅ Import mapping: +${newCount} entries (tổng: ${Object.keys(merged).length})`, 'info');
+      listDocs(); // refresh để hiện tên mới
+    } catch(err) {
+      showToast('❌ File JSON không hợp lệ', 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // reset input
 }
 
 // ════════════════════════════════════════
