@@ -192,7 +192,7 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
       Đăng nhập
     </button>
     <p style="margin-top:16px;font-size:11px;color:var(--ink3)">
-      Build 14:27 Trang này chỉ dành cho nội bộ Trung Sơn Pharma
+      Trang này chỉ dành cho nội bộ Trung Sơn Pharma
     </p>
   </div>
 </div>
@@ -254,6 +254,18 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
           <button class="btn btn-primary" onclick="savePrompt()">💾 Lưu Prompt</button>
           <button class="btn btn-outline" onclick="resetPrompt()">↩ Reset mặc định</button>
         </div>
+      </div>
+
+      <div class="card">
+        <h3>🔧 Cloudflare Worker URL</h3>
+        <p>Nhập URL Worker để tránh lỗi CORS khi upload tài liệu. Bỏ trống để gọi trực tiếp (chỉ dùng khi test local).</p>
+        <div class="form-group">
+          <label>Worker URL</label>
+          <input type="text" id="worker-url-field"
+            placeholder="https://bacsi-gau-proxy.YOUR.workers.dev"/>
+        </div>
+        <button class="btn btn-primary" onclick="saveWorkerUrl()">💾 Lưu Worker URL</button>
+        <div id="worker-status" style="margin-top:8px;font-size:13px"></div>
       </div>
 
       <div class="card">
@@ -351,6 +363,17 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const ADMIN_PWD = 'trungson2024'; // đổi mật khẩu tại đây
 
+// ── Worker URL ── đổi thành URL Worker sau khi deploy ──────────
+// Ví dụ: 'https://bacsi-gau-proxy.YOUR-SUBDOMAIN.workers.dev'
+const WORKER_URL = localStorage.getItem('bsg_worker_url') || '';
+const USE_WORKER = () => !!WORKER_URL;
+function workerHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'X-Admin-Password': ADMIN_PWD,
+  };
+}
+
 const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma).
 
 Nguyên tắc:
@@ -406,6 +429,7 @@ if (sessionStorage.getItem('bsg_admin_auth') === '1') {
 // ══════════════════════════
 function initApp() {
   document.getElementById('api-key-field').value = apiKey();
+  document.getElementById('worker-url-field').value = WORKER_URL;
   document.getElementById('model-select').value = modelId();
   document.getElementById('prompt-field').value =
     localStorage.getItem('bsg_prompt') || DEFAULT_PROMPT;
@@ -430,6 +454,14 @@ function switchTab(id, btn) {
 // ══════════════════════════
 //  SETTINGS
 // ══════════════════════════
+function saveWorkerUrl() {
+  const url = document.getElementById('worker-url-field').value.trim().replace(/\/+$/, '');
+  localStorage.setItem('bsg_worker_url', url);
+  document.getElementById('worker-status').innerHTML = url
+    ? `<span style="color:var(--g1)">✅ Worker URL đã lưu: ${url}</span>`
+    : '<span style="color:var(--ink3)">⚠️ Chưa có Worker URL — upload sẽ bị CORS</span>';
+}
+
 function saveSettings() {
   const key = document.getElementById('api-key-field').value.trim();
   const model = document.getElementById('model-select').value;
@@ -519,9 +551,15 @@ async function createStore() {
   if (!name) return showToast('Nhập tên store!', 'error');
   sLog(`Tạo store: ${name}`, 'info');
   try {
-    const r = await fetch(`${API_BASE}/fileSearchStores?key=${apiKey()}`, {
+    const url = USE_WORKER()
+      ? `${WORKER_URL}/stores`
+      : `${API_BASE}/fileSearchStores?key=${apiKey()}`;
+    const headers = USE_WORKER()
+      ? workerHeaders()
+      : {'Content-Type':'application/json'};
+    const r = await fetch(url, {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers,
       body: JSON.stringify({displayName: name}),
     });
     const d = await r.json();
@@ -539,7 +577,10 @@ async function createStore() {
 async function listStores() {
   sLog('Tải danh sách store...', 'info');
   try {
-    const r = await fetch(`${API_BASE}/fileSearchStores?key=${apiKey()}`);
+    const url = USE_WORKER()
+      ? `${WORKER_URL}/stores`
+      : `${API_BASE}/fileSearchStores?key=${apiKey()}`;
+    const r = await fetch(url, USE_WORKER() ? {headers: workerHeaders()} : {});
     const d = await r.json();
     if (!r.ok) { sLog(`❌ ${d?.error?.message||r.status}`, 'err'); return; }
     stores = d.fileSearchStores || [];
@@ -584,7 +625,14 @@ function selectStore(name, displayName) {
 async function deleteStore(name) {
   if (!confirm(`Xóa store ${name}?\nToàn bộ tài liệu sẽ bị xóa!`)) return;
   try {
-    const r = await fetch(`${API_BASE}/${name}?key=${apiKey()}`, {method:'DELETE'});
+    const storeId = name.replace('fileSearchStores/', '');
+    const url = USE_WORKER()
+      ? `${WORKER_URL}/stores/${storeId}`
+      : `${API_BASE}/${name}?key=${apiKey()}&force=true`;
+    const r = await fetch(url, {
+      method: 'DELETE',
+      headers: USE_WORKER() ? workerHeaders() : {},
+    });
     if (r.ok || r.status===204) {
       if (localStorage.getItem('bsg_store')===name) {
         localStorage.removeItem('bsg_store');
@@ -656,6 +704,29 @@ async function uploadFiles(files) {
 }
 
 async function uploadOneFile(store, file) {
+  const storeId = store.replace('fileSearchStores/', '');
+
+  if (USE_WORKER()) {
+    // ── Gọi qua Worker (không bị CORS) ──
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('displayName', file.name);
+    const r = await fetch(`${WORKER_URL}/stores/${storeId}/upload`, {
+      method: 'POST',
+      headers: { 'X-Admin-Password': ADMIN_PWD },
+      body: fd,
+    });
+    if (!r.ok) {
+      const d = await r.json();
+      throw new Error(d?.error?.message || r.status);
+    }
+    const d = await r.json();
+    dLog(`  ✅ fileName: ${d.fileName} | operation: ${d.operation}`, 'info');
+    return d;
+  }
+
+  // ── Gọi trực tiếp (chỉ dùng nếu CORS cho phép) ──
+
   const mimeMap = {
     pdf:'application/pdf',
     docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -732,7 +803,11 @@ async function listDocs() {
   if (!store) return;
   dLog('Tải tài liệu...', 'info');
   try {
-    const r = await fetch(`${API_BASE}/${store}/documents?key=${apiKey()}`);
+    const storeId = store.replace('fileSearchStores/', '');
+    const url = USE_WORKER()
+      ? `${WORKER_URL}/stores/${storeId}/docs`
+      : `${API_BASE}/${store}/documents?key=${apiKey()}`;
+    const r = await fetch(url, USE_WORKER() ? {headers: workerHeaders()} : {});
     const d = await r.json();
     if (!r.ok) { dLog(`❌ ${d?.error?.message||r.status}`, 'err'); return; }
     const docs = d.documents || [];
@@ -758,7 +833,14 @@ async function listDocs() {
 async function deleteDoc(name) {
   if (!confirm('Xóa tài liệu này?')) return;
   try {
-    const r = await fetch(`${API_BASE}/${name}?key=${apiKey()}`, {method:'DELETE'});
+    const storeId = name.replace('fileSearchStores/', '');
+    const url = USE_WORKER()
+      ? `${WORKER_URL}/stores/${storeId}`
+      : `${API_BASE}/${name}?key=${apiKey()}&force=true`;
+    const r = await fetch(url, {
+      method: 'DELETE',
+      headers: USE_WORKER() ? workerHeaders() : {},
+    });
     if (r.ok||r.status===204) { showToast('🗑️ Đã xóa', 'info'); listDocs(); }
     else { const d = await r.json(); showToast(`❌ ${d?.error?.message||'Lỗi'}`, 'error'); }
   } catch(e) { showToast(`❌ ${e.message}`, 'error'); }
