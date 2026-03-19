@@ -625,6 +625,12 @@ async function uploadFiles(files) {
       });
       const d = await r.json();
       if (r.ok) {
+        // Lưu mapping fileName → tên gốc vào localStorage
+        const map = JSON.parse(localStorage.getItem('bsg_file_map') || '{}');
+        // Key = document ID (phần cuối của fileName: files/abc123 → abc123)
+        const fileId = d.fileName?.split('/').pop() || '';
+        if (fileId) map[fileId] = f.name;
+        localStorage.setItem('bsg_file_map', JSON.stringify(map));
         dLog(`✅ ${f.name} → ${d.fileName} (indexing...)`, 'info');
       } else {
         throw new Error(d?.error?.message || r.status);
@@ -667,15 +673,21 @@ async function listDocs() {
       const parts = doc.name.split('/');
       const docStoreId = parts[1];
       const docId      = parts[3];
-      const label = doc.displayName || '(chưa có tên)';
+      // Ưu tiên: displayName từ API → localStorage map → docId
+      const fileMap = JSON.parse(localStorage.getItem('bsg_file_map') || '{}');
+      // docId có thể chứa suffix: "abc123-xyz456" → key "abc123"
+      const baseId = docId.split('-')[0];
+      const mappedName = fileMap[baseId] || fileMap[docId] || '';
+      const label = doc.displayName || mappedName || docId;
+      const shortId = docId.length > 20 ? docId.substring(0,20)+'...' : docId;
       return `<div class="doc-item">
         <span>📄</span>
         <div class="doc-name">
-          <div>${label}</div>
-          <div style="font-size:11px;color:var(--ink3);font-family:monospace;margin-top:2px">${docId}</div>
+          <div style="font-weight:600">${label}</div>
+          <div style="font-size:10px;color:var(--ink3);font-family:monospace;margin-top:1px">${shortId}</div>
         </div>
         <span class="doc-state ${stateClass}">${state}</span>
-        <button class="btn btn-d btn-sm" onclick="deleteDoc('${docStoreId}','${docId}','${label.replace(/'/g,'')}')">🗑️</button>
+        <button class="btn btn-d btn-sm" onclick="deleteDoc('${docStoreId}','${docId}','${label.replace(/'/g,'').replace(/"/g,'')}')">🗑️</button>
       </div>`;
     }).join('');
   } catch(e) { dLog(`❌ ${e.message}`, 'err'); }
