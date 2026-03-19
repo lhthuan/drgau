@@ -1,0 +1,7 @@
+name = "bacsi-gau-proxy"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Env vars — set qua Cloudflare Dashboard > Workers > Settings > Variables
+# GEMINI_API_KEY = "AIza..."
+# ADMIN_PASSWORD = "your-password"
