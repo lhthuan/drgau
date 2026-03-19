@@ -653,7 +653,8 @@ async function listDocs() {
     const d = await r.json();
     if (!r.ok) { dLog(`❌ ${d?.error?.message || r.status}`, 'err'); return; }
     const docs = d.documents || [];
-    dLog(`✅ ${docs.length} tài liệu`);
+    const total = d.total || docs.length;
+    dLog(`✅ ${docs.length} tài liệu${total > docs.length ? ' (đang tải thêm...)' : ''} — Tổng: ${total}`);
     const el = document.getElementById('doc-list');
     if (!docs.length) {
       el.innerHTML = '<p style="font-size:13px;color:var(--ink3)">Chưa có tài liệu.</p>';
