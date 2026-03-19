@@ -192,7 +192,7 @@ html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var
       Đăng nhập
     </button>
     <p style="margin-top:16px;font-size:11px;color:var(--ink3)">
-      Trang này chỉ dành cho nội bộ Trung Sơn Pharma
+      Build 14:27 Trang này chỉ dành cho nội bộ Trung Sơn Pharma
     </p>
   </div>
 </div>
@@ -711,14 +711,11 @@ async function uploadOneFile(store, file) {
   // Bước 2: Import file vào File Search Store
   dLog(`  Đang import vào File Search Store...`, 'info');
   const r2 = await fetch(
-    `${API_BASE}/${storeName}:importFile?key=${apiKey()}`,
+    `${API_BASE}/${storeName}/files:import?key=${apiKey()}`,
     {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        file_name: fileName,
-        document_config: { display_name: file.name },
-      }),
+      body: JSON.stringify({ fileName }),
     }
   );
   if (!r2.ok) {
@@ -726,7 +723,7 @@ async function uploadOneFile(store, file) {
     throw new Error('Import Store: ' + (d?.error?.message || r2.status));
   }
   const opData = await r2.json();
-  dLog(`  ✅ Đã gửi import, đang indexing... (operation: ${opData.name||'?'})`, 'info');
+  dLog(`  ✅ Đang indexing... (${opData.name||'?'})`, 'info');
   return opData;
 }
 
