@@ -664,23 +664,70 @@ async function uploadOneFile(store, file) {
   };
   const ext = file.name.split('.').pop().toLowerCase();
   const mime = mimeMap[ext] || 'text/plain';
+  const storeName = store.startsWith('fileSearchStores/') ? store : store;
 
-  // Dùng multipart upload
-  const text = await file.text();
-  const b64 = btoa(unescape(encodeURIComponent(text)));
-  const r = await fetch(`${API_BASE}/${store}/documents?key=${apiKey()}`, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      document: { displayName: file.name },
-      inlineContent: { mimeType: mime, data: b64 },
-    }),
-  });
-  if (!r.ok) {
-    const d = await r.json();
-    throw new Error(d?.error?.message || r.status);
+  // Bước 1: Upload file lên Files API (lấy file URI)
+  dLog(`  Đang upload lên Files API...`, 'info');
+  const uploadUrl = `https://generativelanguage.googleapis.com/upload/v1beta/files?key=${apiKey()}`;
+  const meta = JSON.stringify({file:{display_name: file.name}});
+  const metaBlob = new Blob([meta], {type:'application/json'});
+  const formData = new FormData();
+  formData.append('metadata', metaBlob);
+  formData.append('file', file, file.name);
+
+  // Dùng multipart upload trực tiếp
+  const boundary = '-------' + Math.random().toString(36).slice(2);
+  const metaBytes = new TextEncoder().encode(
+    '--' + boundary + '\r\n' +
+    'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+    JSON.stringify({file:{display_name: file.name}}) + '\r\n' +
+    '--' + boundary + '\r\n' +
+    'Content-Type: ' + mime + '\r\n\r\n'
+  );
+  const fileBytes = new Uint8Array(await file.arrayBuffer());
+  const endBytes = new TextEncoder().encode('\r\n--' + boundary + '--');
+  const body = new Uint8Array(metaBytes.length + fileBytes.length + endBytes.length);
+  body.set(metaBytes, 0);
+  body.set(fileBytes, metaBytes.length);
+  body.set(endBytes, metaBytes.length + fileBytes.length);
+
+  const r1 = await fetch(
+    `https://generativelanguage.googleapis.com/upload/v1beta/files?key=${apiKey()}`,
+    {
+      method: 'POST',
+      headers: {'Content-Type': `multipart/related; boundary=${boundary}`, 'X-Goog-Upload-Protocol': 'multipart'},
+      body: body,
+    }
+  );
+  if (!r1.ok) {
+    const d = await r1.json();
+    throw new Error('Files API: ' + (d?.error?.message || r1.status));
   }
-  return r.json();
+  const fileData = await r1.json();
+  const fileName = fileData?.file?.name;
+  if (!fileName) throw new Error('Không lấy được file name từ Files API');
+  dLog(`  File URI: ${fileName}`, 'info');
+
+  // Bước 2: Import file vào File Search Store
+  dLog(`  Đang import vào File Search Store...`, 'info');
+  const r2 = await fetch(
+    `${API_BASE}/${storeName}:importFile?key=${apiKey()}`,
+    {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        file_name: fileName,
+        document_config: { display_name: file.name },
+      }),
+    }
+  );
+  if (!r2.ok) {
+    const d = await r2.json();
+    throw new Error('Import Store: ' + (d?.error?.message || r2.status));
+  }
+  const opData = await r2.json();
+  dLog(`  ✅ Đã gửi import, đang indexing... (operation: ${opData.name||'?'})`, 'info');
+  return opData;
 }
 
 async function listDocs() {
