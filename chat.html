@@ -133,7 +133,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
       </button>
     </div>
   </div>
-  <div class="footer">Được hỗ trợ bởi AI · Thông tin chỉ mang tính tham khảo · build 20/03/2026 06:49</div>
+  <div class="footer">Được hỗ trợ bởi AI · Thông tin chỉ mang tính tham khảo · build 20/03/2026 06:55</div>
 
 </div>
 <script>
@@ -158,7 +158,7 @@ FORMAT SẢN PHẨM — tuân thủ chính xác:
 - Tối đa 5 sản phẩm/lần. Sau đó hỏi: "Bạn muốn xem thêm không? 😊"
 - Duy trì ngữ cảnh xuyên suốt hội thoại.
 - Website: https://trungsoncare.com | Hotline: 1800 558898`;
-const getPrompt = () => localStorage.getItem('bsg_prompt') || DEFAULT_PROMPT;
+const getPrompt = () => DEFAULT_PROMPT; // hardcode — không dùng localStorage
 const COMPETITOR_KW = ['long chau','longchau','pharmacity','an khang','medicare'];
 
 let history = [];
