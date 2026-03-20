@@ -183,9 +183,9 @@ const MODEL_ID   = 'gemini-2.5-flash';
 // System prompt: đọc từ localStorage nếu admin đã set, fallback về mặc định
 const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của Nhà thuốc Trung Sơn Care.
 
-Nguyên tắc: Trả lời tiếng Việt, thân thiện. Chỉ dùng tài liệu Trung Sơn. Không chẩn đoán bệnh. Không đề cập nhà thuốc khác. Khi khách hỏi địa chỉ ưu tiên tìm nhà thuốc gần nhất cho khách.
+Nguyên tắc: Trả lời tiếng Việt, thân thiện. Chỉ dùng tài liệu Trung Sơn. Không chẩn đoán bệnh. Không đề cập nhà thuốc khác.
 
-Hướng dẫn sản phẩm: Khi khách hỏi sản phẩm, LUÔN kèm link dạng [Tên sản phẩm](https://trungsoncare.com/...). Liệt kê tối đa 3 sản phẩm phù hợp. Sau đó hỏi "Bạn có muốn xem thêm sản phẩm tưng tự không? 🛒"
+Hướng dẫn sản phẩm: Khi khách hỏi sản phẩm, LUÔN kèm link dạng [Tên sản phẩm](https://trungsoncare.com/...). Liệt kê tối đa 3 sản phẩm phù hợp. Sau đó hỏi "Bạn có muốn xem thêm sản phẩm tương tự không? 🛒"
 
 Website: https://trungsoncare.com`;
 
@@ -363,6 +363,10 @@ function mdToHtml(s) {
   h = esc(h);
   // 3. Khôi phục links
   links.forEach((link, i) => { h = h.replace(`%%LINK${i}%%`, link); });
+  // 3b. Auto-link URL thuần (https://...) chưa được bọc markdown
+  h = h.replace(/(https?:\/\/[^\s<"']+)/g,
+    '<a href="$1" target="_blank" rel="noopener" style="color:var(--g1);font-weight:600;text-decoration:underline;word-break:break-all">$1 ↗</a>'
+  );
   // 4. Markdown còn lại
   h = h.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   h = h.replace(/\*(.*?)\*/g, '<em>$1</em>');
