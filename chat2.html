@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bác Sĩ Gấu – Trung Sơn Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g1:#00843D;--g2:#00A84F;--g3:#C8F0D8;--g4:#E8F7EE;
+  --teal:#006D62;--ink:#1A2620;--ink2:#3D5248;--ink3:#6B8577;
+  --line:#DDE8E1;--bg:#F5FAF7;--w:#fff;
+  --sh:0 4px 20px rgba(0,132,61,.10);
+  --font:'Be Vietnam Pro',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font);background:var(--bg)}
+
+.widget{width:100%;max-width:440px;height:100vh;max-height:720px;display:flex;flex-direction:column;background:var(--w);border-radius:24px;box-shadow:0 16px 48px rgba(0,132,61,.18);overflow:hidden;margin:0 auto}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#003D1E,var(--teal));padding:15px 19px;display:flex;align-items:center;gap:11px;flex-shrink:0}
+.hav{width:46px;height:46px;background:var(--w);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:25px;box-shadow:0 2px 10px rgba(0,0,0,.2);animation:fl 3s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.hinfo{flex:1}
+.hname{font-size:15.5px;font-weight:700;color:#fff}
+.hsub{font-size:11.5px;color:rgba(255,255,255,.72);margin-top:2px}
+.hdot{display:inline-block;width:7px;height:7px;background:#4ADE80;border-radius:50%;margin-right:5px;animation:pu 2s infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+.hbrand{font-size:10px;font-weight:700;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.9px;text-align:right;line-height:1.4}
+
+/* NO-CONFIG */
+.no-cfg{background:#FEF3C7;border-bottom:1px solid #FCD34D;padding:9px 15px;font-size:12px;color:#92400E;flex-shrink:0;display:none}
+
+/* MESSAGES */
+.msgs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:12px}
+.msgs::-webkit-scrollbar{width:4px}
+.msgs::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+
+.mrow{display:flex;gap:8px;align-items:flex-end;animation:mi .22s ease-out}
+@keyframes mi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mrow.user{flex-direction:row-reverse}
+.mav{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--g3)}
+.mrow.user .mav{background:var(--line)}
+.bub{max-width:74%;padding:11px 14px;border-radius:17px;font-size:13.5px;line-height:1.6;color:var(--ink);background:var(--w);border:1px solid var(--line);box-shadow:var(--sh);border-bottom-left-radius:4px}
+.mrow.user .bub{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:none;border-bottom-right-radius:4px;border-bottom-left-radius:17px}
+.bub strong{font-weight:600}
+.bub ul{padding-left:17px;margin-top:3px}
+.bub li{margin-bottom:3px}
+.bub p+p{margin-top:5px}
+.bub a{color:var(--g1);font-weight:600;text-decoration:underline;word-break:break-all}
+.mrow.user .bub a{color:#cfffdf}
+
+/* TYPING */
+.typing{display:flex;align-items:center;gap:5px;padding:4px 2px}
+.typing span{width:7px;height:7px;background:var(--ink3);border-radius:50%;animation:bo 1.1s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* WELCOME */
+.welcome{background:linear-gradient(135deg,var(--g3),#E0F7F0);border:1px solid rgba(0,132,61,.15);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink2);line-height:1.6}
+.welcome strong{color:var(--g1);font-weight:700}
+
+/* QUICK CHIPS — 2x2 grid */
+.qwrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.qchip{
+  background:var(--w);border:1.5px solid var(--g1);color:var(--g1);
+  border-radius:22px;padding:10px 12px;font-size:12.5px;font-weight:600;
+  cursor:pointer;font-family:var(--font);line-height:1.3;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:46px;transition:background .15s,color .15s;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);touch-action:manipulation;
+  user-select:none;-webkit-user-select:none;
+}
+.qchip:hover{background:var(--g4)}
+.qchip:active{background:var(--g1);color:#fff;transform:scale(.97)}
+
+/* INPUT */
+.input-wrap{padding:10px 12px;border-top:1px solid var(--line);background:var(--w);flex-shrink:0}
+.irow{display:flex;gap:8px;align-items:flex-end;background:var(--bg);border:1.5px solid var(--line);border-radius:26px;padding:8px 12px;transition:border-color .2s}
+.irow:focus-within{border-color:var(--g1);background:var(--w)}
+#msginput{flex:1;border:none;background:transparent;font-family:var(--font);font-size:15px;color:var(--ink);resize:none;outline:none;max-height:100px;line-height:1.5;-webkit-appearance:none}
+#msginput::placeholder{color:var(--ink3)}
+.sbtn{width:42px;height:42px;background:var(--g1);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,132,61,.3);-webkit-tap-highlight-color:rgba(0,0,0,0);touch-action:manipulation;transition:transform .15s}
+.sbtn:active{transform:scale(.92)}
+.sbtn:disabled{background:var(--line);box-shadow:none}
+.sbtn svg{width:17px;height:17px;fill:#fff}
+
+.cl{color:var(--g1);font-weight:600;text-decoration:underline}
+.mrow.user .bub .cl{color:#cfffdf}
+.footer{text-align:center;font-size:10.5px;color:var(--ink3);padding:4px 15px 8px;background:var(--w);flex-shrink:0}
+
+@media(max-width:480px){
+  .widget{border-radius:0;max-height:100vh;height:100dvh}
+  .msgs{padding:14px 12px}
+  #msginput{font-size:16px}
+}
+</style>
+</head>
+<body>
+<div class="widget">
+
+  <div class="hdr">
+    <div class="hav">🐻</div>
+    <div class="hinfo">
+      <div class="hname">Bác Sĩ Gấu</div>
+      <div class="hsub"><span class="hdot"></span>Trợ lý tư vấn sức khỏe &amp; dược phẩm</div>
+    </div>
+    <div class="hbrand">Trung Sơn<br/>Care</div>
+  </div>
+
+  <div class="no-cfg" id="no-cfg">⚠️ Chatbot chưa cấu hình. Vui lòng liên hệ quản trị viên.</div>
+
+  <div class="msgs" id="msgs">
+    <div class="welcome">
+      <div>Xin chào! Tôi là <strong>Bác Sĩ Gấu 🐻</strong>, trợ lý tìm kiếm thông tin về chính sách bán hàng &amp; dịch vụ của <strong>Trung Sơn Care</strong>.</div>
+      <div style="margin-top:6px;font-size:12px;color:var(--ink3)">⚠️ Thông tin chỉ mang tính tham khảo, không thay thế tư vấn y tế.</div>
+    </div>
+    <div class="qwrap" id="quick-init">
+      <button class="qchip" onclick="doQuick('Trung Sơn Care hiện tại đang có chương trình khuyến mãi gì?')">🎉 Khuyến mãi hiện có</button>
+      <button class="qchip" onclick="doQuick('Nhà thuốc Trung Sơn Care có những chi nhánh ở đâu? Cho tôi địa chỉ cụ thể.')">📍 Tìm nhà thuốc Trung Sơn</button>
+      <button class="qchip" onclick="doQuick('Chính sách giao hàng của Trung Sơn Care như thế nào? Phí ship và thời gian giao hàng?')">🚚 Chính sách giao hàng</button>
+      <button class="qchip" onclick="doQuick('Hotline và thông tin liên hệ của Trung Sơn Care? Zalo OA, Facebook, địa chỉ?')">📞 Liên hệ hotline</button>
+    </div>
+  </div>
+
+  <div class="input-wrap">
+    <div class="irow">
+      <textarea id="msginput" rows="1" placeholder="Hỏi Bác Sĩ Gấu điều gì đó…"></textarea>
+      <button class="sbtn" id="sbtn" onclick="sendMsg()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="footer">Được hỗ trợ bởi AI · Thông tin chỉ mang tính tham khảo · build 20/03/2026 07:21</div>
+
+</div>
+<script>
+const WORKER_URL = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
+const STORE_NAME = 'fileSearchStores/datalearning01-8r8tmakcvuzv';
+const MODEL_ID   = 'gemini-2.5-flash';
+
+const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn của Nhà thuốc Trung Sơn Care. Trả lời tiếng Việt, thân thiện, xưng "Bác Sĩ Gấu", gọi khách là "bạn".
+
+QUY TẮC BẮT BUỘC:
+1. Chỉ dùng thông tin có trong tài liệu. KHÔNG tự bịa bất kỳ thông tin nào.
+2. LINK SẢN PHẨM: Chỉ copy nguyên văn từ tài liệu. KHÔNG tự tạo URL.
+3. KHI HỎI "XEM THÊM": Liệt kê tiếp các sản phẩm chưa hiển thị. Nếu hết → báo hết, không bịa.
+4. Không chẩn đoán bệnh. Không đề cập nhà thuốc khác.
+5. Không có sản phẩm → "Bác Sĩ Gấu chưa tìm thấy. Gọi hotline 1800 558898 nhé! 😊"
+
+FORMAT TÙY LOẠI NỘI DUNG:
+
+▌KHI LIỆT KÊ SẢN PHẨM (có tên + link + mô tả trong tài liệu):
+**[số]. [Tên sản phẩm]**
+[Mô tả 1-2 câu]
+🔗 [Xem sản phẩm]([link từ tài liệu])
+→ Tối đa 5/lần. Sau đó hỏi: "Bạn muốn xem thêm không? 😊"
+
+▌KHI LIỆT KÊ CHI NHÁNH / ĐỊA CHỈ:
+**[số]. [Tên chi nhánh]**
+📍 [Địa chỉ từ tài liệu]
+→ KHÔNG thêm link "Xem sản phẩm" vào địa chỉ chi nhánh.
+→ Cuối danh sách thêm: "Xem đầy đủ hệ thống tại: https://trungsoncare.com/he-thong-cua-hang"
+
+▌KHI TRẢ LỜI THÔNG TIN LIÊN HỆ / CHÍNH SÁCH:
+Trả lời dạng văn xuôi hoặc danh sách bullet. KHÔNG dùng format sản phẩm.
+
+Hotline: 1800 558898 | Website: https://trungsoncare.com`;
+const getPrompt = () => DEFAULT_PROMPT; // hardcode — không dùng localStorage
+const COMPETITOR_KW = ['long chau','longchau','pharmacity','an khang','medicare'];
+
+let history = [];
+let loading = false;
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('msginput');
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  });
+  inp.addEventListener('input', () => {
+    inp.style.height = 'auto';
+    inp.style.height = Math.min(inp.scrollHeight, 100) + 'px';
+  });
+  if (STORE_NAME.includes('YOUR-STORE-ID'))
+    document.getElementById('no-cfg').style.display = 'block';
+});
+
+// ── QUICK CHIPS ───────────────────────────────────────
+function doQuick(text) {
+  document.getElementById('quick-init')?.remove();
+  sendMsg(text);
+}
+
+// ── SEND ─────────────────────────────────────────────
+async function sendMsg(override) {
+  if (loading) return;
+  const inp  = document.getElementById('msginput');
+  const text = (override !== undefined ? override : inp.value).trim();
+  if (!text) return;
+  inp.value = ''; inp.style.height = 'auto';
+
+  addUser(text);
+
+  if (COMPETITOR_KW.some(kw => text.toLowerCase().includes(kw))) {
+    const r = 'Bác Sĩ Gấu chỉ hỗ trợ thông tin Nhà thuốc Trung Sơn Care thôi bạn nhé! 😊';
+    history.push({role:'user',parts:[{text}]});
+    history.push({role:'model',parts:[{text:r}]});
+    addBot(r); return;
+  }
+
+  history.push({role:'user',parts:[{text}]});
+  setLoad(true);
+  const typing = addTyping();
+  try {
+    const res = await callGemini(history);
+    removeEl(typing);
+    history.push({role:'model',parts:[{text:res.text}]});
+    addBot(res.text);
+  } catch(e) {
+    removeEl(typing);
+    addBot('❌ Lỗi kết nối: ' + e.message);
+  }
+  setLoad(false);
+}
+
+// ── GEMINI API ────────────────────────────────────────
+async function callGemini(hist) {
+  const r = await fetch(WORKER_URL + '/chat', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model: MODEL_ID,
+      system_instruction: {parts:[{text: getPrompt()}]},
+      contents: hist,
+      tools: [{fileSearch:{fileSearchStoreNames:[STORE_NAME]}}],
+      generationConfig: {temperature:0.1, maxOutputTokens:2048},
+    }),
+  });
+  if (!r.ok) {
+    const d = await r.json().catch(()=>({}));
+    throw new Error(d?.error?.message || 'HTTP ' + r.status);
+  }
+  const data = await r.json();
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  return { text: parts.map(p=>p.text||'').join('').trim() };
+}
+
+
+
+// ── UI ────────────────────────────────────────────────
+function addUser(text) {
+  append('mrow user', `<div class="mav">👤</div><div class="bub">${esc(text).replace(/\n/g,'<br/>')}</div>`);
+}
+function addBot(text) {
+  append('mrow bot', `<div class="mav">🐻</div><div><div class="bub">${md(text)}</div></div>`);
+}
+function addTyping() {
+  return append('mrow bot', `<div class="mav">🐻</div><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div>`);
+}
+function append(cls, html) {
+  const msgs = document.getElementById('msgs');
+  const el = document.createElement('div');
+  el.className = cls; el.innerHTML = html;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+function removeEl(el) { el?.parentNode?.removeChild(el); }
+function setLoad(on) { loading=on; document.getElementById('sbtn').disabled=on; }
+
+// ── MARKDOWN RENDERER ─────────────────────────────────
+function md(s) {
+  if (!s) return '';
+  var slots = [];
+
+  // 1. Markdown link [text](url) → slot trước khi escape
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, t, u) {
+    slots.push('<a href="' + u.replace(/[<>"]/g,'') + '" target="_blank" rel="noopener" class="cl">' + t + ' ↗</a>');
+    return '@@' + (slots.length - 1) + '@@';
+  });
+
+  // 2. Plain URL → slot
+  s = s.replace(/https?:\/\/[^\s<>"')\]]+/g, function(u) {
+    slots.push('<a href="' + u + '" target="_blank" rel="noopener" class="cl">' + u + '</a>');
+    return '@@' + (slots.length - 1) + '@@';
+  });
+
+  // 3. Escape HTML (slots @@N@@ không bị ảnh hưởng vì chỉ có @, digits)
+  var h = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  // 4. Restore links
+  h = h.replace(/@@(\d+)@@/g, function(_, i) { return slots[+i]; });
+
+  // 5. Bold **text** (xử lý TRƯỚC numbered để **1. text** không bị nhầm)
+  h = h.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // 6. Line breaks
+  h = h.replace(/\n/g, '<br/>');
+
+  // 7. Bullet  - text  hoặc  * text
+  h = h.replace(/(^|<br\/>)\s*[-*]\s+/g, '$1• ');
+
+  return '<p>' + h + '</p>';
+}
+
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+</script>
+</body>
+</html>
