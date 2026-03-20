@@ -3,37 +3,24 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Bác Sĩ Gấu – Trung Sơn</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>Bác Sĩ Gấu – Trung Sơn Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --g1:#00843D;--g2:#00A84F;--g3:#C8F0D8;--g4:#E8F7EE;
   --teal:#006D62;--ink:#1A2620;--ink2:#3D5248;--ink3:#6B8577;
   --line:#DDE8E1;--bg:#F5FAF7;--w:#fff;
   --sh:0 4px 20px rgba(0,132,61,.10);
-  --shlg:0 16px 48px rgba(0,132,61,.18);
   --font:'Be Vietnam Pro',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:var(--font);background:var(--bg)}
 
-.widget{
-  width:100%;max-width:440px;height:100vh;max-height:720px;
-  display:flex;flex-direction:column;
-  background:var(--w);border-radius:24px;
-  box-shadow:var(--shlg);overflow:hidden;margin:0 auto;
-}
+.widget{width:100%;max-width:440px;height:100vh;max-height:720px;display:flex;flex-direction:column;background:var(--w);border-radius:24px;box-shadow:0 16px 48px rgba(0,132,61,.18);overflow:hidden;margin:0 auto}
 
 /* HEADER */
-.hdr{
-  background:linear-gradient(135deg,#003D1E,var(--teal));
-  padding:15px 19px;display:flex;align-items:center;gap:11px;flex-shrink:0;
-}
-.hav{
-  width:46px;height:46px;background:var(--w);border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:25px;
-  box-shadow:0 2px 10px rgba(0,0,0,.2);animation:fl 3s ease-in-out infinite;
-}
+.hdr{background:linear-gradient(135deg,#003D1E,var(--teal));padding:15px 19px;display:flex;align-items:center;gap:11px;flex-shrink:0}
+.hav{width:46px;height:46px;background:var(--w);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:25px;box-shadow:0 2px 10px rgba(0,0,0,.2);animation:fl 3s ease-in-out infinite}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .hinfo{flex:1}
 .hname{font-size:15.5px;font-weight:700;color:#fff}
@@ -42,11 +29,11 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
 @keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
 .hbrand{font-size:10px;font-weight:700;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.9px;text-align:right;line-height:1.4}
 
-/* NO-CONFIG BANNER */
+/* NO-CONFIG */
 .no-cfg{background:#FEF3C7;border-bottom:1px solid #FCD34D;padding:9px 15px;font-size:12px;color:#92400E;flex-shrink:0;display:none}
 
 /* MESSAGES */
-.msgs{flex:1;overflow-y:auto;padding:18px 15px;display:flex;flex-direction:column;gap:13px}
+.msgs{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:12px}
 .msgs::-webkit-scrollbar{width:4px}
 .msgs::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
 
@@ -55,59 +42,39 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
 .mrow.user{flex-direction:row-reverse}
 .mav{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--g3)}
 .mrow.user .mav{background:var(--line)}
-
-.bub{
-  max-width:74%;padding:11px 14px;border-radius:17px;
-  font-size:13.5px;line-height:1.6;color:var(--ink);
-  background:var(--w);border:1px solid var(--line);
-  box-shadow:var(--sh);border-bottom-left-radius:4px;
-}
-.mrow.user .bub{
-  background:linear-gradient(135deg,var(--g1),var(--g2));
-  color:#fff;border:none;border-bottom-right-radius:4px;border-bottom-left-radius:17px;
-}
+.bub{max-width:74%;padding:11px 14px;border-radius:17px;font-size:13.5px;line-height:1.6;color:var(--ink);background:var(--w);border:1px solid var(--line);box-shadow:var(--sh);border-bottom-left-radius:4px}
+.mrow.user .bub{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:none;border-bottom-right-radius:4px;border-bottom-left-radius:17px}
 .bub strong{font-weight:600}
 .bub ul{padding-left:17px;margin-top:3px}
 .bub li{margin-bottom:3px}
 .bub p+p{margin-top:5px}
-
-.cites{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.cc{background:var(--g4);border:1px solid var(--g3);border-radius:20px;padding:3px 9px;font-size:11px;color:var(--teal);font-weight:500}
+.bub a{color:var(--g1);font-weight:600;text-decoration:underline;word-break:break-all}
+.mrow.user .bub a{color:#cfffdf}
 
 /* TYPING */
-.typing{display:flex;align-items:center;gap:5px;padding:13px 15px}
+.typing{display:flex;align-items:center;gap:5px;padding:4px 2px}
 .typing span{width:7px;height:7px;background:var(--ink3);border-radius:50%;animation:bo 1.1s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
 .typing span:nth-child(3){animation-delay:.4s}
 @keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
-/* QUICK */
-.qwrap{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.qchip{
-  width:100%;background:var(--w);border:1.5px solid var(--g1);color:var(--g1);
-  border-radius:22px;padding:11px 16px;font-size:13px;font-weight:600;
-  cursor:pointer;font-family:var(--font);transition:background .15s,color .15s;
-  text-align:left;line-height:1.4;
-  -webkit-tap-highlight-color:transparent;
-  min-height:44px;box-sizing:border-box;
-}
-.qchip:active{background:var(--g1);color:#fff}
-
 /* WELCOME */
 .welcome{background:linear-gradient(135deg,var(--g3),#E0F7F0);border:1px solid rgba(0,132,61,.15);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink2);line-height:1.6}
 .welcome strong{color:var(--g1);font-weight:700}
 
-/* QUICK CHIPS — mobile friendly */
-.qwrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+/* QUICK CHIPS — 2x2 grid */
+.qwrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .qchip{
   background:var(--w);border:1.5px solid var(--g1);color:var(--g1);
-  border-radius:20px;padding:8px 14px;font-size:13px;font-weight:600;
-  cursor:pointer;font-family:var(--font);transition:all .18s;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;user-select:none;
-  min-height:38px;display:flex;align-items:center;
+  border-radius:22px;padding:10px 12px;font-size:12.5px;font-weight:600;
+  cursor:pointer;font-family:var(--font);line-height:1.3;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:46px;transition:background .15s,color .15s;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);touch-action:manipulation;
+  user-select:none;-webkit-user-select:none;
 }
-.qchip:hover,.qchip:active{background:var(--g1);color:#fff}
+.qchip:hover{background:var(--g4)}
+.qchip:active{background:var(--g1);color:#fff;transform:scale(.97)}
 
 /* INPUT */
 .input-wrap{padding:10px 12px;border-top:1px solid var(--line);background:var(--w);flex-shrink:0}
@@ -115,33 +82,23 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
 .irow:focus-within{border-color:var(--g1);background:var(--w)}
 #msginput{flex:1;border:none;background:transparent;font-family:var(--font);font-size:15px;color:var(--ink);resize:none;outline:none;max-height:100px;line-height:1.5;-webkit-appearance:none}
 #msginput::placeholder{color:var(--ink3)}
-.sbtn{
-  width:42px;height:42px;background:var(--g1);border:none;border-radius:50%;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all .18s;box-shadow:0 2px 8px rgba(0,132,61,.3);
-  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
-}
-.sbtn:active{transform:scale(.94)}
-.sbtn:disabled{background:var(--line);box-shadow:none;cursor:not-allowed}
+.sbtn{width:42px;height:42px;background:var(--g1);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,132,61,.3);-webkit-tap-highlight-color:rgba(0,0,0,0);touch-action:manipulation;transition:transform .15s}
+.sbtn:active{transform:scale(.92)}
+.sbtn:disabled{background:var(--line);box-shadow:none}
 .sbtn svg{width:17px;height:17px;fill:#fff}
-.cl{color:var(--g1);font-weight:600;text-decoration:underline}
-.mrow.user .cl{color:#cfffdf}
+
 .footer{text-align:center;font-size:10.5px;color:var(--ink3);padding:4px 15px 8px;background:var(--w);flex-shrink:0}
 
-/* Mobile overrides */
 @media(max-width:480px){
   .widget{border-radius:0;max-height:100vh;height:100dvh}
-  .msgs{padding:14px 12px;gap:12px}
-  .bub{font-size:14px;padding:10px 13px}
-  .qchip{font-size:12.5px;padding:8px 12px}
-  #msginput{font-size:16px} /* tránh zoom trên iOS */
-  .hdr{padding:13px 16px}
+  .msgs{padding:14px 12px}
+  #msginput{font-size:16px}
 }
 </style>
 </head>
 <body>
-
 <div class="widget">
+
   <div class="hdr">
     <div class="hav">🐻</div>
     <div class="hinfo">
@@ -151,9 +108,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
     <div class="hbrand">Trung Sơn<br/>Care</div>
   </div>
 
-  <div class="no-cfg" id="no-cfg">
-    ⚠️ Chatbot chưa cấu hình đầy đủ. Vui lòng liên hệ quản trị viên.
-  </div>
+  <div class="no-cfg" id="no-cfg">⚠️ Chatbot chưa cấu hình. Vui lòng liên hệ quản trị viên.</div>
 
   <div class="msgs" id="msgs">
     <div class="welcome">
@@ -161,214 +116,158 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
       <div style="margin-top:6px;font-size:12px;color:var(--ink3)">⚠️ Thông tin chỉ mang tính tham khảo, không thay thế tư vấn y tế.</div>
     </div>
     <div class="qwrap" id="quick-init">
-      <button class="qchip" onclick="doQuick('Trung Sơn Care hiện có chương trình khuyến mãi gì?')">🎉 Khuyến mãi hiện có</button>
-      <button class="qchip" onclick="doQuick('Nhà thuốc Trung Sơn Care có những chi nhánh ở đâu? Địa chỉ cụ thể?')">📍 Tìm nhà thuốc Trung Sơn</button>
-      <button class="qchip" onclick="doQuick('Chính sách giao hàng của Trung Sơn Care như thế nào? Phí ship, thời gian giao hàng?')">🚚 Chính sách giao hàng</button>
-      <button class="qchip" onclick="doQuick('Hotline và thông tin liên hệ của Trung Sơn Care?')">📞 Thông tin liên hệ hotline</button>
+      <button class="qchip" onclick="doQuick('Trung Son Care hien co chuong trinh khuyen mai gi?')">🎉 Khuyến mãi hiện có</button>
+      <button class="qchip" onclick="doQuick('Nha thuoc Trung Son Care co nhung chi nhanh o dau?')">📍 Tìm nhà thuốc Trung Sơn</button>
+      <button class="qchip" onclick="doQuick('Chinh sach giao hang cua Trung Son Care nhu the nao?')">🚚 Chính sách giao hàng</button>
+      <button class="qchip" onclick="doQuick('Hotline va thong tin lien he cua Trung Son Care?')">📞 Liên hệ hotline</button>
     </div>
   </div>
 
   <div class="input-wrap">
     <div class="irow">
-      <textarea id="msginput" rows="1"
-        placeholder="Hỏi Bác Sĩ Gấu điều gì đó…"
-        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <textarea id="msginput" rows="1" placeholder="Hỏi Bác Sĩ Gấu điều gì đó…"></textarea>
       <button class="sbtn" id="sbtn" onclick="sendMsg()">
         <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       </button>
     </div>
   </div>
   <div class="footer">Được hỗ trợ bởi AI · Thông tin chỉ mang tính tham khảo</div>
-</div>
 
+</div>
 <script>
-// ════════════════════════════════════════
-//  CONFIG — hardcode, không đọc từ localStorage
-// ════════════════════════════════════════
 const WORKER_URL = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
-const STORE_NAME = 'fileSearchStores/datalearning01-8r8tmakcvuzv'; // 👈 điền sau khi tạo store
+const STORE_NAME = 'fileSearchStores/datalearning01-8r8tmakcvuzv';
 const MODEL_ID   = 'gemini-2.5-flash';
 
-// System prompt: đọc từ localStorage nếu admin đã set, fallback về mặc định
-const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của Nhà thuốc Trung Sơn Care.
-
-Nguyên tắc: Trả lời tiếng Việt, thân thiện. Chỉ dùng tài liệu Trung Sơn. Không chẩn đoán bệnh. Không đề cập nhà thuốc khác.
-
-Hướng dẫn sản phẩm: Khi khách hỏi sản phẩm, LUÔN kèm link dạng [Tên sản phẩm](https://trungsoncare.com/...). Liệt kê tối đa 3 sản phẩm phù hợp. Sau đó hỏi "Bạn có muốn đặt hàng không? 🛒"
-
-Website: https://trungsoncare.com`;
-
+const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu - trợ lý tư vấn của Nhà thuốc Trung Sơn Care. Trả lời tiếng Việt, thân thiện. Chỉ dùng tài liệu Trung Sơn. Không chẩn đoán bệnh. Không đề cập nhà thuốc khác. Khi có link sản phẩm hãy trả về dạng markdown [Tên](url). Website: https://trungsoncare.com`;
 const getPrompt = () => localStorage.getItem('bsg_prompt') || DEFAULT_PROMPT;
+const COMPETITOR_KW = ['long chau','longchau','pharmacity','an khang','medicare'];
 
-const COMPETITOR_KW = ['long châu','longchau','pharmacity','an khang','medicare','eco pharma','long chau'];
-
-// ════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════
 let history = [];
 let loading = false;
 
-// ════════════════════════════════════════
-//  INIT
-// ════════════════════════════════════════
+// ── INIT ──────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  const ok = WORKER_URL && !WORKER_URL.includes('YOUR')
-          && STORE_NAME && !STORE_NAME.includes('YOUR-STORE-ID');
-  if (!ok) document.getElementById('no-cfg').style.display = 'block';
+  const inp = document.getElementById('msginput');
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  });
+  inp.addEventListener('input', () => {
+    inp.style.height = 'auto';
+    inp.style.height = Math.min(inp.scrollHeight, 100) + 'px';
+  });
+  if (STORE_NAME.includes('YOUR-STORE-ID'))
+    document.getElementById('no-cfg').style.display = 'block';
 });
 
-// ════════════════════════════════════════
-//  CHAT
-// ════════════════════════════════════════
+// ── QUICK CHIPS ───────────────────────────────────────
 function doQuick(text) {
-  const el = document.getElementById('quick-init');
-  if (el) el.remove();
+  document.getElementById('quick-init')?.remove();
   sendMsg(text);
 }
-function quickSend(btn) {
-  doQuick(btn.dataset.prompt || btn.textContent.trim());
-}
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-}
-
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-}
-
-function isCompetitor(text) {
-  const low = text.toLowerCase();
-  return COMPETITOR_KW.some(kw => low.includes(kw));
-}
-
+// ── SEND ─────────────────────────────────────────────
 async function sendMsg(override) {
   if (loading) return;
-  const input = document.getElementById('msginput');
-  const text  = (override || input.value).trim();
+  const inp  = document.getElementById('msginput');
+  const text = (override !== undefined ? override : inp.value).trim();
   if (!text) return;
-  input.value = ''; input.style.height = 'auto';
+  inp.value = ''; inp.style.height = 'auto';
 
   addUser(text);
 
-  // Chặn đối thủ cạnh tranh
-  if (isCompetitor(text)) {
-    const reply = 'Bác Sĩ Gấu chỉ hỗ trợ thông tin về **Nhà thuốc Trung Sơn** thôi bạn nhé! 😊\n\nBạn có muốn tìm chi nhánh Trung Sơn gần bạn không?';
+  if (COMPETITOR_KW.some(kw => text.toLowerCase().includes(kw))) {
+    const r = 'Bác Sĩ Gấu chỉ hỗ trợ thông tin Nhà thuốc Trung Sơn Care thôi bạn nhé! 😊';
     history.push({role:'user',parts:[{text}]});
-    history.push({role:'model',parts:[{text:reply}]});
-    addBot(reply);
-    return;
-  }
-
-  // Kiểm tra cấu hình
-  if (STORE_NAME.includes('YOUR-STORE-ID')) {
-    addBot('⚠️ Chatbot chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
-    return;
+    history.push({role:'model',parts:[{text:r}]});
+    addBot(r); return;
   }
 
   history.push({role:'user',parts:[{text}]});
   setLoad(true);
-  const typingEl = addTyping();
-
+  const typing = addTyping();
   try {
-    const result = await callGemini(history);
-    removeEl(typingEl);
-    history.push({role:'model',parts:[{text:result.text}]});
-    addBot(result.text, result.citations);
+    const res = await callGemini(history);
+    removeEl(typing);
+    history.push({role:'model',parts:[{text:res.text}]});
+    addBot(res.text);
   } catch(e) {
-    removeEl(typingEl);
-    addBot(`❌ Lỗi: ${e.message}`);
+    removeEl(typing);
+    addBot('❌ Lỗi kết nối: ' + e.message);
   }
   setLoad(false);
 }
 
+// ── GEMINI API ────────────────────────────────────────
 async function callGemini(hist) {
-  const body = {
-    model: MODEL_ID, // Worker đọc field này rồi xóa trước khi gọi Gemini
-    system_instruction: { parts: [{ text: getPrompt() }] },
-    contents: hist,
-    tools: [{ fileSearch: { fileSearchStoreNames: [STORE_NAME] } }],
-    generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
-  };
-
-  const r = await fetch(`${WORKER_URL}/chat`, {
+  const r = await fetch(WORKER_URL + '/chat', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model: MODEL_ID,
+      system_instruction: {parts:[{text: getPrompt()}]},
+      contents: hist,
+      tools: [{fileSearch:{fileSearchStoreNames:[STORE_NAME]}}],
+      generationConfig: {temperature:0.7, maxOutputTokens:1024},
+    }),
   });
-
   if (!r.ok) {
-    const d = await r.json().catch(() => ({}));
-    throw new Error(d?.error?.message || `HTTP ${r.status}`);
+    const d = await r.json().catch(()=>({}));
+    throw new Error(d?.error?.message || 'HTTP ' + r.status);
   }
-
-  const data  = await r.json();
-  const cand  = data.candidates?.[0];
-  const parts = cand?.content?.parts || [];
-  const text  = parts.map(p => p.text || '').join('').trim();
-
-  // Trích citations từ grounding metadata
-  let citations = [];
-  const chunks = cand?.groundingMetadata?.groundingChunks || [];
-  citations = [...new Set(
-    chunks
-      .filter(c => c.retrievedContext)
-      .map(c => c.retrievedContext.title || 'Tài liệu Trung Sơn')
-  )];
-
-  return { text, citations };
+  const data = await r.json();
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  return { text: parts.map(p=>p.text||'').join('').trim() };
 }
 
-// ════════════════════════════════════════
-//  UI
-// ════════════════════════════════════════
+// ── UI ────────────────────────────────────────────────
 function addUser(text) {
-  const el = document.getElementById('msgs');
-  const row = document.createElement('div');
-  row.className = 'mrow user';
-  row.innerHTML = `<div class="mav">👤</div><div class="bub">${esc(text).replace(/\n/g,'<br/>')}</div>`;
-  el.appendChild(row); scrollBottom();
+  append('mrow user', `<div class="mav">👤</div><div class="bub">${esc(text).replace(/\n/g,'<br/>')}</div>`);
 }
-
-function addBot(text, citations) {
-  const el  = document.getElementById('msgs');
-  const row = document.createElement('div');
-  row.className = 'mrow bot';
-  row.innerHTML = `
-    <div class="mav">🐻</div>
-    <div><div class="bub">${mdToHtml(text)}</div></div>`;
-  el.appendChild(row); scrollBottom();
+function addBot(text) {
+  append('mrow bot', `<div class="mav">🐻</div><div><div class="bub">${md(text)}</div></div>`);
 }
-
 function addTyping() {
-  const el  = document.getElementById('msgs');
-  const row = document.createElement('div');
-  row.className = 'mrow bot';
-  row.innerHTML = `<div class="mav">🐻</div><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  el.appendChild(row); scrollBottom();
-  return row;
+  return append('mrow bot', `<div class="mav">🐻</div><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div>`);
 }
-
-function setLoad(on) {
-  loading = on;
-  document.getElementById('sbtn').disabled = on;
+function append(cls, html) {
+  const msgs = document.getElementById('msgs');
+  const el = document.createElement('div');
+  el.className = cls; el.innerHTML = html;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
 }
-
 function removeEl(el) { el?.parentNode?.removeChild(el); }
-function scrollBottom() {
-  const el = document.getElementById('msgs');
-  el.scrollTop = el.scrollHeight;
-}
+function setLoad(on) { loading=on; document.getElementById('sbtn').disabled=on; }
 
-function mdToHtml(s) {
+// ── MARKDOWN RENDERER ─────────────────────────────────
+function md(s) {
   if (!s) return '';
+  // Bước 1: bảo vệ links trước khi escape
   const slots = [];
-
-  // ── Bước 1: Trích tất cả links & URLs ra khỏi string TRƯỚC khi escape ──
-  // 1a. Markdown link [text](url)
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
-    const safe = url.replace(/[<>"']/g, '');
-    const i = slots.length;
-    slots.push(`<a href="${safe}" target="_blank" rel="noopener" class="cl">${text} ↗</a>`);
-    return `
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_,t,u) => {
+    slots.push(`<a href="${u.replace(/[<>"']/g,'')}" target="_blank" rel="noopener">${t} ↗</a>`);
+    return '\x01'+(slots.length-1)+'\x01';
+  });
+  s = s.replace(/https?:\/\/[^\s<>"')\]]+/g, u => {
+    slots.push(`<a href="${u}" target="_blank" rel="noopener">${u} ↗</a>`);
+    return '\x01'+(slots.length-1)+'\x01';
+  });
+  // Bước 2: escape
+  let h = esc(s);
+  // Bước 3: khôi phục links
+  h = h.replace(/\x01(\d+)\x01/g, (_,i) => slots[+i]);
+  // Bước 4: markdown
+  h = h.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  h = h.replace(/\*(.*?)\*/g,'<em>$1</em>');
+  h = h.replace(/^[-*] (.+)$/gm,'<li>$1</li>');
+  h = h.replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>');
+  h = h.replace(/\n{2,}/g,'</p><p>');
+  h = h.replace(/\n/g,'<br/>');
+  return '<p>'+h+'</p>';
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+</script>
+</body>
+</html>
