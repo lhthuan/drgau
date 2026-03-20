@@ -87,6 +87,8 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
 .sbtn:disabled{background:var(--line);box-shadow:none}
 .sbtn svg{width:17px;height:17px;fill:#fff}
 
+.cl{color:var(--g1);font-weight:600;text-decoration:underline}
+.mrow.user .bub .cl{color:#cfffdf}
 .footer{text-align:center;font-size:10.5px;color:var(--ink3);padding:4px 15px 8px;background:var(--w);flex-shrink:0}
 
 @media(max-width:480px){
@@ -131,7 +133,7 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
       </button>
     </div>
   </div>
-  <div class="footer">Được hỗ trợ bởi AI · Thông tin chỉ mang tính tham khảo</div>
+  <div class="footer">Được hỗ trợ bởi AI · Thông tin chỉ mang tính tham khảo · build 20/03/2026 06:44</div>
 
 </div>
 <script>
@@ -228,7 +230,7 @@ async function callGemini(hist) {
       system_instruction: {parts:[{text: getPrompt()}]},
       contents: hist,
       tools: [{fileSearch:{fileSearchStoreNames:[STORE_NAME]}}],
-      generationConfig: {temperature:0.4, maxOutputTokens:2048},
+      generationConfig: {temperature:0.1, maxOutputTokens:2048},
     }),
   });
   if (!r.ok) {
@@ -266,29 +268,39 @@ function setLoad(on) { loading=on; document.getElementById('sbtn').disabled=on; 
 // ── MARKDOWN RENDERER ─────────────────────────────────
 function md(s) {
   if (!s) return '';
-  // Bước 1: bảo vệ links trước khi escape
-  const slots = [];
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_,t,u) => {
-    slots.push(`<a href="${u.replace(/[<>"']/g,'')}" target="_blank" rel="noopener">${t} ↗</a>`);
-    return '\x01'+(slots.length-1)+'\x01';
+  var slots = [];
+
+  // 1. Markdown link [text](url) → slot trước khi escape
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, t, u) {
+    slots.push('<a href="' + u.replace(/[<>"]/g,'') + '" target="_blank" rel="noopener" class="cl">' + t + ' ↗</a>');
+    return '@@' + (slots.length - 1) + '@@';
   });
-  s = s.replace(/https?:\/\/[^\s<>"')\]]+/g, u => {
-    slots.push(`<a href="${u}" target="_blank" rel="noopener">${u} ↗</a>`);
-    return '\x01'+(slots.length-1)+'\x01';
+
+  // 2. Plain URL → slot
+  s = s.replace(/https?:\/\/[^\s<>"')\]]+/g, function(u) {
+    slots.push('<a href="' + u + '" target="_blank" rel="noopener" class="cl">' + u + '</a>');
+    return '@@' + (slots.length - 1) + '@@';
   });
-  // Bước 2: escape
-  let h = esc(s);
-  // Bước 3: khôi phục links
-  h = h.replace(/\x01(\d+)\x01/g, (_,i) => slots[+i]);
-  // Bước 4: markdown
-  h = h.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  h = h.replace(/\*(.*?)\*/g,'<em>$1</em>');
-  h = h.replace(/^[-*] (.+)$/gm,'<li>$1</li>');
-  h = h.replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>');
-  h = h.replace(/\n{2,}/g,'</p><p>');
-  h = h.replace(/\n/g,'<br/>');
-  return '<p>'+h+'</p>';
+
+  // 3. Escape HTML (slots @@N@@ không bị ảnh hưởng vì chỉ có @, digits)
+  var h = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  // 4. Restore links
+  h = h.replace(/@@(\d+)@@/g, function(_, i) { return slots[+i]; });
+
+  // 5. Bold **text** (xử lý TRƯỚC numbered để **1. text** không bị nhầm)
+  h = h.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // 6. Line breaks
+  h = h.replace(/\n/g, '<br/>');
+
+  // 7. Bullet  - text  hoặc  * text
+  h = h.replace(/(^|<br\/>)\s*[-*]\s+/g, '$1• ');
+
+  return '<p>' + h + '</p>';
 }
+
+
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
