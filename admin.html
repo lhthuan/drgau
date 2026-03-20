@@ -266,28 +266,48 @@ function setLoad(on) { loading=on; document.getElementById('sbtn').disabled=on; 
 // ── MARKDOWN RENDERER ─────────────────────────────────
 function md(s) {
   if (!s) return '';
-  // Bước 1: bảo vệ links trước khi escape
   const slots = [];
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_,t,u) => {
-    slots.push(`<a href="${u.replace(/[<>"']/g,'')}" target="_blank" rel="noopener">${t} ↗</a>`);
-    return '\x01'+(slots.length-1)+'\x01';
+
+  // 1. Bảo vệ markdown links [text](url) TRƯỚC khi escape
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, t, u) => {
+    const safe = u.replace(/[<>"']/g, '');
+    slots.push(`<a href="${safe}" target="_blank" rel="noopener" style="color:var(--g1);font-weight:600;text-decoration:underline">${t}</a>`);
+    return '' + (slots.length - 1) + '';
   });
+
+  // 2. Bảo vệ URL thuần https://...
   s = s.replace(/https?:\/\/[^\s<>"')\]]+/g, u => {
-    slots.push(`<a href="${u}" target="_blank" rel="noopener">${u} ↗</a>`);
-    return '\x01'+(slots.length-1)+'\x01';
+    slots.push(`<a href="${u}" target="_blank" rel="noopener" style="color:var(--g1);font-weight:600;text-decoration:underline;word-break:break-all">${u}</a>`);
+    return '' + (slots.length - 1) + '';
   });
-  // Bước 2: escape
+
+  // 3. Escape HTML
   let h = esc(s);
-  // Bước 3: khôi phục links
-  h = h.replace(/\x01(\d+)\x01/g, (_,i) => slots[+i]);
-  // Bước 4: markdown
-  h = h.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  h = h.replace(/\*(.*?)\*/g,'<em>$1</em>');
-  h = h.replace(/^[-*] (.+)$/gm,'<li>$1</li>');
-  h = h.replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>');
-  h = h.replace(/\n{2,}/g,'</p><p>');
-  h = h.replace(/\n/g,'<br/>');
-  return '<p>'+h+'</p>';
+
+  // 4. Khôi phục links
+  h = h.replace(/(\d+)/g, (_, i) => slots[+i]);
+
+  // 5. Bold **text**
+  h = h.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // 6. Italic *text*
+  h = h.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+  // 7. Numbered list: "1. text" → styled div (tránh lẫn với số thứ tự thường)
+  h = h.replace(/^(\d+)\. (.+)$/gm,
+    '<div style="margin:6px 0"><strong>$1.</strong> $2</div>');
+
+  // 8. Bullet list
+  h = h.replace(/^[-*] (.+)$/gm, '<li>$1</li>');
+  h = h.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
+
+  // 9. Paragraph breaks
+  h = h.replace(/
+{2,}/g, '</p><p>');
+  h = h.replace(/
+/g, '<br/>');
+
+  return '<p>' + h + '</p>';
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
