@@ -213,9 +213,8 @@ async function sendMsg(override) {
   try {
     const res = await callGemini(history);
     removeEl(typing);
-    const cleanText = stripFakeLinks(res.text);
-    history.push({role:'model',parts:[{text:cleanText}]});
-    addBot(cleanText);
+    history.push({role:'model',parts:[{text:res.text}]});
+    addBot(res.text);
   } catch(e) {
     removeEl(typing);
     addBot('❌ Lỗi kết nối: ' + e.message);
@@ -245,36 +244,7 @@ async function callGemini(hist) {
   return { text: parts.map(p=>p.text||'').join('').trim() };
 }
 
-// ── LINK VALIDATOR ───────────────────────────────────
-// Chỉ giữ link có đúng format: trungsoncare.com/{category}/{seo-name}/
-// Loại bỏ link Gemini tự ghép (thường thiếu category hoặc seo-name quá ngắn)
-// Whitelist slug hợp lệ — build từ CSV export 20/03/2026
 
-
-function isValidTrungSonUrl(url) {
-  try {
-    const u = new URL(url);
-    if (u.hostname !== 'trungsoncare.com') return false;
-    const parts = u.pathname.replace(/^\/|\/$/g,'').split('/');
-    if (parts.length !== 2) return false;
-    // Kiểm tra slug có trong whitelist không
-    return VALID_SLUGS.has(parts[1]);
-  } catch { return false; }
-}
-
-function stripFakeLinks(text) {
-  // Thay link markdown [text](url) — kiểm tra url
-  text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (match, label, url) => {
-    if (isValidTrungSonUrl(url)) return match; // giữ nguyên
-    return label; // bỏ link, giữ text
-  });
-  // Thay URL thuần
-  text = text.replace(/(https?:\/\/trungsoncare\.com[^\s<>"')\]]*)/g, (url) => {
-    if (isValidTrungSonUrl(url)) return url;
-    return ''; // xóa hẳn link fake
-  });
-  return text;
-}
 
 // ── UI ────────────────────────────────────────────────
 function addUser(text) {
