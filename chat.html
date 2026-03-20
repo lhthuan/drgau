@@ -82,16 +82,16 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
 @keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
 /* QUICK */
-.qwrap{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.qwrap{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .qchip{
-  background:var(--w);border:1.5px solid var(--g1);color:var(--g1);
-  border-radius:20px;padding:10px 12px;font-size:12.5px;font-weight:600;
-  cursor:pointer;font-family:var(--font);transition:all .18s;
-  text-align:center;line-height:1.3;
-  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
-  min-height:44px;display:flex;align-items:center;justify-content:center;
+  width:100%;background:var(--w);border:1.5px solid var(--g1);color:var(--g1);
+  border-radius:22px;padding:11px 16px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:var(--font);transition:background .15s,color .15s;
+  text-align:left;line-height:1.4;
+  -webkit-tap-highlight-color:transparent;
+  min-height:44px;box-sizing:border-box;
 }
-.qchip:hover,.qchip:active{background:var(--g1);color:#fff}
+.qchip:active{background:var(--g1);color:#fff}
 
 /* WELCOME */
 .welcome{background:linear-gradient(135deg,var(--g3),#E0F7F0);border:1px solid rgba(0,132,61,.15);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink2);line-height:1.6}
@@ -161,10 +161,10 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
       <div style="margin-top:6px;font-size:12px;color:var(--ink3)">⚠️ Thông tin chỉ mang tính tham khảo, không thay thế tư vấn y tế.</div>
     </div>
     <div class="qwrap" id="quick-init">
-      <button class="qchip" onclick="quickSend(this)" data-prompt="Trung Sơn Care hiện có chương trình khuyến mãi gì?">🎉 Khuyến mãi hiện có</button>
-      <button class="qchip" onclick="quickSend(this)" data-prompt="Nhà thuốc Trung Sơn Care có những chi nhánh ở đâu? Địa chỉ cụ thể?">📍 Tìm nhà thuốc Trung Sơn</button>
-      <button class="qchip" onclick="quickSend(this)" data-prompt="Chính sách giao hàng của Trung Sơn Care như thế nào? Phí ship, thời gian giao hàng?">🚚 Chính sách giao hàng</button>
-      <button class="qchip" onclick="quickSend(this)" data-prompt="Hotline và thông tin liên hệ của Trung Sơn Care?">📞 Thông tin liên hệ hotline</button>
+      <button class="qchip" onclick="doQuick('Trung Sơn Care hiện có chương trình khuyến mãi gì?')">🎉 Khuyến mãi hiện có</button>
+      <button class="qchip" onclick="doQuick('Nhà thuốc Trung Sơn Care có những chi nhánh ở đâu? Địa chỉ cụ thể?')">📍 Tìm nhà thuốc Trung Sơn</button>
+      <button class="qchip" onclick="doQuick('Chính sách giao hàng của Trung Sơn Care như thế nào? Phí ship, thời gian giao hàng?')">🚚 Chính sách giao hàng</button>
+      <button class="qchip" onclick="doQuick('Hotline và thông tin liên hệ của Trung Sơn Care?')">📞 Thông tin liên hệ hotline</button>
     </div>
   </div>
 
@@ -220,10 +220,13 @@ window.addEventListener('DOMContentLoaded', () => {
 // ════════════════════════════════════════
 //  CHAT
 // ════════════════════════════════════════
-function quickSend(btn) {
-  const text = btn.dataset.prompt || btn.textContent.trim().replace(/^[^\w\sÀ-ɏ]*\s*/, '');
-  document.getElementById('quick-init')?.remove();
+function doQuick(text) {
+  const el = document.getElementById('quick-init');
+  if (el) el.remove();
   sendMsg(text);
+}
+function quickSend(btn) {
+  doQuick(btn.dataset.prompt || btn.textContent.trim());
 }
 
 function handleKey(e) {
