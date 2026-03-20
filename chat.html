@@ -116,10 +116,10 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
       <div style="margin-top:6px;font-size:12px;color:var(--ink3)">⚠️ Thông tin chỉ mang tính tham khảo, không thay thế tư vấn y tế.</div>
     </div>
     <div class="qwrap" id="quick-init">
-      <button class="qchip" onclick="doQuick('Chương trình khuyến mãi hiện tại của Trung Sơn?')">🎉 Khuyến mãi hiện có</button>
-      <button class="qchip" onclick="doQuick('Tôi muốn tìm nhà thuốc Trung Sơn gần nhất?')">📍 Tìm nhà thuốc Trung Sơn</button>
-      <button class="qchip" onclick="doQuick('Tư vấn ngắn ngọn về chính sách giao hàng của Trung Sơn?')">🚚 Chính sách giao hàng</button>
-      <button class="qchip" onclick="doQuick('Hotline và các kênh liên hệ với Trung Sơn Care?')">📞 Liên hệ hotline</button>
+      <button class="qchip" onclick="doQuick('Trung Son Care hien co chuong trinh khuyen mai gi?')">🎉 Khuyến mãi hiện có</button>
+      <button class="qchip" onclick="doQuick('Nha thuoc Trung Son Care co nhung chi nhanh o dau?')">📍 Tìm nhà thuốc Trung Sơn</button>
+      <button class="qchip" onclick="doQuick('Chinh sach giao hang cua Trung Son Care nhu the nao?')">🚚 Chính sách giao hàng</button>
+      <button class="qchip" onclick="doQuick('Hotline va thong tin lien he cua Trung Son Care?')">📞 Liên hệ hotline</button>
     </div>
   </div>
 
@@ -139,27 +139,15 @@ const WORKER_URL = 'https://bacsi-gau-proxy.lamhieuthuan.workers.dev';
 const STORE_NAME = 'fileSearchStores/datalearning01-8r8tmakcvuzv';
 const MODEL_ID   = 'gemini-2.5-flash';
 
-const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu 🐻 – trợ lý tư vấn sức khỏe và dược phẩm thân thiện của hệ thống Nhà thuốc Trung Sơn (Trung Sơn Pharma).
- 
-Nguyên tắc trả lời:
-- Luôn trả lời bằng tiếng Việt, thân thiện, ấm áp nhưng chuyên nghiệp
-- Xưng là "Bác Sĩ Gấu", gọi khách là "bạn" hoặc "anh/chị"
-- CHỈ trả lời dựa trên tài liệu được cung cấp từ Trung Sơn Pharma
-- Nếu không có thông tin, hướng dẫn khách gọi hotline hoặc đến chi nhánh
-- Không chẩn đoán bệnh, chỉ cung cấp thông tin tham khảo
-- Không đề cập nhà thuốc khác (Long Châu, Pharmacity, An Khang...)
-- Trả lời súc tích, dùng bullet points khi liệt kê
- 
-Hướng dẫn về sản phẩm:
-- Khi khách hỏi về sản phẩm thuốc cụ thể, LUÔN kèm đường link sản phẩm từ tài liệu
-- Format link: [Tên sản phẩm](https://trungsoncare.com/...)
-- Nếu có nhiều sản phẩm phù hợp, liệt kê tối đa 3 sản phẩm kèm link
-- Sau khi giới thiệu sản phẩm, hỏi thêm "Bạn có muốn đặt hàng không? 🛒"
- 
-Thông tin Trung Sơn Pharma:
-- Chuỗi nhà thuốc bán lẻ uy tín tại Việt Nam
-- Website: https://trungsoncare.com
-- Giao hàng tận nơi toàn quốc`;
+const DEFAULT_PROMPT = `Bạn là Bác Sĩ Gấu - trợ lý tư vấn của Nhà thuốc Trung Sơn Care.
+
+QUY TẮC BẮT BUỘC:
+1. Chỉ trả lời bằng tiếng Việt, thân thiện.
+2. Chỉ dùng thông tin từ tài liệu được cung cấp. KHÔNG tự suy đoán hoặc bịa thông tin.
+3. Không chẩn đoán bệnh. Không đề cập nhà thuốc khác.
+4. LINK SẢN PHẨM: Chỉ được dùng link CÓ SẴN trong tài liệu. TUYỆT ĐỐI KHÔNG tự tạo, tự đoán hoặc tự ghép link. Nếu không có link trong tài liệu thì KHÔNG đưa ra link nào.
+5. Nếu không tìm thấy thông tin trong tài liệu, trả lời: "Bác Sĩ Gấu chưa có thông tin về sản phẩm này. Bạn vui lòng liên hệ hotline 1800 6821 để được hỗ trợ nhé!"
+6. Website chính thức: https://trungsoncare.com`;
 const getPrompt = () => localStorage.getItem('bsg_prompt') || DEFAULT_PROMPT;
 const COMPETITOR_KW = ['long chau','longchau','pharmacity','an khang','medicare'];
 
