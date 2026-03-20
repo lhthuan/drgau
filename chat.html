@@ -221,7 +221,7 @@ window.addEventListener('DOMContentLoaded', () => {
 //  CHAT
 // ════════════════════════════════════════
 function quickSend(btn) {
-  const text = btn.dataset.prompt || btn.textContent.trim().replace(/^[^\w\s\u00C0-\u024F]*\s*/, '');
+  const text = btn.dataset.prompt || btn.textContent.trim().replace(/^[^\w\sÀ-ɏ]*\s*/, '');
   document.getElementById('quick-init')?.remove();
   sendMsg(text);
 }
