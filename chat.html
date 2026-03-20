@@ -82,9 +82,16 @@ html,body{height:100%;font-family:var(--font);background:var(--bg)}
 @keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
 /* QUICK */
-.qwrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-.qchip{background:var(--w);border:1.5px solid var(--g1);color:var(--g1);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .18s}
-.qchip:hover{background:var(--g1);color:#fff}
+.qwrap{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.qchip{
+  background:var(--w);border:1.5px solid var(--g1);color:var(--g1);
+  border-radius:20px;padding:10px 12px;font-size:12.5px;font-weight:600;
+  cursor:pointer;font-family:var(--font);transition:all .18s;
+  text-align:center;line-height:1.3;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  min-height:44px;display:flex;align-items:center;justify-content:center;
+}
+.qchip:hover,.qchip:active{background:var(--g1);color:#fff}
 
 /* WELCOME */
 .welcome{background:linear-gradient(135deg,var(--g3),#E0F7F0);border:1px solid rgba(0,132,61,.15);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink2);line-height:1.6}
