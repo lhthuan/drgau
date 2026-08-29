@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ECOM Trung Sơn - Tạo ảnh thông báo nghỉ lễ</title>
+<meta name="theme-color" content="#216E2C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#142418; --ink-soft:#4C6350; --ink-faint:#7F9283;
+  --paper:#F5F5FA; --surface:#FFFFFF; --line:#E1E5E2;
+  --brand:#216E2C; --brand-dark:#17501F; --brand-mid:#2C853B;
+  --accent:#EC8001;
+  --r:14px; --r-s:10px;
+  --shadow:0 1px 2px rgba(16,36,27,.06), 0 4px 14px rgba(16,36,27,.05);
+  --font:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.45}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:4px}
+
+header.top{background:linear-gradient(100deg,#1C6227 0%,var(--brand-mid) 100%);color:#fff;padding:16px 20px}
+header.top h1{margin:0;font-size:18px;font-weight:800}
+header.top p{margin:4px 0 0;font-size:13px;color:#C4E8C7}
+
+.app{max-width:1280px;margin:0 auto;padding:18px;display:grid;grid-template-columns:360px 1fr;gap:18px}
+@media (max-width:880px){ .app{grid-template-columns:1fr} }
+
+.panel{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px}
+.card h2{margin:0 0 10px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--brand);color:#fff;font-size:11.5px;font-weight:800;flex:0 0 auto}
+
+.filebtn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--brand);border-radius:var(--r-s);color:var(--brand);font-weight:600;font-size:13.5px;cursor:pointer;background:var(--surface)}
+.filebtn:hover{background:#EEF7EE}
+.hint{margin:8px 0 0;font-size:12.5px;color:var(--ink-faint);line-height:1.5}
+
+.picker{position:relative}
+.picker-input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface);font-size:14px}
+.picker-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);box-shadow:var(--shadow);max-height:280px;overflow-y:auto;z-index:30}
+.picker-row{display:block;width:100%;text-align:left;padding:9px 12px;border:0;background:none;cursor:pointer;border-bottom:1px solid var(--line)}
+.picker-row:last-child{border-bottom:0}
+.picker-row:hover{background:var(--paper)}
+.picker-name{display:block;font-size:13.5px;font-weight:600}
+.picker-name em{font-style:normal;color:var(--accent);font-weight:700;font-size:11.5px;margin-left:4px}
+.picker-addr{display:block;font-size:12px;color:var(--ink-soft);margin-top:1px}
+.picker-empty{padding:14px 12px;font-size:13px;color:var(--ink-faint);text-align:center}
+
+.picked{margin-top:8px;padding:9px 11px;border-radius:var(--r-s);background:var(--paper);font-size:12.5px;color:var(--ink-soft);display:none}
+.picked.on{display:block}
+.picked b{color:var(--ink)}
+
+.zoomrow{display:flex;align-items:center;gap:8px;margin-top:10px}
+.zoomlbl{font-size:12.5px;color:var(--ink-soft);white-space:nowrap}
+.zoomrow input[type=range]{flex:1;accent-color:var(--brand)}
+
+.calrow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:10px 13px;border-radius:var(--r-s);border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+.btn:hover{filter:brightness(.97)}
+.btn.accent{border-color:var(--accent);color:var(--accent)}
+.btn.accent[aria-pressed="true"]{background:var(--accent);color:#fff}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.ghost{color:var(--ink-soft)}
+.btn.small{padding:7px 11px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.warn{margin-top:8px;padding:9px 11px;border-radius:var(--r-s);background:#FCF0DF;color:#7A4A00;font-size:12.5px;display:none}
+.warn.on{display:block}
+
+.stage-wrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+.stage{position:relative;width:100%;border-radius:10px;overflow:hidden;background:#EDEFEA}
+#canvas{display:block;width:100%;height:auto}
+
+.zonebox{position:absolute;box-sizing:border-box;border:2px dashed transparent;pointer-events:none;border-radius:6px}
+body.calibrating .zonebox{border-color:var(--accent);pointer-events:auto;background:rgba(236,128,1,.07);cursor:move}
+.zonebox.pannable .zonebody{pointer-events:auto;cursor:grab}
+.zonebox.pannable .zonebody:active{cursor:grabbing}
+.zonebody{position:absolute;inset:0}
+.zonelabel{position:absolute;left:4px;top:4px;font-size:10.5px;font-weight:800;color:#fff;background:var(--accent);padding:2px 7px;border-radius:6px;display:none;pointer-events:none;white-space:nowrap}
+body.calibrating .zonelabel{display:block}
+.zonehandle{position:absolute;right:-8px;bottom:-8px;width:17px;height:17px;background:var(--accent);border:2px solid #fff;border-radius:5px;display:none;cursor:nwse-resize;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+body.calibrating .zonehandle{display:block}
+
+.stagebar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stage-hint{margin:10px 2px 0;font-size:12px;color:var(--ink-faint)}
+
+footer.foot{max-width:1280px;margin:0 auto;padding:6px 18px 30px;font-size:11.5px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>ECOM Trung Sơn - Tạo ảnh thông báo nghỉ lễ</h1>
+  <p>Vị trí 1: tên chi nhánh nghỉ · Vị trí 2: chi nhánh điều hướng · Vị trí 3: ảnh chụp Google Maps.</p>
+</header>
+
+<div class="app">
+  <div class="panel">
+
+    <div class="card" id="bgCard">
+      <h2>Ảnh nền</h2>
+      <p class="hint" id="bgHint">Đang tải Nen.jpg…</p>
+      <button type="button" id="bgOverrideToggle" class="btn ghost small" style="margin-top:8px">Dùng ảnh nền khác</button>
+      <label class="filebtn" id="bgFileWrap" hidden style="margin-top:8px">
+        <input type="file" id="bgFile" accept="image/*" hidden>
+        📁 Chọn ảnh nền khác
+      </label>
+    </div>
+
+    <div class="card">
+      <h2><span class="step-badge">1</span> Nhà thuốc nghỉ lễ (vị trí 1)</h2>
+      <div id="pickA"></div>
+      <div class="picked" id="pickedA"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="step-badge">2</span> Nhà thuốc điều hướng đến (vị trí 2)</h2>
+      <div id="pickB"></div>
+      <div class="picked" id="pickedB"></div>
+      <p class="warn" id="sameWarn">Vị trí 1 và 2 đang trùng một nhà thuốc — vui lòng chọn nhà thuốc khác cho vị trí 2.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="step-badge">3</span> Ảnh chụp Google Maps (vị trí 3)</h2>
+      <label class="filebtn">
+        <input type="file" id="mapFile" accept="image/*" hidden>
+        🗺️ Tải ảnh chụp màn hình Google Maps
+      </label>
+      <div class="zoomrow" id="zoomRow" hidden>
+        <span class="zoomlbl">Phóng to/nhỏ</span>
+        <input type="range" id="zoomRange" min="1" max="4" step="0.01" value="1">
+      </div>
+      <p class="hint">Ảnh vuông hay chữ nhật đều được — ảnh sẽ tự cắt vừa khung 3. Sau khi tải lên, <b>kéo trực tiếp trong khung 3</b> ở khung xem trước bên phải để dời vị trí, dùng thanh trượt để phóng to/thu nhỏ.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="step-badge">4</span> Canh khung (tuỳ chọn)</h2>
+      <div class="calrow">
+        <button class="btn accent" id="calBtn" type="button" aria-pressed="false">Chỉnh vị trí khung 1/2/3</button>
+        <button class="btn ghost" id="resetLayoutBtn" type="button">Khôi phục mặc định</button>
+      </div>
+      <p class="hint">Bật rồi kéo/thả khung cam để đặt đúng vị trí trên ảnh nền, kéo góc dưới-phải để đổi kích thước. Nhấn lại nút để lưu. Khi tắt canh khung, kéo trong khung 3 sẽ dời ảnh Google Maps thay vì dời khung.</p>
+    </div>
+
+  </div>
+
+  <div class="stage-wrap">
+    <div class="stage" id="stage">
+      <canvas id="canvas"></canvas>
+      <div class="zonebox" id="zoneA" data-key="A">
+        <span class="zonelabel">1 · Tên chi nhánh nghỉ</span>
+        <div class="zonebody"></div>
+        <div class="zonehandle"></div>
+      </div>
+      <div class="zonebox" id="zoneB" data-key="B">
+        <span class="zonelabel">2 · Card chi nhánh điều hướng</span>
+        <div class="zonebody"></div>
+        <div class="zonehandle"></div>
+      </div>
+      <div class="zonebox pannable" id="zoneC" data-key="C">
+        <span class="zonelabel">3 · Ảnh chụp Google Maps</span>
+        <div class="zonebody"></div>
+        <div class="zonehandle"></div>
+      </div>
+    </div>
+    <div class="stagebar">
+      <button class="btn primary" id="exportBtn" type="button">⬇ Tải ảnh PNG</button>
+      <button class="btn" id="gmapBtn" type="button">🧭 Mở chỉ đường Google Maps (kiểm tra)</button>
+    </div>
+    <p class="stage-hint">Khung 3 luôn kéo được để dời ảnh Google Maps (không cần bật "Chỉnh vị trí khung"); chỉ bật canh khung khi cần sửa vị trí/kích thước của cả 3 khung so với ảnh nền.</p>
+  </div>
+</div>
+
+<footer class="foot">Công cụ nội bộ — Trung Sơn. Dữ liệu 181 nhà thuốc lấy từ danh sách tra cứu nghỉ lễ 01–02/09/2026.</footer>
+
+<script src="stores.js"></script>
+<script src="bg-data.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   TIỆN ÍCH DÙNG CHUNG (giống trang tra cứu gốc)
+   ═══════════════════════════════════════════════════════════ */
+const FONT = '"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif';
+const BG_SRC = "Nen.jpg";
+
+const fold = s => (s || "")
+  .toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/đ/g, "d")
+  .replace(/\s+/g, " ")
+  .trim();
+
+const esc = s => String(s).replace(/[&<>"']/g, m =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+function dist(a, b, c, d){
+  const R = 6371, r = Math.PI/180;
+  const dLat = (c-a)*r, dLng = (d-b)*r;
+  const x = Math.sin(dLat/2)**2 + Math.cos(a*r)*Math.cos(c*r)*Math.sin(dLng/2)**2;
+  return 2*R*Math.asin(Math.sqrt(x));
+}
+const fmtKm = k => k < 1 ? Math.round(k*1000) + " m" : k.toFixed(1).replace(".", ",") + " km";
+/* 0865947068 -> "0865.947.068" (khớp mẫu thẻ chi nhánh) */
+const fmtTel = p => String(p || "").replace(/(\d{4})(\d{3})(\d{3,4})/, "$1.$2.$3");
+const clamp = (v,min,max) => Math.min(max, Math.max(min, v));
+/* Chuẩn hiển thị thống nhất mọi nơi: "TS244 - Trung Sơn An Giang 25"
+   — kể cả trong ảnh banner xuất ra, để phân biệt các chi nhánh trùng/gần
+   giống tên nhau. */
+const displayName = s => `${s.code} - ${s.name}`;
+
+STORES.forEach(s => { s._h = fold([s.name, s.address, s.province, s.code].join(" ")); });
+const CLOSED  = STORES.filter(s => s.status === "closed").sort((a,b)=>a.name.localeCompare(b.name,"vi"));
+const OPENISH = STORES.filter(s => s.status !== "closed");
+
+/* ═══════════════════════════════════════════════════════════
+   TRẠNG THÁI + LAYOUT (vị trí % 3 khung trên ảnh nền)
+   ═══════════════════════════════════════════════════════════ */
+/* Khớp với Nen.jpg (1024×1536px) — "THÔNG BÁO HOẠT ĐỘNG DỊP LỄ":
+     1 = dải xám mờ trong khối hướng dẫn phía trên (tên chi nhánh nghỉ, canh giữa)
+     2 = khung trắng bo góc bên trái  (card chi nhánh điều hướng)
+     3 = khung trắng bo góc bên phải (ảnh chụp Google Maps)
+   Toạ độ đo trực tiếp trên Nen.jpg — nếu đổi ảnh nền khác kích thước/bố cục
+   khác thì dùng "Chỉnh vị trí khung 1/2/3" để canh lại. */
+const DEFAULT_LAYOUT = {
+  A: { x:0.210, y:0.320, w:0.580, h:0.035 },
+  B: { x:0.040, y:0.472, w:0.450, h:0.198 },
+  C: { x:0.510, y:0.472, w:0.450, h:0.198 },
+};
+const LAYOUT_KEY = "ts_thongbao_layout_v2";
+
+function loadLayout(){
+  try{
+    const raw = localStorage.getItem(LAYOUT_KEY);
+    if (raw){
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.A && parsed.B && parsed.C) return parsed;
+    }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_LAYOUT));
+}
+function saveLayout(){ try{ localStorage.setItem(LAYOUT_KEY, JSON.stringify(state.layout)); }catch(e){} }
+
+const state = {
+  bgImage: null,
+  storeA: null,
+  storeB: null,
+  mapShot: null,   // { img, zoom, offsetX, offsetY } — ảnh chụp Google Maps (vị trí 3)
+  layout: loadLayout(),
+  calibrating: false,
+};
+
+/* ═══════════════════════════════════════════════════════════
+   Ô TÌM KIẾM / CHỌN NHÀ THUỐC
+   ═══════════════════════════════════════════════════════════ */
+function createPicker({containerId, items, placeholder, emptyLabel, onPick}){
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML = `
+    <div class="picker">
+      <input class="picker-input" type="text" placeholder="${esc(placeholder)}" autocomplete="off">
+      <div class="picker-list" hidden></div>
+    </div>`;
+  const input = wrap.querySelector(".picker-input");
+  const list  = wrap.querySelector(".picker-list");
+  let currentItems = items;
+
+  function renderList(q){
+    const f = fold(q);
+    const rows = currentItems.filter(s => !f || s._h.includes(f)).slice(0, 30);
+    list.innerHTML = rows.length
+      ? rows.map(s => `
+        <button type="button" class="picker-row" data-code="${s.code}">
+          <span class="picker-name">${esc(displayName(s))}${s._badge ? ` <em>${esc(s._badge)}</em>` : ""}</span>
+          <span class="picker-addr">${esc(s.address)}</span>
+        </button>`).join("")
+      : `<div class="picker-empty">${esc(emptyLabel)}</div>`;
+    list.hidden = false;
+  }
+  input.addEventListener("focus", () => renderList(input.value));
+  input.addEventListener("input", () => renderList(input.value));
+  input.addEventListener("blur", () => setTimeout(() => { list.hidden = true; }, 150));
+  list.addEventListener("mousedown", e => {
+    const row = e.target.closest(".picker-row");
+    if (!row) return;
+    const store = currentItems.find(s => s.code === row.dataset.code);
+    if (!store) return;
+    input.value = displayName(store);
+    list.hidden = true;
+    onPick(store);
+  });
+
+  return {
+    setItems(newItems){ currentItems = newItems; },
+    clear(){ input.value = ""; },
+  };
+}
+
+const pickerA = createPicker({
+  containerId: "pickA", items: CLOSED,
+  placeholder: "Tìm theo tên, đường, quận/huyện…",
+  emptyLabel: "Không tìm thấy nhà thuốc nghỉ lễ phù hợp",
+  onPick(s){
+    state.storeA = s;
+    document.getElementById("pickedA").className = "picked on";
+    document.getElementById("pickedA").innerHTML = `<b>${esc(displayName(s))}</b><br>${esc(s.address)}`;
+    resortB();
+    checkSame();
+    render();
+  }
+});
+
+const pickerB = createPicker({
+  containerId: "pickB", items: OPENISH,
+  placeholder: "Tìm theo tên, đường, quận/huyện…",
+  emptyLabel: "Không tìm thấy nhà thuốc phù hợp",
+  onPick(s){
+    state.storeB = s;
+    document.getElementById("pickedB").className = "picked on";
+    document.getElementById("pickedB").innerHTML = `<b>${esc(displayName(s))}</b><br>${esc(s.address)} · ${esc(fmtTel(s.phone))} · ${esc(s.hours || "")}`;
+    checkSame();
+    render();
+  }
+});
+
+function resortB(){
+  if (!state.storeA){ pickerB.setItems(OPENISH); return; }
+  const withDist = OPENISH.map(s => ({...s, _d: dist(state.storeA.lat, state.storeA.lng, s.lat, s.lng)}))
+    .sort((a,b) => a._d - b._d);
+  withDist.forEach((s,i) => { s._badge = (i < 3 ? "Gần nhất · " : "") + fmtKm(s._d); });
+  pickerB.setItems(withDist);
+}
+
+function checkSame(){
+  const same = state.storeA && state.storeB && state.storeA.code === state.storeB.code;
+  document.getElementById("sameWarn").classList.toggle("on", !!same);
+  document.getElementById("exportBtn").disabled = !state.storeA || !state.storeB || same;
+}
+checkSame();
+
+/* ═══════════════════════════════════════════════════════════
+   ẢNH NỀN — mặc định tự tải Nen.jpg cùng thư mục, có thể đổi
+   ═══════════════════════════════════════════════════════════ */
+function setBgStatus(msg, isWarn){
+  const el = document.getElementById("bgHint");
+  el.textContent = msg;
+  el.style.color = isWarn ? "#B34700" : "";
+}
+function loadDefaultBackground(){
+  /* Nhúng sẵn dạng base64 (bg-data.js) thay vì tải file Nen.jpg qua đường
+     dẫn riêng — bắt buộc phải làm vậy vì khi mở trực tiếp bằng double-click
+     (file://), Chrome/Edge coi ảnh tải qua đường dẫn file là khác nguồn gốc
+     với trang, "làm bẩn" canvas và chặn xuất ảnh (toBlob/toDataURL báo lỗi
+     SecurityError, nút Tải ảnh PNG bấm không phản hồi gì). Ảnh nhúng base64
+     thì không bao giờ bị lỗi này, dù mở kiểu gì (double-click hay server). */
+  const src = (typeof BG_DATA_URI !== "undefined" && BG_DATA_URI) ? BG_DATA_URI : BG_SRC;
+  const img = new Image();
+  img.onload = () => {
+    state.bgImage = img;
+    setBgStatus(`✓ Đã tải ảnh nền (${img.naturalWidth}×${img.naturalHeight}px)`, false);
+    render();
+  };
+  img.onerror = () => {
+    setBgStatus(`⚠ Không tải được ảnh nền nhúng sẵn (thiếu file bg-data.js?). Bấm "Dùng ảnh nền khác" bên dưới để chọn ảnh thủ công.`, true);
+    render();
+  };
+  img.src = src;
+}
+document.getElementById("bgOverrideToggle").addEventListener("click", () => {
+  document.getElementById("bgFileWrap").hidden = false;
+});
+document.getElementById("bgFile").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  img.onload = () => {
+    state.bgImage = img;
+    setBgStatus(`Đã dùng ảnh khác: ${f.name} (${img.naturalWidth}×${img.naturalHeight}px)`, false);
+    render();
+  };
+  img.onerror = () => alert("Không đọc được ảnh này, thử ảnh PNG/JPG khác.");
+  img.src = URL.createObjectURL(f);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   ẢNH CHỤP GOOGLE MAPS (vị trí 3) — tải lên, kéo dời vị trí,
+   trượt phóng to/nhỏ; luôn cắt vừa khít khung 3
+   ═══════════════════════════════════════════════════════════ */
+document.getElementById("mapFile").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  img.onload = () => {
+    state.mapShot = { img, zoom: 1, offsetX: 0, offsetY: 0 };
+    document.getElementById("zoomRow").hidden = false;
+    document.getElementById("zoomRange").value = "1";
+    render();
+  };
+  img.onerror = () => alert("Không đọc được ảnh này, thử ảnh PNG/JPG khác.");
+  img.src = URL.createObjectURL(f);
+});
+document.getElementById("zoomRange").addEventListener("input", (e) => {
+  if (!state.mapShot) return;
+  state.mapShot.zoom = clamp(parseFloat(e.target.value) || 1, 1, 4);
+  render();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   CANH KHUNG 1/2/3 (kéo–thả DOM overlay, lưu theo % để không
+   phụ thuộc kích thước ảnh nền thật)
+   ═══════════════════════════════════════════════════════════ */
+const stageEl = document.getElementById("stage");
+
+function applyLayoutToDOM(){
+  ["A","B","C"].forEach(key => {
+    const el = document.getElementById("zone"+key);
+    const L = state.layout[key];
+    el.style.left   = (L.x*100)+"%";
+    el.style.top    = (L.y*100)+"%";
+    el.style.width  = (L.w*100)+"%";
+    el.style.height = (L.h*100)+"%";
+  });
+}
+
+function makeZoneDraggable(key){
+  const boxEl  = document.getElementById("zone"+key);
+  const body   = boxEl.querySelector(".zonebody");
+  const handle = boxEl.querySelector(".zonehandle");
+  let mode = null, startX = 0, startY = 0, start = null;
+
+  function begin(e, m){
+    if (!state.calibrating) return;
+    mode = m;
+    boxEl.setPointerCapture(e.pointerId);
+    startX = e.clientX; startY = e.clientY;
+    start = {...state.layout[key]};
+    e.preventDefault(); e.stopPropagation();
+  }
+  body.addEventListener("pointerdown", e => begin(e, "move"));
+  handle.addEventListener("pointerdown", e => begin(e, "resize"));
+  boxEl.addEventListener("pointermove", e => {
+    if (!mode) return;
+    const r = stageEl.getBoundingClientRect();
+    const dx = (e.clientX - startX) / r.width;
+    const dy = (e.clientY - startY) / r.height;
+    const L = state.layout[key];
+    if (mode === "move"){
+      L.x = clamp(start.x + dx, 0, 1 - L.w);
+      L.y = clamp(start.y + dy, 0, 1 - L.h);
+    } else {
+      L.w = clamp(start.w + dx, 0.08, 1 - L.x);
+      L.h = clamp(start.h + dy, 0.03, 1 - L.y);
+    }
+    applyLayoutToDOM(); render();
+  });
+  function end(){ mode = null; }
+  boxEl.addEventListener("pointerup", end);
+  boxEl.addEventListener("pointercancel", end);
+}
+makeZoneDraggable("A"); makeZoneDraggable("B"); makeZoneDraggable("C");
+
+/* Kéo trong khung 3 (khi KHÔNG canh khung) = dời ảnh Google Maps,
+   không phải dời khung. Cuộn chuột trên khung 3 = phóng to/nhỏ. */
+function makeZoneCPannable(){
+  const boxEl = document.getElementById("zoneC");
+  const body  = boxEl.querySelector(".zonebody");
+  let dragging = false, startX = 0, startY = 0, startOff = null;
+
+  body.addEventListener("pointerdown", e => {
+    if (state.calibrating || !state.mapShot) return;
+    dragging = true;
+    boxEl.setPointerCapture(e.pointerId);
+    startX = e.clientX; startY = e.clientY;
+    startOff = { x: state.mapShot.offsetX, y: state.mapShot.offsetY };
+  });
+  boxEl.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    const r = boxEl.getBoundingClientRect();
+    state.mapShot.offsetX = startOff.x + (e.clientX - startX) / r.width;
+    state.mapShot.offsetY = startOff.y + (e.clientY - startY) / r.height;
+    render();
+  });
+  function end(){ dragging = false; }
+  boxEl.addEventListener("pointerup", end);
+  boxEl.addEventListener("pointercancel", end);
+
+  boxEl.addEventListener("wheel", e => {
+    if (state.calibrating || !state.mapShot) return;
+    e.preventDefault();
+    state.mapShot.zoom = clamp(state.mapShot.zoom + (e.deltaY < 0 ? 0.08 : -0.08), 1, 4);
+    document.getElementById("zoomRange").value = String(state.mapShot.zoom);
+    render();
+  }, { passive: false });
+}
+makeZoneCPannable();
+
+const calBtn = document.getElementById("calBtn");
+calBtn.addEventListener("click", () => {
+  state.calibrating = !state.calibrating;
+  document.body.classList.toggle("calibrating", state.calibrating);
+  calBtn.setAttribute("aria-pressed", String(state.calibrating));
+  calBtn.textContent = state.calibrating ? "Xong, lưu vị trí" : "Chỉnh vị trí khung 1/2/3";
+  if (!state.calibrating){ saveLayout(); render(); }
+});
+document.getElementById("resetLayoutBtn").addEventListener("click", () => {
+  state.layout = JSON.parse(JSON.stringify(DEFAULT_LAYOUT));
+  applyLayoutToDOM(); saveLayout(); render();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   VẼ CANVAS
+   ═══════════════════════════════════════════════════════════ */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function canvasSize(){
+  return {
+    w: state.bgImage ? state.bgImage.naturalWidth  : 1080,
+    h: state.bgImage ? state.bgImage.naturalHeight : 1350,
+  };
+}
+function rectPx(zone, w, h){
+  return { x: zone.x*w, y: zone.y*h, w: zone.w*w, h: zone.h*h };
+}
+function wrapLines(c, text, maxWidth){
+  const words = String(text || "").split(/\s+/).filter(Boolean);
+  const lines = []; let cur = "";
+  for (const w of words){
+    const test = cur ? cur + " " + w : w;
+    if (c.measureText(test).width > maxWidth && cur){ lines.push(cur); cur = w; }
+    else cur = test;
+  }
+  if (cur) lines.push(cur);
+  return lines.length ? lines : [""];
+}
+function fitText(c, text, maxWidth, maxHeight, maxSize, minSize, weight){
+  let size = maxSize, lines = [text], lineHeight = maxSize*1.22;
+  for (size = maxSize; size >= minSize; size--){
+    c.font = `${weight} ${size}px ${FONT}`;
+    lines = wrapLines(c, text, maxWidth);
+    lineHeight = size*1.22;
+    if (lines.length * lineHeight <= maxHeight) break;
+  }
+  return { size, lines, lineHeight };
+}
+function roundRectPath(c, x, y, w, h, r){
+  const rr = Math.max(0, Math.min(r, w/2, h/2));
+  c.beginPath();
+  c.moveTo(x+rr, y);
+  c.arcTo(x+w, y, x+w, y+h, rr);
+  c.arcTo(x+w, y+h, x, y+h, rr);
+  c.arcTo(x, y+h, x, y, rr);
+  c.arcTo(x, y, x+w, y, rr);
+  c.closePath();
+}
+
+/* ── Vị trí 1: tên chi nhánh nghỉ, canh giữa ─────────────── */
+function drawZoneA(c, rect){
+  if (!state.storeA) return;
+  c.save();
+  c.fillStyle = "#142418"; c.textBaseline = "top"; c.textAlign = "center";
+  const fit = fitText(c, displayName(state.storeA), rect.w, rect.h, Math.min(30, rect.h*0.62), 10, 800);
+  const totalH = fit.lines.length * fit.lineHeight;
+  let y = rect.y + (rect.h - totalH)/2;
+  c.font = `800 ${fit.size}px ${FONT}`;
+  fit.lines.forEach(line => { c.fillText(line, rect.x + rect.w/2, y); y += fit.lineHeight; });
+  c.restore();
+}
+
+/* ── Icon vector đơn giản (đồng bộ màu thương hiệu, không phụ
+   thuộc font emoji của từng hệ điều hành) ───────────────── */
+function drawIconPin(c, cx, cy, r){
+  c.save();
+  c.fillStyle = "#216E2C";
+  c.beginPath(); c.arc(cx, cy - r*0.15, r*0.62, 0, Math.PI*2); c.fill();
+  c.beginPath();
+  c.moveTo(cx - r*0.5, cy);
+  c.quadraticCurveTo(cx, cy + r*1.1, cx + r*0.5, cy);
+  c.closePath(); c.fill();
+  c.beginPath(); c.fillStyle = "#fff";
+  c.arc(cx, cy - r*0.15, r*0.26, 0, Math.PI*2); c.fill();
+  c.restore();
+}
+function drawIconClock(c, cx, cy, r){
+  c.save();
+  c.strokeStyle = "#216E2C"; c.lineWidth = Math.max(1, r*0.16); c.lineCap = "round";
+  c.beginPath(); c.arc(cx, cy, r*0.82, 0, Math.PI*2); c.stroke();
+  c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx, cy - r*0.5); c.stroke();
+  c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx + r*0.38, cy + r*0.12); c.stroke();
+  c.restore();
+}
+function drawIconPhone(c, cx, cy, r){
+  c.save();
+  c.strokeStyle = "#216E2C"; c.lineWidth = Math.max(1, r*0.18);
+  c.lineCap = "round"; c.lineJoin = "round";
+  c.beginPath();
+  c.moveTo(cx - r*0.55, cy - r*0.7);
+  c.quadraticCurveTo(cx - r*0.95, cy - r*0.15, cx - r*0.3, cy + r*0.2);
+  c.quadraticCurveTo(cx - r*0.05, cy + r*0.4, cx + r*0.15, cy + r*0.2);
+  c.quadraticCurveTo(cx + r*0.4, cy - r*0.05, cx + r*0.75, cy + r*0.55);
+  c.stroke();
+  c.restore();
+}
+
+/* ── Vị trí 2: card chi nhánh điều hướng (tên trên nền xanh,
+   địa chỉ, giờ hoạt động khung lễ, SĐT — theo mẫu thẻ) ───── */
+function drawInfoRow(c, x, y, w, zoneH, iconFn, label, value, opts){
+  opts = opts || {};
+  const maxLines = opts.maxLines || 1;
+  c.textAlign = "left"; c.textBaseline = "top";
+
+  const iconR = Math.max(6, zoneH*0.035);
+  iconFn(c, x + iconR, y + iconR, iconR);
+  const labelSize = Math.max(8.5, zoneH*0.045);
+  c.font = `700 ${labelSize}px ${FONT}`;
+  c.fillStyle = "#216E2C";
+  c.fillText(label, x + iconR*2.6, y + (iconR*2 - labelSize)/2);
+  y += Math.max(iconR*2, labelSize) + zoneH*0.02;
+
+  const valueSize = Math.max(10, zoneH*0.065);
+  c.font = `800 ${valueSize}px ${FONT}`;
+  const valPad = zoneH*0.025;
+  const lines = maxLines > 1
+    ? wrapLines(c, String(value || ""), w - valPad*2).slice(0, maxLines)
+    : [String(value || "")];
+  const lineH = valueSize*1.2;
+  const pillH = Math.max(zoneH*0.11, lines.length*lineH + valPad*2);
+  roundRectPath(c, x, y, w, pillH, 8);
+  c.fillStyle = "#EDEFEA"; c.fill();
+  c.fillStyle = "#142418"; c.textAlign = "center"; c.textBaseline = "top";
+  let vy = y + (pillH - lines.length*lineH)/2;
+  lines.forEach(line => { c.fillText(line, x + w/2, vy); vy += lineH; });
+  c.textAlign = "left"; c.textBaseline = "top";
+  return y + pillH;
+}
+
+function drawBrandCard(c, rect, store){
+  if (!store) return;
+  c.save();
+  const pad = Math.max(8, rect.w*0.045);
+  const innerW = rect.w - pad*2;
+  let y = rect.y + pad;
+
+  const nameText = displayName(store).toLocaleUpperCase("vi");
+  const bannerPadY = Math.max(6, rect.h*0.035);
+  const nameFit = fitText(c, nameText, innerW - bannerPadY*2, rect.h*0.22, Math.min(16, rect.h*0.085), 9, 800);
+  const bannerH = nameFit.lines.length*nameFit.lineHeight + bannerPadY*2;
+  roundRectPath(c, rect.x+pad, y, innerW, bannerH, 10);
+  c.fillStyle = "#216E2C"; c.fill();
+  c.fillStyle = "#fff"; c.textAlign = "center"; c.textBaseline = "top";
+  let ny = y + (bannerH - nameFit.lines.length*nameFit.lineHeight)/2;
+  c.font = `800 ${nameFit.size}px ${FONT}`;
+  nameFit.lines.forEach(line => { c.fillText(line, rect.x + rect.w/2, ny); ny += nameFit.lineHeight; });
+  y += bannerH + rect.h*0.03;
+
+  const rowGap = rect.h*0.025;
+  y = drawInfoRow(c, rect.x+pad, y, innerW, rect.h, drawIconPin,   "ĐỊA CHỈ",              store.address, {maxLines:2}) + rowGap;
+  y = drawInfoRow(c, rect.x+pad, y, innerW, rect.h, drawIconClock, "THỜI GIAN HOẠT ĐỘNG",  store.hours || "Liên hệ tổng đài") + rowGap;
+  y = drawInfoRow(c, rect.x+pad, y, innerW, rect.h, drawIconPhone, "SỐ ĐIỆN THOẠI",        fmtTel(store.phone));
+  c.restore();
+}
+
+/* ── Vị trí 3: ảnh chụp Google Maps do người dùng tải lên,
+   kéo dời vị trí + trượt phóng to/nhỏ, luôn cắt vừa khung ── */
+function mapShotGeometry(rect){
+  const ms = state.mapShot;
+  if (!ms || !ms.img) return null;
+  const iw = ms.img.naturalWidth, ih = ms.img.naturalHeight;
+  if (!iw || !ih) return null;
+  const baseScale = Math.max(rect.w/iw, rect.h/ih);
+  const scale = baseScale * ms.zoom;
+  const dispW = iw*scale, dispH = ih*scale;
+  const maxOffX = Math.max(0, (dispW - rect.w)/2);
+  const maxOffY = Math.max(0, (dispH - rect.h)/2);
+  const offXpx = clamp(ms.offsetX * rect.w, -maxOffX, maxOffX);
+  const offYpx = clamp(ms.offsetY * rect.h, -maxOffY, maxOffY);
+  return {
+    dispW, dispH,
+    dx: rect.x + rect.w/2 - dispW/2 + offXpx,
+    dy: rect.y + rect.h/2 - dispH/2 + offYpx,
+  };
+}
+function drawMapShot(c, rect){
+  c.save();
+  roundRectPath(c, rect.x, rect.y, rect.w, rect.h, 10);
+  c.clip();
+  const geo = mapShotGeometry(rect);
+  if (geo){
+    c.drawImage(state.mapShot.img, geo.dx, geo.dy, geo.dispW, geo.dispH);
+  } else {
+    c.fillStyle = "#EDEFEA"; c.fillRect(rect.x, rect.y, rect.w, rect.h);
+    c.strokeStyle = "rgba(20,36,24,.25)"; c.lineWidth = 1.5; c.setLineDash([6,6]);
+    c.strokeRect(rect.x+5, rect.y+5, rect.w-10, rect.h-10);
+    c.setLineDash([]);
+    c.fillStyle = "rgba(76,99,80,.75)"; c.textAlign = "center"; c.textBaseline = "middle";
+    c.font = `500 ${Math.max(10, rect.h*0.06)}px ${FONT}`;
+    c.fillText("Chưa tải ảnh chụp Google Maps", rect.x + rect.w/2, rect.y + rect.h/2);
+  }
+  c.restore();
+  c.save();
+  c.strokeStyle = "rgba(20,36,24,.14)"; c.lineWidth = 1;
+  roundRectPath(c, rect.x, rect.y, rect.w, rect.h, 10); c.stroke();
+  c.restore();
+}
+
+function render(){
+  const {w, h} = canvasSize();
+  canvas.width = w; canvas.height = h;
+
+  if (state.bgImage) ctx.drawImage(state.bgImage, 0, 0, w, h);
+  else {
+    ctx.fillStyle = "#EDEFEA"; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "#B9C2BB"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = `600 ${Math.round(w*0.035)}px ${FONT}`;
+    ctx.fillText("Chưa có ảnh nền — kiểm tra file Nen.jpg", w/2, h/2);
+  }
+
+  drawZoneA(ctx, rectPx(state.layout.A, w, h));
+  drawBrandCard(ctx, rectPx(state.layout.B, w, h), state.storeB);
+  drawMapShot(ctx, rectPx(state.layout.C, w, h));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   XUẤT ẢNH + NÚT CHỈ ĐƯỜNG THẬT
+   ═══════════════════════════════════════════════════════════ */
+document.getElementById("exportBtn").addEventListener("click", () => {
+  if (!state.storeA || !state.storeB) return;
+  try {
+    canvas.toBlob((blob) => {
+      if (!blob) { alert("Không xuất được ảnh, thử lại."); return; }
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `thong-bao-${state.storeA.code}-${state.storeB.code}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+    }, "image/png");
+  } catch (err) {
+    alert("Không xuất được ảnh: " + err.message + "\n\nThử tải lại trang, hoặc nếu đang mở file trực tiếp (double-click) thì thử mở qua 1 server local (xem README).");
+  }
+});
+document.getElementById("gmapBtn").addEventListener("click", () => {
+  if (!state.storeA || !state.storeB) { alert("Chọn cả vị trí 1 và 2 trước."); return; }
+  const url = `https://www.google.com/maps/dir/?api=1&origin=${state.storeA.lat},${state.storeA.lng}&destination=${state.storeB.lat},${state.storeB.lng}`;
+  window.open(url, "_blank", "noopener");
+});
+
+/* ═══════════════════════════════════════════════════════════
+   KHỞI ĐỘNG
+   ═══════════════════════════════════════════════════════════ */
+applyLayoutToDOM();
+loadDefaultBackground();
+render();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+
+/* Chế độ tự kiểm tra bố cục (?selftest=1) — điền sẵn dữ liệu mẫu để xem
+   nhanh cả 3 khung mà không cần thao tác tay. Không ảnh hưởng khi dùng
+   bình thường (không có query param thì đoạn này không chạy). */
+if (location.search.includes("selftest=1")){
+  setTimeout(() => {
+    state.storeA = CLOSED[0];
+    state.storeB = OPENISH[0];
+    resortB(); checkSame();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420">
+      <rect width="640" height="420" fill="#cfe8d3"/>
+      <text x="320" y="210" font-size="36" text-anchor="middle" fill="#216E2C" font-family="sans-serif">MAP TEST</text>
+    </svg>`;
+    const testImg = new Image();
+    testImg.onload = () => { state.mapShot = { img: testImg, zoom: 1, offsetX: 0, offsetY: 0 }; render(); };
+    testImg.src = "data:image/svg+xml;base64," + btoa(svg);
+  }, 30);
+}
+</script>
+</body>
+</html>
